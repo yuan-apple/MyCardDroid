@@ -1,6 +1,7 @@
 package org.mycard;
 
-import org.mycard.fragment.PageFragment;
+import org.mycard.fragment.RoomFragment;
+import org.mycard.fragment.TabFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,8 @@ public class MainActivity extends FragmentActivity {
 		}
 
 	}
+	
+	private static final int DRAWER_ID_ROOM_LIST = 0;
 
 	private DrawerLayout mDrawerLayout;
 	private TextView mMainTitle;
@@ -66,9 +69,17 @@ public class MainActivity extends FragmentActivity {
 	/** Swaps fragments in the main content view */
 	private void selectItem(int position) {
 	    // Create a new fragment and specify the planet to show based on position
-	    Fragment fragment = new PageFragment();
+		Fragment fragment = null;
+		switch (position) {
+		case DRAWER_ID_ROOM_LIST:
+			fragment = new RoomFragment();
+			break;
+
+		default:
+			break;
+		}
 	    Bundle args = new Bundle();
-	    args.putInt(PageFragment.ARG_ITEM_INDEX, position);
+	    args.putInt(TabFragment.ARG_ITEM_INDEX, position);
 	    fragment.setArguments(args);
 
 	    // Insert the fragment by replacing any existing fragment
