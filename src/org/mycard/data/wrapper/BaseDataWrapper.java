@@ -1,6 +1,10 @@
-package org.mycard.data;
+package org.mycard.data.wrapper;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.os.Bundle;
 
@@ -10,42 +14,19 @@ import android.os.Bundle;
  */
 public abstract class BaseDataWrapper implements IBaseWrapper {
 
-	protected int mItemID;
-
-	protected int mChannelId;
 	protected ArrayList<String> mUrls;
-	protected Bundle mData;
 	protected boolean mResult;
-
+	
 	/**
 	 * 
 	 */
-	public BaseDataWrapper(int channelID, int itemID) {
-		mChannelId = channelID;
-		mItemID = itemID;
+	public BaseDataWrapper() {
 		mUrls = new ArrayList<String>();
 	}
 
-	public void setData(Bundle data) {
-		mData = data;
-	}
 	
-	protected void formatTestUrl() {
-	}
-	protected abstract void formatManufactureUrl();
-	
-	protected abstract void formatIntegrationTestUrl();
-	
-	protected abstract void formatInternalTestUrl();
-	
-	public Bundle getData() {
-		return mData;
-	}
+	public abstract void parse(JSONArray data);
 
-	public int getItemIndex() {
-		return mItemID;
-	}
-	
 	@Override
 	public void recyle() {
 		// TODO Auto-generated method stub

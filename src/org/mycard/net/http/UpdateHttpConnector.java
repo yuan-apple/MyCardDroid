@@ -10,8 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mycard.Constants;
-import org.mycard.data.BaseDataWrapper;
 import org.mycard.data.ResourcesConstants;
+import org.mycard.data.wrapper.BaseDataWrapper;
 
 import android.util.Log;
 
@@ -30,16 +30,20 @@ public class UpdateHttpConnector extends BaseHttpConnector implements
 	public UpdateHttpConnector(HttpClient client) {
 		super(client);
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.uc.addon.indoorsmanwelfare.net.http.BaseHttpConnector#get(com.uc.addon.indoorsmanwelfare.model.data.wrapper.BaseDataWrapper)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.uc.addon.indoorsmanwelfare.net.http.BaseHttpConnector#get(com.uc.
+	 * addon.indoorsmanwelfare.model.data.wrapper.BaseDataWrapper)
 	 */
 	@Override
 	public void get(BaseDataWrapper wrapper) {
 		// TODO Auto-generated method stub
 		int i = 0;
 		String url = wrapper.getUrl(0);
-		while(null != url) {
+		while (null != url) {
 			InputStream is = HttpUtils.doGet(mClient, url);
 			if (null != is) {
 				try {
@@ -51,7 +55,7 @@ public class UpdateHttpConnector extends BaseHttpConnector implements
 				}
 			}
 			url = wrapper.getUrl(++i);
-		} 
+		}
 	}
 
 	/**
@@ -60,42 +64,31 @@ public class UpdateHttpConnector extends BaseHttpConnector implements
 	 * @return
 	 **/
 	@Override
-	protected void handleResponse(InputStream data, BaseDataWrapper wrapper) throws InterruptedException{
+	protected void handleResponse(InputStream data, BaseDataWrapper wrapper)
+			throws InterruptedException {
 		boolean status = false;
 		StringBuilder out = new StringBuilder();
-		JSONObject jsonObj;
+		JSONArray jsonArray;
 		BufferedReader reader = new BufferedReader(new InputStreamReader(data));
 		int len = -1;
 		char[] buffer = new char[Constants.IO_BUFFER_SIZE];
 		try {
-			while ((!Thread.currentThread().isInterrupted() && (len = reader.read(buffer, 0, Constants.IO_BUFFER_SIZE)) != -1))
+			while ((!Thread.currentThread().isInterrupted() && (len = reader
+					.read(buffer, 0, Constants.IO_BUFFER_SIZE)) != -1))
 				out.append(buffer, 0, len);
 			if (Thread.currentThread().isInterrupted()) {
 				throw new InterruptedException();
 			}
-			jsonObj = new JSONObject(out.toString());
-//			String result = jsonObj.getString(JSON_KEY_QUERY_STATUS);
-//			if (!RESULT_OK.equals(result)) {
-//				wrapper.setResult(status);
-//				return;
-//			}
-//			if (jsonObj.has(JSON_KEY_QUERY_VERSION) &&
-//					jsonObj.has(JSON_KEY_QUERY_LATEST)) {
-//				((UpdateDataWrapper) wrapper).setVersions(jsonObj.getString(JSON_KEY_QUERY_VERSION));
-//				((UpdateDataWrapper) wrapper).setLatests(jsonObj.getString(JSON_KEY_QUERY_LATEST));
-//			}
-//			if (jsonObj.has(JSON_KEY_QUERY_DATA)) {
-//				Object upAppItemObj = jsonObj.get(JSON_KEY_QUERY_DATA);
-//				if (!JSONObject.NULL.equals(upAppItemObj)) {
-//					if (upAppItemObj instanceof JSONArray) {
-//						((UpdateDataWrapper) wrapper)
-//								.parse((JSONArray) upAppItemObj);
-//						status = true;
-//					}
-//				}
-//				upAppItemObj = null;
-//			}
-			jsonObj = null;
+			Log.d(TAG, out.toString());
+			jsonArray = new JSONArray(out.toString());
+			// String result = jsonObj.getString(JSON_KEY_QUERY_STATUS);
+			// if (!RESULT_OK.equals(result)) {
+			// wrapper.setResult(status);
+			// return;
+			// }
+			wrapper.parse(jsonArray);
+			status = true;
+			jsonArray = null;
 		} catch (JSONException e) {
 			e.printStackTrace();
 			status = false;

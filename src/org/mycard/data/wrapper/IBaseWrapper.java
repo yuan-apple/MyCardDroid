@@ -1,4 +1,6 @@
-package org.mycard.data;
+package org.mycard.data.wrapper;
+
+import org.mycard.data.ResourcesConstants;
 
 /**
  * @author mabin
