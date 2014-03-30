@@ -12,7 +12,7 @@
     <string-array name="room_items">
         <item >单局模式</item>
         <item >比赛模式</item>
-        <item >双打模式</item>
+        <item >双人模式</item>
     </string-array>
     
 </resources>

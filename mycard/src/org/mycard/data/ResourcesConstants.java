@@ -31,6 +31,7 @@ public interface ResourcesConstants {
 	public static final String JSON_KEY_ROOM_STATUS = "status";
 	public static final String JSON_KEY_ROOM_SERVER_ID = "server_id";
 	public static final String JSON_KEY_ROOM_MODE = "mode";
+	public static final String JSON_KEY_ROOM_USERS = "users";
 	
 	//Optional
 	public static final String JSON_KEY_ROOM_PRIVACY = "private";
@@ -49,5 +50,13 @@ public interface ResourcesConstants {
 	public static final int GAME_MODE_SINGLE = 0;
 	public static final int GAME_MODE_MATCH = 1;
 	public static final int GAME_MODE_TAG = 2;
+	
+	
+	public static final String GAME_STATUS_START = "start";
+	public static final String GAME_STATUS_WAIT = "wait";
+	
+	public static final int GAME_RULE_OCG_ONLY = 0;
+	public static final int GAME_RULE_TCG_ONLY = 1;
+	public static final int GAME_RULE_OCG_TCG = 2;
 
 }

@@ -29,4 +29,6 @@
 	<color name="translucent_green">#80008B00</color>
 	<color name="list_background_selcted">#15000000</color>
 	<color name="grid_background_selcted">#7F000000</color>
+	
+	<color name="line_divider_color">#e0e0e0</color>
 </resources>

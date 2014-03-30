@@ -1,11 +1,13 @@
 package org.mycard;
 
+import org.mycard.core.UpdateController;
 import org.mycard.data.ResourcesConstants;
 import org.mycard.fragment.CardDeckFragment;
 import org.mycard.fragment.CardWikiFragment;
 import org.mycard.fragment.ChatRoomFragment;
 import org.mycard.fragment.FinalPhaseFragment;
 import org.mycard.fragment.RoomFragment;
+import org.mycard.fragment.RoomPageFragment;
 import org.mycard.fragment.TabFragment;
 
 import android.content.Intent;
@@ -59,10 +61,10 @@ public class MainActivity extends ActionBarActivity {
 	private static final int DRAWER_ID_FINAL_PHASE = 6;
 
 	private DrawerLayout mDrawerLayout;
-	private TextView mMainTitle;
 	private ListView mDrawerList;
-
 	private String[] mDrawerItems;
+	
+	private UpdateController mController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,11 @@ public class MainActivity extends ActionBarActivity {
 
 		initView();
 		setTitle(R.string.mycard);
+		mController = new UpdateController((StaticApplication) getApplication());
+	}
+	
+	public UpdateController getController() {
+		return mController;
 	}
 
 	private void initView() {
@@ -107,7 +114,7 @@ public class MainActivity extends ActionBarActivity {
 		Fragment fragment = null;
 		switch (position) {
 		case DRAWER_ID_ROOM_LIST:
-			fragment = new RoomFragment();
+			fragment = new RoomPageFragment();
 			break;
 		case DRAWER_ID_CARD_DECK:
 			fragment = new CardDeckFragment();
