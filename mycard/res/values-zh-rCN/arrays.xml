@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="draw_items">
+        <item >卡组</item>
+        <item >卡查</item>
+        <item >对战</item>
+        <item >聊天</item>
+        <item >论坛</item>
+        <item >残局</item>
+    </string-array>
+    
+    <string-array name="room_items">
+        <item >单局模式</item>
+        <item >比赛模式</item>
+        <item >双打模式</item>
+    </string-array>
+    
+</resources>
