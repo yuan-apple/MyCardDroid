@@ -5,26 +5,32 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.http.client.HttpClient;
 import org.mycard.data.wrapper.BaseDataWrapper;
+import org.mycard.net.websocket.MoeSocketClient;
 
 public class UpdateConnection {
 	
-	public interface TaskFinishCallback {
+	public interface TaskStatusCallback {
 		void onTaskFinish(BaseDataWrapper wrapper);
+		void onTaskContinue(BaseDataWrapper wrapper);
 	}
 
 	private HttpClient mClient;
 	
 	private BlockingQueue<BaseDataWrapper> mTaskQueue;
 	
-	private UpdateThread mThread;
+	private BaseThread mUpdateThread;
 	
 	
-	public UpdateConnection(HttpClient client, TaskFinishCallback callback) {
+	public UpdateConnection(HttpClient client, TaskStatusCallback callback, boolean isContinued) {
 		// TODO Auto-generated constructor stub
 		mClient = client;
 		mTaskQueue = new LinkedBlockingQueue<BaseDataWrapper>();
-		mThread = new UpdateThread(mTaskQueue, callback, mClient);
-		mThread.start();
+		if (isContinued) {
+			mUpdateThread = new MoeThread(callback);
+		} else {
+			mUpdateThread = new UpdateThread(mTaskQueue, callback, mClient);
+		}
+		mUpdateThread.start();
 	}
 	
 	public void addTask(BaseDataWrapper wrapper) {
@@ -37,7 +43,7 @@ public class UpdateConnection {
 	}
 	
 	public void purge() {
-		mThread.terminate();
+		mUpdateThread.terminate();
 		mTaskQueue.clear();
 	}
 

@@ -2,7 +2,7 @@ package org.mycard.core;
 
 
 import org.mycard.StaticApplication;
-import org.mycard.core.UpdateConnection.TaskFinishCallback;
+import org.mycard.core.UpdateConnection.TaskStatusCallback;
 import org.mycard.data.DataStore;
 import org.mycard.data.wrapper.BaseDataWrapper;
 import org.mycard.data.wrapper.RoomDataWrapper;
@@ -12,7 +12,7 @@ import android.content.Context;
 import android.os.Message;
 import android.support.v4.util.SparseArrayCompat;
 
-public class UpdateController implements TaskFinishCallback {
+public class UpdateController implements TaskStatusCallback {
 	
 	private static final int UPDATE_TYPE_SERVER_LIST = 0;
 	
@@ -31,7 +31,7 @@ public class UpdateController implements TaskFinishCallback {
 		mContext = app;
 		mStore = new DataStore();
 		mUpdateMessages = new SparseArrayCompat<Message>(UPDATE_MAX_TYPE);
-		mConnection = new UpdateConnection(app.getHttpClient(), this);
+		mConnection = new UpdateConnection(app.getHttpClient(), this, false);
 	}
 	
 	public DataStore getDataStore() {
@@ -67,6 +67,12 @@ public class UpdateController implements TaskFinishCallback {
 			msg.sendToTarget();
 			mUpdateMessages.remove(key);
 		}
+	}
+
+	@Override
+	public void onTaskContinue(BaseDataWrapper wrapper) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

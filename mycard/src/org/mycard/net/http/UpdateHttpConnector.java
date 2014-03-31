@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import org.apache.http.client.HttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.mycard.Constants;
 import org.mycard.data.ResourcesConstants;
 import org.mycard.data.wrapper.BaseDataWrapper;
@@ -81,11 +80,6 @@ public class UpdateHttpConnector extends BaseHttpConnector implements
 			}
 			Log.d(TAG, out.toString());
 			jsonArray = new JSONArray(out.toString());
-			// String result = jsonObj.getString(JSON_KEY_QUERY_STATUS);
-			// if (!RESULT_OK.equals(result)) {
-			// wrapper.setResult(status);
-			// return;
-			// }
 			wrapper.parse(jsonArray);
 			status = true;
 			jsonArray = null;

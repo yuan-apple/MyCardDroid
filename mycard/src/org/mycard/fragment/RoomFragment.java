@@ -3,7 +3,6 @@ package org.mycard.fragment;
 import org.mycard.R;
 
 import android.app.Activity;
-import android.mtp.MtpStorageInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

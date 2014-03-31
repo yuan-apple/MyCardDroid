@@ -1,46 +1,18 @@
 package org.mycard.core;
 
-import java.util.concurrent.BlockingQueue;
+import org.mycard.core.UpdateConnection.TaskStatusCallback;
 
-import org.apache.http.client.HttpClient;
-import org.mycard.core.UpdateConnection.TaskFinishCallback;
-import org.mycard.data.wrapper.BaseDataWrapper;
-import org.mycard.net.http.BaseHttpConnector;
-
-public class BaseThread extends Thread {
-	private volatile boolean isRunning = true;
-
-	private BlockingQueue<BaseDataWrapper> mQueue;
-
-	protected BaseHttpConnector mConnector;
+public abstract class BaseThread extends Thread {
 	
-	protected TaskFinishCallback mCallback;
-
-	public BaseThread(BlockingQueue<BaseDataWrapper> queue, TaskFinishCallback callback) {
+	public BaseThread(TaskStatusCallback callback) {
 		// TODO Auto-generated constructor stub
-		mQueue = queue;
-		mCallback = callback;
+		mCallback = callback; 
 	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		BaseDataWrapper wrapper = null;
-		while (isRunning && !isInterrupted()) {
-			try {
-				wrapper = mQueue.take();
-				if (wrapper != null) {
-					mConnector.get(wrapper);
-					mCallback.onTaskFinish(wrapper);
-				}
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
-	}
-
+	
+	protected volatile boolean isRunning = true;
+	
+	protected TaskStatusCallback mCallback;
+	
 	public void terminate() {
 		if (isRunning) {
 			interrupt();

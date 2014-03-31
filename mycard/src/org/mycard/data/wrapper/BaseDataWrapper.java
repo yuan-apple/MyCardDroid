@@ -1,12 +1,8 @@
 package org.mycard.data.wrapper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.os.Bundle;
 
 /**
  * @author mabin

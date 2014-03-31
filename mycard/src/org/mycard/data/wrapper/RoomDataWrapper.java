@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mycard.data.BaseInfo;
 import org.mycard.data.RoomInfo;
-import org.mycard.data.ServerInfo;
 
 public class RoomDataWrapper extends BaseDataWrapper {
 
