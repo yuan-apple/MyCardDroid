@@ -12,8 +12,8 @@ public class RoomInfo extends BaseInfo {
 	public boolean status;
 	public int serverId;
 	
-	public ArrayList<UserInfo> mUsers;
-	public int mode;
+	public ArrayList<UserInfo> mUsers = new ArrayList<UserInfo>();
+	public int mode = 0;
 	public int rule = -1;
 	public boolean privacy = false;
 	public int startLp = -1;
@@ -33,7 +33,9 @@ public class RoomInfo extends BaseInfo {
 			info.initFromJsonData(usersArray.getJSONObject(i));
 			mUsers.add(info);
 		}
-		mode = data.getInt(JSON_KEY_ROOM_MODE);
+		if (data.has(JSON_KEY_ROOM_MODE)) {
+			mode = data.getInt(JSON_KEY_ROOM_MODE);
+		}
 		if (data.has(JSON_KEY_ROOM_PRIVACY)) {
 			privacy = data.getBoolean(JSON_KEY_ROOM_PRIVACY);
 		}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mycard.data.wrapper.BaseDataWrapper;
+import org.mycard.data.wrapper.RoomDataWrapper;
 import org.mycard.data.wrapper.ServerDataWrapper;
 
 public class DataStore {
@@ -24,6 +25,12 @@ public class DataStore {
 				mServers.add(i,
 						(ServerInfo) ((ServerDataWrapper) wrapper).getItem(i));
 			}
+		} else if (wrapper instanceof RoomDataWrapper) {
+			mRooms.clear();
+			int size = ((RoomDataWrapper) wrapper).size();
+			for (int i = 0; i < size; i++) {
+				mRooms.add(i, (RoomInfo) ((RoomDataWrapper) wrapper).getItem(i));
+			}
 		}
 	}
 
@@ -38,7 +45,7 @@ public class DataStore {
 	public synchronized List<RoomInfo> getRoomList() {
 		List<RoomInfo> rooms = new ArrayList<RoomInfo>();
 		for (RoomInfo info : mRooms) {
-			mRooms.add(info.clone());
+			rooms.add(info.clone());
 		}
 		return rooms;
 	}

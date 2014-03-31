@@ -21,7 +21,7 @@ public class UserInfo extends BaseInfo {
 		super.initFromJsonData(data);
 		name = data.getString(JSON_KEY_NAME);
 		playerID = data.getInt(JSON_KEY_USER_PLAYER_ID);
-		certified = data.getBoolean(JSON_KEY_ROOM_MODE);
+		certified = data.getBoolean(JSON_KEY_USER_CERTIFIED);
 	}
 
 }

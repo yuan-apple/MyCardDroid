@@ -26,6 +26,8 @@ public class RoomAdapter extends BaseAdapter {
 	
 	public RoomAdapter(List<RoomInfo> lists, Context context) {
 		// TODO Auto-generated constructor stub
+		super();
+		mDataList = lists;
 		mContext = context;
 	}
 
@@ -61,7 +63,7 @@ public class RoomAdapter extends BaseAdapter {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 		holder.mImage.setImageResource(R.drawable.logo);
 		holder.mTitle.setText(mDataList.get(position).name);
-		holder.mTitle.setText(mContext.getResources()
+		holder.mMode.setText(mContext.getResources()
 				.getStringArray(R.array.room_items)[mDataList.get(position).mode]);
 		return convertView;
 	}

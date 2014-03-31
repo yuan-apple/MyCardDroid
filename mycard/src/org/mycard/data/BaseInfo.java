@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public abstract class BaseInfo implements Cloneable, ResourcesConstants{
 	
-	public int id;
+	public String id;
 	
 	@Override
 	protected BaseInfo clone() {
@@ -21,7 +21,7 @@ public abstract class BaseInfo implements Cloneable, ResourcesConstants{
 	
 	
 	public void initFromJsonData(JSONObject data) throws JSONException {
-		id = data.getInt(JSON_KEY_ID);
+		id = data.getString(JSON_KEY_ID);
 	}
 
 }

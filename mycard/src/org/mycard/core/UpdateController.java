@@ -12,7 +12,7 @@ import android.content.Context;
 import android.os.Message;
 import android.support.v4.util.SparseArrayCompat;
 
-public class UpdateController implements TaskFinishCallback{
+public class UpdateController implements TaskFinishCallback {
 	
 	private static final int UPDATE_TYPE_SERVER_LIST = 0;
 	
@@ -34,10 +34,20 @@ public class UpdateController implements TaskFinishCallback{
 		mConnection = new UpdateConnection(app.getHttpClient(), this);
 	}
 	
+	public DataStore getDataStore() {
+		return mStore;
+	}
+	
 	
 	public void asyncUpdateServer(Message msg) {
 		mUpdateMessages.put(UPDATE_TYPE_SERVER_LIST, msg);
 		ServerDataWrapper wrapper = new ServerDataWrapper();
+		mConnection.addTask(wrapper);
+	}
+	
+	public void asyncUpdateRoomList(Message msg) {
+		mUpdateMessages.put(UPDATE_TYPE_ROOM_LIST, msg);
+		RoomDataWrapper wrapper = new RoomDataWrapper();
 		mConnection.addTask(wrapper);
 	}
 

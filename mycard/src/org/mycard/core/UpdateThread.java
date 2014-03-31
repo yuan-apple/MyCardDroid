@@ -14,6 +14,4 @@ public class UpdateThread extends BaseThread {
 		// TODO Auto-generated constructor stub
 		mConnector = new UpdateHttpConnector(client);
 	}
-	
-
 }

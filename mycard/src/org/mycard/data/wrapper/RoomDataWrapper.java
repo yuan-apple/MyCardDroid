@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mycard.data.BaseInfo;
+import org.mycard.data.RoomInfo;
 import org.mycard.data.ServerInfo;
 
 public class RoomDataWrapper extends BaseDataWrapper {
@@ -15,7 +16,7 @@ private List<JSONObject> mData;
 	
 	public RoomDataWrapper() {
 		super();
-		mUrls.add(SERVER_LIST_URL);
+		mUrls.add(ROOM_LIST_URL);
 		mData = new ArrayList<JSONObject>();
 	}
 
@@ -35,7 +36,7 @@ private List<JSONObject> mData;
 	}
 	
 	public BaseInfo getItem(int index) {
-		BaseInfo info = new ServerInfo();
+		BaseInfo info = new RoomInfo();
 		try {
 			info.initFromJsonData(mData.get(index));
 		} catch (JSONException e) {

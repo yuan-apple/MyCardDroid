@@ -9,8 +9,8 @@ public interface ResourcesConstants {
 	public static final String FORUM_URL = "https://forum.my-card.in/";
 	
 	
-	public static final String SERVER_LIST_URL = "mycard-in/servers.json";
-	public static final String ROOM_LIST_URL = "mycard-in/rooms.json";
+	public static final String SERVER_LIST_URL = "http://my-card.in/servers.json";
+	public static final String ROOM_LIST_URL = "http://my-card.in/rooms.json";
 	
 	public static final String JSON_KEY_ID = "id";
 	public static final String JSON_KEY_NAME = "name";
