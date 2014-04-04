@@ -11,8 +11,10 @@ import org.mycard.fragment.RoomPageFragment;
 import org.mycard.fragment.TabFragment;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +22,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -61,6 +64,7 @@ public class MainActivity extends ActionBarActivity {
 	private static final int DRAWER_ID_FINAL_PHASE = 6;
 
 	private DrawerLayout mDrawerLayout;
+	private ActionBarDrawerToggle mDrawerToggle;
 	private ListView mDrawerList;
 	private String[] mDrawerItems;
 	
@@ -84,6 +88,15 @@ public class MainActivity extends ActionBarActivity {
 
 	private void initView() {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerToggle = new ActionBarDrawerToggle(
+				this,
+				mDrawerLayout,
+				R.drawable.ic_navigation_drawer,
+				R.string.app_name,
+				R.string.app_name
+		);
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		
 		mDrawerItems = getResources().getStringArray(R.array.draw_items);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		View headerView = LayoutInflater.from(this).inflate(
@@ -95,9 +108,9 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void initActionBar() {
-		// TODO Auto-generated method stub
 		ActionBar actionbar = getSupportActionBar();
 		actionbar.setDisplayHomeAsUpEnabled(true);
+		actionbar.setHomeButtonEnabled(true);
 	}
 
 	@Override
@@ -106,7 +119,30 @@ public class MainActivity extends ActionBarActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+          return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+	
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		mDrawerToggle.syncState();
+	}
 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+	
 	/** Swaps fragments in the main content view */
 	private void selectItem(int position) {
 		// Create a new fragment and specify the planet to show based on

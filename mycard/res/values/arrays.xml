@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="draw_items">
+        <item >Cards</item>
+        <item >Card Wiki</item>
+        <item >Battle</item>
+        <item >Chat</item>
+        <item >Forum</item>
+        <item >Mess</item>
+    </string-array>
     
+    <string-array name="room_items">
+        <item >Single-game mode</item>
+        <item >Match mode</item>
+        <item >VS mode</item>
+    </string-array>
 </resources>
