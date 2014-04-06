@@ -44,6 +44,22 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 	}
 	
 	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		Log.d(TAG, "onPause: E");
+		super.onPause();
+		mData = null;
+		isDataBinded = false;
+	}
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		Log.d(TAG, "onResume: E");
+		super.onResume();
+	}
+	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -52,6 +68,13 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 		mContentView.setOnItemClickListener(this);
 		isDataBinded = false;
 		return mContentView;
+	}
+	
+	@Override
+	public void onDetach() {
+		// TODO Auto-generated method stub
+		Log.d(TAG, "onDetach: E");
+		super.onDetach();
 	}
 
 	/* (non-Javadoc)
@@ -69,12 +92,13 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 	/*package*/ void setData(List<RoomInfo> data) {
 		mData = data;
 		if (mAdapter == null) {
+			Log.d(TAG, "create new adapter " + getArguments().getInt("index", 0));
 			mAdapter = new RoomAdapter(mData, mActivity, getArguments().getInt("index", 0));
 		} else {
 			mAdapter.setData(mData);
 			mAdapter.notifyDataSetChanged();
 		}
-		if (mContentView != null && !isDataBinded) {
+		if (mContentView != null && !isDataBinded && !isDetached()) {
 			Log.d(TAG, "bind view data with index " + getArguments().getInt("index", 0));
 			mContentView.setAdapter(mAdapter);
 			isDataBinded = true;

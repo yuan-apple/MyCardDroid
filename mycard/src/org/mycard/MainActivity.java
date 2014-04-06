@@ -1,7 +1,9 @@
 package org.mycard;
 
+import org.mycard.common.ActionBarCreator;
 import org.mycard.core.UpdateController;
 import org.mycard.data.ResourcesConstants;
+import org.mycard.fragment.BaseFragment.OnActionBarChangeCallback;
 import org.mycard.fragment.CardDeckFragment;
 import org.mycard.fragment.CardWikiFragment;
 import org.mycard.fragment.ChatRoomFragment;
@@ -17,20 +19,25 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.internal.widget.ProgressBarICS;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements OnActionBarChangeCallback{
 
 	/**
 	 * @author mabin
@@ -50,6 +57,7 @@ public class MainActivity extends ActionBarActivity {
 				long id) {
 			// TODO Auto-generated method stub
 			if (position != 0) {
+				onActionBarChange(Constants.ACTION_BAR_CHANGE_TYPE_PAGE_CHANGE, position);
 				selectItem(position);
 			}
 		}
@@ -69,17 +77,18 @@ public class MainActivity extends ActionBarActivity {
 	private String[] mDrawerItems;
 	
 	private UpdateController mController;
-
+	
+	private ActionBarCreator mActionBarCreator;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
 		initActionBar();
-
 		initView();
 		setTitle(R.string.mycard);
 		mController = new UpdateController((StaticApplication) getApplication());
+		mActionBarCreator = new ActionBarCreator(this);
 	}
 	
 	public UpdateController getController() {
@@ -112,12 +121,20 @@ public class MainActivity extends ActionBarActivity {
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setHomeButtonEnabled(true);
 	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		mActionBarCreator.createMenu(menu);
+		return super.onPrepareOptionsMenu(menu);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		mActionBarCreator.createMenu(menu);
+//		getMenuInflater().inflate(R.menu.main, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 	@Override
@@ -183,5 +200,28 @@ public class MainActivity extends ActionBarActivity {
 		mDrawerList.setItemChecked(position, true);
 		setTitle(mDrawerItems[position - 1]);
 		mDrawerLayout.closeDrawer(mDrawerList);
+	}
+
+	@Override
+	public void onActionBarChange(int msgType, int action) {
+		// TODO Auto-generated method stub
+		switch (msgType) {
+		case Constants.ACTION_BAR_CHANGE_TYPE_PAGE_CHANGE:
+			if (action == DRAWER_ID_ROOM_LIST) {
+				mActionBarCreator.setRoomCreate(true).setSearch(true);
+			} else {
+				mActionBarCreator.setRoomCreate(false).setSearch(false);
+			}
+			break;
+		case Constants.ACTION_BAR_CHANGE_TYPE_DATA_LOADING:
+			if (action == 0) {
+				mActionBarCreator.setLoading(false).setRoomCreate(true).setSearch(true);
+			} else {
+				mActionBarCreator.setLoading(true).setRoomCreate(false).setSearch(false);
+			}
+		default:
+			break;
+		}
+		supportInvalidateOptionsMenu();
 	}
 }

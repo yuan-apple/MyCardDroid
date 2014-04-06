@@ -75,5 +75,10 @@
         android:background="#ffffff"
         android:flipInterval="30"
         android:persistentDrawingCache="animation" />
-
+    <RelativeLayout
+        android:id="@+id/extra_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    </RelativeLayout>
 </RelativeLayout>

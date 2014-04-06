@@ -8,10 +8,13 @@ import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.mycard.core.IBaseConnection;
 import org.mycard.core.MoeThread;
 import org.mycard.core.MoeThread.MoeEventHandler;
 import org.mycard.data.wrapper.BaseDataWrapper;
+import org.mycard.data.wrapper.IBaseWrapper;
 
+import android.os.Message;
 import android.util.Log;
 
 public class WebSocketConnector {
@@ -63,14 +66,14 @@ public class WebSocketConnector {
 			public void onError(Exception arg0) {
 				// TODO Auto-generated method stub
 				arg0.printStackTrace();
-				
+				mHandler.sendMessage(Message.obtain(null, MoeThread.MSG_ID_CONNECTION_CLOSED, 0, IBaseWrapper.TASK_STATUS_FAILED));
 			}
 			
 			@Override
 			public void onClose(int arg0, String arg1, boolean arg2) {
 				// TODO Auto-generated method stub
 				Log.d(TAG, "connection closed by " + (arg2 ? "remote" : "self") + " due to " + arg1);
-				mHandler.sendEmptyMessage(MoeThread.MSG_ID_CONNECTION_CLOSED);
+				mHandler.sendMessage(Message.obtain(null, MoeThread.MSG_ID_CONNECTION_CLOSED, 0, IBaseWrapper.TASK_STATUS_FAILED));
 			}
 			
 			@Override

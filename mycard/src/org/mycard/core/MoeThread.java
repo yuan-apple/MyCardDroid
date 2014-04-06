@@ -3,6 +3,7 @@ package org.mycard.core;
 
 import org.mycard.core.IBaseConnection.TaskStatusCallback;
 import org.mycard.data.wrapper.BaseDataWrapper;
+import org.mycard.data.wrapper.IBaseWrapper;
 import org.mycard.net.websocket.WebSocketConnector;
 
 import android.annotation.TargetApi;
@@ -32,11 +33,11 @@ public class MoeThread extends HandlerThread implements IBaseThread, Handler.Cal
 	
 	private BaseDataWrapper mWrapper;
 	
-	private volatile boolean isRunning = true;
-	
 	private WebSocketConnector mConnector;
 
 	private MoeEventHandler mHandler;
+	
+	private volatile boolean isTerminateRequest = false;
 	
 	public MoeThread(TaskStatusCallback callback, WebSocketConnector connector) {
 		super(TAG);
@@ -54,6 +55,7 @@ public class MoeThread extends HandlerThread implements IBaseThread, Handler.Cal
 	
 	public void executeTask(BaseDataWrapper wrapper) {
 		mWrapper = wrapper;
+		isTerminateRequest = false;
 		mConnector.connect(wrapper);
 	}
 
@@ -62,22 +64,21 @@ public class MoeThread extends HandlerThread implements IBaseThread, Handler.Cal
 		// TODO Auto-generated method stub
 		switch (msg.what) {
 		case MSG_ID_DATA_UPDATE:
+			mWrapper.setResult(msg.arg2);
 			mCallback.onTaskContinue(mWrapper);
 			break;
 		case MSG_ID_CONNECTION_CLOSED:
-			mWrapper.setResult(false);
+			mWrapper.setResult(isTerminateRequest ? IBaseWrapper.TASK_STATUS_CANCELED : msg.arg2);
 			mCallback.onTaskFinish(mWrapper);
-			quit();
 		default:
 			break;
 		}
 		return false;
 	}
 
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	@Override
 	public void terminate() {
+		isTerminateRequest = true;
 		mConnector.terminate();
-		isRunning = false;
 	}
 }

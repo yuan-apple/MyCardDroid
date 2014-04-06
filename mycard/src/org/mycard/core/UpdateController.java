@@ -5,6 +5,7 @@ import org.mycard.StaticApplication;
 import org.mycard.core.IBaseConnection.TaskStatusCallback;
 import org.mycard.data.DataStore;
 import org.mycard.data.wrapper.BaseDataWrapper;
+import org.mycard.data.wrapper.IBaseWrapper;
 import org.mycard.data.wrapper.RoomDataWrapper;
 import org.mycard.data.wrapper.ServerDataWrapper;
 
@@ -51,12 +52,16 @@ public class UpdateController implements TaskStatusCallback {
 		RoomDataWrapper wrapper = new RoomDataWrapper("ws");
 		mConnection.addTask(wrapper);
 	}
+	
+	public void stopUpdateRoomList() {
+		// TODO Auto-generated method stub
+		mConnection.purge();
+	}
+
 
 
 	@Override
 	public void onTaskFinish(BaseDataWrapper wrapper) {
-		// TODO Auto-generated method stub
-		mStore.updateData(wrapper);
 		int key = -1;
 		if (wrapper instanceof ServerDataWrapper) {
 			key = UPDATE_TYPE_SERVER_LIST;
@@ -65,15 +70,18 @@ public class UpdateController implements TaskStatusCallback {
 		}
 		Message msg = mUpdateMessages.get(key);
 		if (msg != null) {
+			if (wrapper.getResult() == IBaseWrapper.TASK_STATUS_SUCCESS) {
+				mStore.updateData(wrapper);
+			}
+			msg.arg2 = wrapper.getResult();
 			msg.sendToTarget();
 			mUpdateMessages.remove(key);
 		}
+
 	}
 
 	@Override
 	public void onTaskContinue(BaseDataWrapper wrapper) {
-		// TODO Auto-generated method stub
-		mStore.updateData(wrapper);
 		int key = -1;
 		if (wrapper instanceof ServerDataWrapper) {
 			key = UPDATE_TYPE_SERVER_LIST;
@@ -82,14 +90,13 @@ public class UpdateController implements TaskStatusCallback {
 		}
 		Message msg = mUpdateMessages.get(key);
 		if (msg != null) {
+			if (wrapper.getResult() == IBaseWrapper.TASK_STATUS_SUCCESS) {
+				mStore.updateData(wrapper);
+			}
 			Message reply = Message.obtain(msg);
+			reply.arg2 = wrapper.getResult();
 			reply.sendToTarget();
 		}
-	}
-
-	public void stopUpdateRoomList() {
-		// TODO Auto-generated method stub
-		mConnection.purge();
 	}
 
 }

@@ -9,9 +9,9 @@ import org.json.JSONArray;
  * 
  */
 public abstract class BaseDataWrapper implements IBaseWrapper {
-
+	
 	protected ArrayList<String> mUrls;
-	protected boolean mResult;
+	protected int mResult;
 	
 	/**
 	 * 
@@ -28,11 +28,11 @@ public abstract class BaseDataWrapper implements IBaseWrapper {
 		// TODO Auto-generated method stub
 	}
 
-	public boolean getResult() {
+	public int getResult() {
 		return mResult;
 	}
 
-	public void setResult(boolean result) {
+	public void setResult(int result) {
 		mResult = result;
 	}
 	

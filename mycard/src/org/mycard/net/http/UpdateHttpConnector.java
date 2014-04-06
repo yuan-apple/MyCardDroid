@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.mycard.Constants;
 import org.mycard.data.ResourcesConstants;
 import org.mycard.data.wrapper.BaseDataWrapper;
+import org.mycard.data.wrapper.IBaseWrapper;
 
 import android.util.Log;
 
@@ -65,7 +66,7 @@ public class UpdateHttpConnector extends BaseHttpConnector implements
 	@Override
 	protected void handleResponse(InputStream data, BaseDataWrapper wrapper)
 			throws InterruptedException {
-		boolean status = false;
+		int status = IBaseWrapper.TASK_STATUS_SUCCESS;
 		StringBuilder out = new StringBuilder();
 		JSONArray jsonArray;
 		BufferedReader reader = new BufferedReader(new InputStreamReader(data));
@@ -81,17 +82,16 @@ public class UpdateHttpConnector extends BaseHttpConnector implements
 			Log.d(TAG, out.toString());
 			jsonArray = new JSONArray(out.toString());
 			wrapper.parse(jsonArray);
-			status = true;
 			jsonArray = null;
 		} catch (JSONException e) {
 			e.printStackTrace();
-			status = false;
+			status = IBaseWrapper.TASK_STATUS_FAILED;
 		} catch (IOException e) {
 			e.printStackTrace();
-			status = false;
+			status = IBaseWrapper.TASK_STATUS_FAILED;
 		} catch (OutOfMemoryError e) {
 			e.printStackTrace();
-			status = false;
+			status = IBaseWrapper.TASK_STATUS_FAILED;
 		} finally {
 			wrapper.setResult(status);
 			buffer = null;

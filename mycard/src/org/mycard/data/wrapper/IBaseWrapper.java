@@ -8,6 +8,10 @@ import org.mycard.data.ResourcesConstants;
  */
 public interface IBaseWrapper extends ResourcesConstants {
 
+	public static final int TASK_STATUS_SUCCESS = 0;
+	public static final int TASK_STATUS_FAILED = 1;
+	public static final int TASK_STATUS_CANCELED = 2;
+
 	/**
 	 * 
 	 * @brief clear all data and force GC. Never use this object after recycle()

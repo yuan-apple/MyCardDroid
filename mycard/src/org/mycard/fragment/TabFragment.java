@@ -46,7 +46,7 @@ public abstract class TabFragment extends BaseFragment {
 	protected int mTabCount;
 
 	private TextView mTabTitle;
-
+	
 	protected Activity mAcitivity;
 
 	@Override
@@ -68,8 +68,8 @@ public abstract class TabFragment extends BaseFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View contentView = inflater.inflate(R.layout.fragment_base, null);
-
+		View contentView = inflater.inflate(R.layout.tab_fragment, null);
+		
 		rl_nav = (RelativeLayout) contentView.findViewById(R.id.rl_nav);
 
 		mHsv = (SyncHorizontalScrollView) contentView.findViewById(R.id.mHsv);
@@ -102,7 +102,6 @@ public abstract class TabFragment extends BaseFragment {
 		mHsv.setSomeParam(rl_nav, iv_nav_left, iv_nav_right, mAcitivity);
 
 		initTab();
-
 		mAdapter = initFragmentAdapter();
 		mViewPager.setAdapter(mAdapter);
 	}
