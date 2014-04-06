@@ -4,6 +4,7 @@ import java.io.InputStream;
 
 import org.apache.http.client.HttpClient;
 import org.mycard.data.wrapper.BaseDataWrapper;
+import org.mycard.net.IBaseConnector;
 
 import android.util.Log;
 
@@ -11,7 +12,7 @@ import android.util.Log;
  * @author mabin
  * 
  */
-public abstract class BaseHttpConnector {
+public abstract class BaseHttpConnector implements IBaseConnector{
 	private static final String TAG = "BaseHttpConnector";
 	protected static final String RESULT_OK = "true";
 
@@ -35,9 +36,6 @@ public abstract class BaseHttpConnector {
 	/**
 	 * 
 	 * @author: mabin
-	 * @param
-	 * @param
-	 * @return
 	 * @throws InterruptedException 
 	 **/
 	protected abstract void handleResponse(InputStream data,

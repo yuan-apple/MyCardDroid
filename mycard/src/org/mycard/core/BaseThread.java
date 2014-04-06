@@ -1,8 +1,9 @@
 package org.mycard.core;
 
-import org.mycard.core.UpdateConnection.TaskStatusCallback;
+import org.mycard.core.IBaseConnection.TaskStatusCallback;
 
-public abstract class BaseThread extends Thread {
+
+public abstract class BaseThread extends Thread implements IBaseThread{
 	
 	public BaseThread(TaskStatusCallback callback) {
 		// TODO Auto-generated constructor stub

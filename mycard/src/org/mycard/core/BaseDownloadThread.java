@@ -2,15 +2,15 @@ package org.mycard.core;
 
 import java.util.concurrent.BlockingQueue;
 
-import org.mycard.core.UpdateConnection.TaskStatusCallback;
+import org.mycard.core.IBaseConnection.TaskStatusCallback;
 import org.mycard.data.wrapper.BaseDataWrapper;
-import org.mycard.net.http.BaseHttpConnector;
+import org.mycard.net.IBaseConnector;
 
 public class BaseDownloadThread extends BaseThread {
 
 	private BlockingQueue<BaseDataWrapper> mQueue;
 
-	protected BaseHttpConnector mConnector;
+	protected IBaseConnector mConnector;
 	
 	public BaseDownloadThread(BlockingQueue<BaseDataWrapper> queue, TaskStatusCallback callback) {
 		// TODO Auto-generated constructor stub

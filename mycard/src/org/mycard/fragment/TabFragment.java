@@ -28,7 +28,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
  * @author mabin
  * 
  */
-public abstract class TabFragment extends Fragment {
+public abstract class TabFragment extends BaseFragment {
 
 	public static final String ARG_ITEM_INDEX = "pagefragment.number";
 	protected ImageView iv_nav_indicator;
@@ -39,7 +39,7 @@ public abstract class TabFragment extends Fragment {
 	private SyncHorizontalScrollView mHsv;
 	private RelativeLayout rl_nav;
 	private RadioGroup rg_nav_content;
-	private FragmentPagerAdapter mAdapter;
+	protected FragmentPagerAdapter mAdapter;
 	private LayoutInflater mInflater;
 	private int currentIndicatorLeft;
 	

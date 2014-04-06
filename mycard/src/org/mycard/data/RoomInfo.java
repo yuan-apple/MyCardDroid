@@ -19,6 +19,12 @@ public class RoomInfo extends BaseInfo {
 	public int startLp = -1;
 	public int startHand = -1;
 	public int drawCount = -1;
+	public boolean enablePriority = false;
+	public boolean noDeckCheck = false;
+	public boolean noDeckShuffle = false;
+	
+	public boolean deleted = false;
+	
 	
 	@Override
 	public void initFromJsonData(JSONObject data) throws JSONException {
@@ -51,10 +57,22 @@ public class RoomInfo extends BaseInfo {
 		if (data.has(JSON_KEY_ROOM_DRAW_COUNT)) {
 			drawCount = data.getInt(JSON_KEY_ROOM_DRAW_COUNT);
 		}
+		if (data.has(JSON_KEY_ROOM_ENABLE_PRIORITY)) {
+			enablePriority = data.getBoolean(JSON_KEY_ROOM_ENABLE_PRIORITY);
+		}
+		if (data.has(JSON_KEY_ROOM_NO_CHECK_DECK)) {
+			noDeckCheck = data.getBoolean(JSON_KEY_ROOM_NO_CHECK_DECK);
+		}
+		if (data.has(JSON_KEY_ROOM_NO_SHUFFLE_DECK)) {
+			noDeckShuffle = data.getBoolean(JSON_KEY_ROOM_NO_SHUFFLE_DECK);
+		}
+		if (data.has(JSON_KEY_ROOM_DELETED)) {
+			deleted = data.getBoolean(JSON_KEY_ROOM_DELETED);
+		}
 	}
 	
 	@Override
-	protected RoomInfo clone() {
+	public RoomInfo clone() {
 		// TODO Auto-generated method stub
 		RoomInfo info = (RoomInfo)super.clone();
 		return info;

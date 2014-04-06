@@ -2,7 +2,7 @@ package org.mycard.core;
 
 
 import org.mycard.StaticApplication;
-import org.mycard.core.UpdateConnection.TaskStatusCallback;
+import org.mycard.core.IBaseConnection.TaskStatusCallback;
 import org.mycard.data.DataStore;
 import org.mycard.data.wrapper.BaseDataWrapper;
 import org.mycard.data.wrapper.RoomDataWrapper;
@@ -25,13 +25,14 @@ public class UpdateController implements TaskStatusCallback {
 	
 	private SparseArrayCompat<Message> mUpdateMessages;
 	
-	private UpdateConnection mConnection;
+	private IBaseConnection mConnection;
 	
 	public UpdateController(StaticApplication app) {
 		mContext = app;
 		mStore = new DataStore();
 		mUpdateMessages = new SparseArrayCompat<Message>(UPDATE_MAX_TYPE);
-		mConnection = new UpdateConnection(app.getHttpClient(), this, false);
+//		mConnection = new UpdateConnection(app, this);
+		mConnection = new MoeConnection(this);
 	}
 	
 	public DataStore getDataStore() {
@@ -41,13 +42,13 @@ public class UpdateController implements TaskStatusCallback {
 	
 	public void asyncUpdateServer(Message msg) {
 		mUpdateMessages.put(UPDATE_TYPE_SERVER_LIST, msg);
-		ServerDataWrapper wrapper = new ServerDataWrapper();
+		ServerDataWrapper wrapper = new ServerDataWrapper("http");
 		mConnection.addTask(wrapper);
 	}
 	
 	public void asyncUpdateRoomList(Message msg) {
 		mUpdateMessages.put(UPDATE_TYPE_ROOM_LIST, msg);
-		RoomDataWrapper wrapper = new RoomDataWrapper();
+		RoomDataWrapper wrapper = new RoomDataWrapper("ws");
 		mConnection.addTask(wrapper);
 	}
 
@@ -72,7 +73,23 @@ public class UpdateController implements TaskStatusCallback {
 	@Override
 	public void onTaskContinue(BaseDataWrapper wrapper) {
 		// TODO Auto-generated method stub
-		
+		mStore.updateData(wrapper);
+		int key = -1;
+		if (wrapper instanceof ServerDataWrapper) {
+			key = UPDATE_TYPE_SERVER_LIST;
+		} else if (wrapper instanceof RoomDataWrapper) {
+			key = UPDATE_TYPE_ROOM_LIST;
+		}
+		Message msg = mUpdateMessages.get(key);
+		if (msg != null) {
+			Message reply = Message.obtain(msg);
+			reply.sendToTarget();
+		}
+	}
+
+	public void stopUpdateRoomList() {
+		// TODO Auto-generated method stub
+		mConnection.purge();
 	}
 
 }

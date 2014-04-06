@@ -13,9 +13,9 @@ public class ServerDataWrapper extends BaseDataWrapper {
 	
 	private List<JSONObject> mData;
 	
-	public ServerDataWrapper() {
+	public ServerDataWrapper(String scheme) {
 		super();
-		mUrls.add(SERVER_LIST_URL);
+		mUrls.add(scheme + SERVER_LIST_URL);
 		mData = new ArrayList<JSONObject>();
 	}
 

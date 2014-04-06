@@ -150,7 +150,7 @@ public class MainActivity extends ActionBarActivity {
 		Fragment fragment = null;
 		switch (position) {
 		case DRAWER_ID_ROOM_LIST:
-			fragment = new RoomPageFragment();
+			fragment = new RoomFragment();
 			break;
 		case DRAWER_ID_CARD_DECK:
 			fragment = new CardDeckFragment();

@@ -13,9 +13,9 @@ public class RoomDataWrapper extends BaseDataWrapper {
 
 private List<JSONObject> mData;
 	
-	public RoomDataWrapper() {
+	public RoomDataWrapper(String scheme) {
 		super();
-		mUrls.add(ROOM_LIST_URL);
+		mUrls.add(scheme + ROOM_LIST_URL);
 		mData = new ArrayList<JSONObject>();
 	}
 

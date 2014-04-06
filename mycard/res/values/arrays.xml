@@ -12,6 +12,6 @@
     <string-array name="room_items">
         <item >Single-game mode</item>
         <item >Match mode</item>
-        <item >VS mode</item>
+        <item >Tag mode</item>
     </string-array>
 </resources>

@@ -3,36 +3,24 @@ package org.mycard.core;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.apache.http.client.HttpClient;
+import org.mycard.StaticApplication;
 import org.mycard.data.wrapper.BaseDataWrapper;
-import org.mycard.net.websocket.MoeSocketClient;
 
-public class UpdateConnection {
+public class UpdateConnection implements IBaseConnection{
 	
-	public interface TaskStatusCallback {
-		void onTaskFinish(BaseDataWrapper wrapper);
-		void onTaskContinue(BaseDataWrapper wrapper);
-	}
 
-	private HttpClient mClient;
-	
 	private BlockingQueue<BaseDataWrapper> mTaskQueue;
 	
-	private BaseThread mUpdateThread;
+	private IBaseThread mUpdateThread;
 	
 	
-	public UpdateConnection(HttpClient client, TaskStatusCallback callback, boolean isContinued) {
-		// TODO Auto-generated constructor stub
-		mClient = client;
+	public UpdateConnection(StaticApplication app, TaskStatusCallback callback) {
 		mTaskQueue = new LinkedBlockingQueue<BaseDataWrapper>();
-		if (isContinued) {
-			mUpdateThread = new MoeThread(callback);
-		} else {
-			mUpdateThread = new UpdateThread(mTaskQueue, callback, mClient);
-		}
+		mUpdateThread = new UpdateThread(mTaskQueue, callback, app.getHttpClient());
 		mUpdateThread.start();
 	}
 	
+	@Override
 	public void addTask(BaseDataWrapper wrapper) {
 		try {
 			mTaskQueue.put(wrapper);
@@ -42,6 +30,7 @@ public class UpdateConnection {
 		}
 	}
 	
+	@Override
 	public void purge() {
 		mUpdateThread.terminate();
 		mTaskQueue.clear();
