@@ -66,8 +66,6 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 		Log.d(TAG, "onCreateView: E");
 		mContentView = (ListView) inflater.inflate(R.layout.common_list, null);
 		mContentView.setOnItemClickListener(this);
-		mContentView.setDivider(null);
-		mContentView.setDividerHeight(4);
 		isDataBinded = false;
 		return mContentView;
 	}
@@ -103,6 +101,8 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 		if (mContentView != null && !isDataBinded && !isDetached()) {
 			Log.d(TAG, "bind view data with index " + getArguments().getInt("index", 0));
 			mContentView.setAdapter(mAdapter);
+			mContentView.setDivider(null);
+			mContentView.setDividerHeight(4);
 			isDataBinded = true;
 		}
 	}
@@ -110,8 +110,9 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO Auto-generated method stub
-		
+		RoomInfo info = (RoomInfo) mAdapter.getItem(position);
+		Bundle data = new Bundle();
+		showDialog(data);
 	}
 
 }

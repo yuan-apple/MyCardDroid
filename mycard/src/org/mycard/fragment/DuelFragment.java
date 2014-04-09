@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.RelativeLayout;
 
-public class RoomFragment extends TabFragment {
+public class DuelFragment extends TabFragment {
 	
 	public class RoomTabPageAdapter extends FragmentPagerAdapter {
 
@@ -95,7 +95,7 @@ public class RoomFragment extends TabFragment {
 		// TODO Auto-generated method stub
 		Log.d(TAG, "onAttach: E");
 		super.onAttach(activity);
-		mTabs = getResources().getStringArray(R.array.room_items);
+		mTabs = getResources().getStringArray(R.array.duel_mode);
 		mTabCount = mTabs.length;
 	}
 	

@@ -8,7 +8,7 @@ import org.mycard.fragment.CardDeckFragment;
 import org.mycard.fragment.CardWikiFragment;
 import org.mycard.fragment.ChatRoomFragment;
 import org.mycard.fragment.FinalPhaseFragment;
-import org.mycard.fragment.RoomFragment;
+import org.mycard.fragment.DuelFragment;
 import org.mycard.fragment.RoomPageFragment;
 import org.mycard.fragment.TabFragment;
 
@@ -167,7 +167,7 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		Fragment fragment = null;
 		switch (position) {
 		case DRAWER_ID_ROOM_LIST:
-			fragment = new RoomFragment();
+			fragment = new DuelFragment();
 			break;
 		case DRAWER_ID_CARD_DECK:
 			fragment = new CardDeckFragment();
@@ -215,9 +215,9 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 			break;
 		case Constants.ACTION_BAR_CHANGE_TYPE_DATA_LOADING:
 			if (action == 0) {
-				mActionBarCreator.setLoading(false).setRoomCreate(true).setSearch(true);
+				mActionBarCreator.setLoading(false).setRoomCreate(true).setSearch(true).setPlay(true);
 			} else {
-				mActionBarCreator.setLoading(true).setRoomCreate(false).setSearch(false);
+				mActionBarCreator.setLoading(true).setRoomCreate(false).setSearch(false).setPlay(false);
 			}
 		default:
 			break;

@@ -24,6 +24,8 @@ public class ActionBarCreator {
 	
 	private boolean mSettings = true;
 	
+	private boolean mPlay = false;
+	
 	public ActionBarCreator setSettings(boolean settings) {
 		mSearch = true;
 		return this;
@@ -44,6 +46,11 @@ public class ActionBarCreator {
 		return this;
 	}
 	
+	public ActionBarCreator setPlay(boolean play) {
+		mPlay = play;
+		return this;
+	}
+	
 	public void createMenu(Menu menu) {
 		int index= 0;
 		menu.removeGroup(Menu.NONE);
@@ -57,13 +64,17 @@ public class ActionBarCreator {
 			MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 			MenuItemCompat.expandActionView(item);
 		}
+		if (mPlay) {
+			MenuItem item = menu.add(Menu.NONE,index++, Menu.NONE, mContext.getResources().getString(R.string.action_play)).setIcon(R.drawable.ic_action_play);
+			MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+		}
 		if (mSearch) {
 			MenuItem item = menu.add(Menu.NONE,index++, Menu.NONE, mContext.getResources().getString(R.string.action_search)).setIcon(R.drawable.ic_action_search);
-			MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+			MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 		}
 		if (mRoomCreate) {
 			MenuItem item = menu.add(Menu.NONE,index++, Menu.NONE, mContext.getResources().getString(R.string.action_new_room)).setIcon(R.drawable.ic_action_new);
-			MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+			MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 		}
 		
 	}
