@@ -5,6 +5,7 @@
     <string name="action_search">Search</string>
     <string name="action_new_room">Create room</string>
     <string name="mycard">My-card</string>
-    
     <string name="loading">Loading</string>
+    <string name="ongoing">Ongoing</string>
+    <string name="pending">Pending</string>
 </resources>
