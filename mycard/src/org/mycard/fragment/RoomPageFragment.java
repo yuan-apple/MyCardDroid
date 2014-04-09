@@ -66,6 +66,8 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 		Log.d(TAG, "onCreateView: E");
 		mContentView = (ListView) inflater.inflate(R.layout.common_list, null);
 		mContentView.setOnItemClickListener(this);
+		mContentView.setDivider(null);
+		mContentView.setDividerHeight(4);
 		isDataBinded = false;
 		return mContentView;
 	}

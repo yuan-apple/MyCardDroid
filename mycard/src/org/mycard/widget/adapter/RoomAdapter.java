@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.mycard.R;
 import org.mycard.data.RoomInfo;
+import org.mycard.data.UserInfo;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,7 +20,7 @@ public class RoomAdapter extends BaseAdapter {
 	public static class ViewHolder {
 		public ImageView mImage;
 		public TextView mTitle;
-		public TextView mMode;
+		public TextView mProperty;
 	}
 
 	private List<RoomInfo> mDataList;
@@ -74,16 +75,25 @@ public class RoomAdapter extends BaseAdapter {
 					.findViewById(R.id.item_list_name);
 			holder.mImage = (ImageView) convertView
 					.findViewById(R.id.item_list_icon);
-			holder.mMode = (TextView) convertView
+			holder.mProperty = (TextView) convertView
 					.findViewById(R.id.item_property_text);
 			convertView.setTag(holder);
 		}
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 		holder.mImage.setImageResource(R.drawable.logo);
 		holder.mTitle.setText(mDataList.get(position).name);
-		holder.mMode.setText(mContext.getResources().getStringArray(
-				R.array.room_items)[mDataList.get(position).mode]);
+		holder.mProperty.setText(generatePropertyString(mDataList.get(position)));
 		return convertView;
 	}
-
+	
+	private String generatePropertyString(RoomInfo roomInfo) {
+		StringBuilder builder = new StringBuilder();
+		for (UserInfo userInfo : roomInfo.mUsers) {
+			builder.append(userInfo.name + " | ");
+		}
+		builder.append(roomInfo.status
+				? mContext.getString(R.string.ongoing)
+				: mContext.getString(R.string.pending));
+		return builder.toString();
+	}
 }
