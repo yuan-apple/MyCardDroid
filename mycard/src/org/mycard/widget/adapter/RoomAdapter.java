@@ -1,6 +1,6 @@
 package org.mycard.widget.adapter;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.mycard.R;
@@ -21,6 +21,7 @@ public class RoomAdapter extends BaseAdapter {
 		public ImageView mImage;
 		public TextView mTitle;
 		public TextView mProperty;
+		public TextView mStatus;
 	}
 
 	private List<RoomInfo> mDataList;
@@ -38,10 +39,14 @@ public class RoomAdapter extends BaseAdapter {
 
 	public void setData(List<RoomInfo> lists) {
 		// TODO Auto-generated method stub
-		mDataList = new ArrayList<RoomInfo>();
+		mDataList = new LinkedList<RoomInfo>();
 		for (RoomInfo info : lists) {
 			if (info.mode == mFilter) {
-				mDataList.add(info.clone());
+				if (!info.status) {
+					((LinkedList<RoomInfo>)mDataList).addFirst(info.clone());
+				} else {
+					((LinkedList<RoomInfo>)mDataList).addLast(info.clone());
+				}
 			}
 		}
 	}
@@ -77,23 +82,26 @@ public class RoomAdapter extends BaseAdapter {
 					.findViewById(R.id.item_list_icon);
 			holder.mProperty = (TextView) convertView
 					.findViewById(R.id.item_property_text);
+			holder.mStatus = (TextView) convertView
+					.findViewById(R.id.item_list_status);
 			convertView.setTag(holder);
 		}
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 		holder.mImage.setImageResource(R.drawable.logo);
 		holder.mTitle.setText(mDataList.get(position).name);
-		holder.mProperty.setText(generatePropertyString(mDataList.get(position)));
+		holder.mProperty
+				.setText(generatePropertyString(mDataList.get(position)));
+		holder.mStatus.setText(mDataList.get(position).status ? mContext.getString(R.string.ongoing)
+				: mContext.getString(R.string.pending));
 		return convertView;
 	}
-	
+
 	private String generatePropertyString(RoomInfo roomInfo) {
 		StringBuilder builder = new StringBuilder();
 		for (UserInfo userInfo : roomInfo.mUsers) {
 			builder.append(userInfo.name + " | ");
 		}
-		builder.append(roomInfo.status
-				? mContext.getString(R.string.ongoing)
-				: mContext.getString(R.string.pending));
+		builder.delete(builder.length() - 2, builder.length());
 		return builder.toString();
 	}
 }

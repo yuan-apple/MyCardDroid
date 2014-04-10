@@ -3,6 +3,7 @@ package org.mycard.fragment;
 import java.util.List;
 
 import org.mycard.R;
+import org.mycard.data.ResourcesConstants;
 import org.mycard.data.RoomInfo;
 import org.mycard.widget.adapter.RoomAdapter;
 
@@ -17,7 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class RoomPageFragment extends BaseFragment implements OnItemClickListener {
+public class RoomPageFragment extends BaseFragment implements OnItemClickListener, ResourcesConstants {
 	
 	private static final String TAG = "RoomPageFragment";
 	
@@ -112,6 +113,11 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 			long id) {
 		RoomInfo info = (RoomInfo) mAdapter.getItem(position);
 		Bundle data = new Bundle();
+		data.putString(ROOM_INFO_NAME, info.name);
+		data.putInt(ROOM_INFO_MODE, info.mode);
+		data.putInt(ROOM_INFO_LIFEPOINTS, info.startLp == -1 ? 8000 : info.startLp);
+		data.putInt(ROOM_INFO_INITIALHAND, info.startHand == -1 ? 5 : info.startHand);
+		data.putInt(ROOM_INFO_DRAWCARDS, info.drawCount == -1 ? 1 : info.drawCount);
 		showDialog(data);
 	}
 

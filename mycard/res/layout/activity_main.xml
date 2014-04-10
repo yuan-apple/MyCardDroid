@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
-    android:background="@android:color/white"
+    android:background="@color/holo_gray_light"
     tools:context=".MainActivity" >
     <!-- The main content view -->
     <FrameLayout

@@ -12,6 +12,7 @@
 package org.mycard.fragment;
 
 import org.mycard.R;
+import org.mycard.data.ResourcesConstants;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,14 +35,7 @@ import android.widget.TextView;
  * 
  */
 public class RoomDetailFragment extends DialogFragment implements
-		OnTouchListener {
-
-	public static final String ROOM_INFO_NAME = "room.info.name";
-	public static final String ROOM_INFO_RULE = "room.info.rule";
-	public static final String ROOM_INFO_MODE = "room.info.mode";
-	public static final String ROOM_INFO_LIFEPOINTS = "room.info.lp";
-	public static final String ROOM_INFO_INITIALHAND = "room.info.inithand";
-	public static final String ROOM_INFO_DRAWCARDS = "room.info.drawcards";
+		OnTouchListener, ResourcesConstants{
 
 	private ViewGroup mContentView;
 	@SuppressWarnings("unused")

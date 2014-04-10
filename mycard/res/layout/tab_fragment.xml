@@ -6,8 +6,7 @@
         android:id="@+id/rl_tab"
         android:layout_alignParentTop="true"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#F2F2F2" >
+        android:layout_height="wrap_content">
 
         <org.mycard.widget.SyncHorizontalScrollView
             android:id="@+id/mHsv"

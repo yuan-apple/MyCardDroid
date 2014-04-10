@@ -7,7 +7,6 @@
         <item>Battle</item>
         <item>Chat</item>
         <item>Forum</item>
-        <item>Mess</item>
     </string-array>
     <string-array name="duel_mode">
         <item>Single-game mode</item>
