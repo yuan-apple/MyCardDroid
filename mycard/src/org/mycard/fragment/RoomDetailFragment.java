@@ -26,8 +26,6 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -40,7 +38,6 @@ public class RoomDetailFragment extends DialogFragment implements
 	private ViewGroup mContentView;
 	@SuppressWarnings("unused")
 	private ViewGroup mTitleGroup;
-	private OnClickListener mOnClickListener;
 
 	private Activity mActivity;
 	private String mTitle;
@@ -74,10 +71,6 @@ public class RoomDetailFragment extends DialogFragment implements
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
 		mActivity = activity;
-	}
-
-	public void setOnclickListener(OnClickListener l) {
-		mOnClickListener = l;
 	}
 
 	@Override
@@ -143,12 +136,12 @@ public class RoomDetailFragment extends DialogFragment implements
 		AlertDialog dialog = new AlertDialog.Builder(mActivity)
 				.setTitle(mTitle)
 				.setView(contentView)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.button_join, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 					}
 				})
-				.setNegativeButton("cancel",
+				.setNegativeButton(R.string.button_cancel,
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog,
