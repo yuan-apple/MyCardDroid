@@ -4,6 +4,7 @@ import org.mycard.R;
 import org.mycard.widget.SyncHorizontalScrollView;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -31,12 +33,10 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 public abstract class TabFragment extends BaseFragment {
 
 	public static final String ARG_ITEM_INDEX = "pagefragment.number";
-	protected ImageView iv_nav_indicator;
-	protected ImageView iv_nav_left;
-	protected ImageView iv_nav_right;
+	protected ImageView mNavIndicator;
 	protected ViewPager mViewPager;
-	private int indicatorWidth;
-	private SyncHorizontalScrollView mHsv;
+	private int mIndicatorWidth;
+	private HorizontalScrollView mHsv;
 	private RelativeLayout rl_nav;
 	private RadioGroup rg_nav_content;
 	protected FragmentPagerAdapter mAdapter;
@@ -72,38 +72,50 @@ public abstract class TabFragment extends BaseFragment {
 		
 		rl_nav = (RelativeLayout) contentView.findViewById(R.id.rl_nav);
 
-		mHsv = (SyncHorizontalScrollView) contentView.findViewById(R.id.mHsv);
+		mHsv = (HorizontalScrollView) contentView.findViewById(R.id.mHsv);
 
 		rg_nav_content = (RadioGroup) contentView
 				.findViewById(R.id.rg_nav_content);
 
-		iv_nav_indicator = (ImageView) contentView
+		mNavIndicator = (ImageView) contentView
 				.findViewById(R.id.iv_nav_indicator);
-		iv_nav_left = (ImageView) contentView.findViewById(R.id.iv_nav_left);
-		iv_nav_right = (ImageView) contentView.findViewById(R.id.iv_nav_right);
 
 		mViewPager = (ViewPager) contentView.findViewById(R.id.mViewPager);
 		initView();
 		setUpListener();
 		return contentView;
 	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		// TODO Auto-generated method stub
+		super.onConfigurationChanged(newConfig);
+		resizeNavTab(newConfig);
+	}
 
 	private void initView() {
-
-		DisplayMetrics dm = new DisplayMetrics();
-		mAcitivity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-		indicatorWidth = dm.widthPixels / (mTabCount > 4 ? 4 : mTabCount);
-
-		LayoutParams cursor_Params = iv_nav_indicator.getLayoutParams();
-		cursor_Params.width = indicatorWidth;// 初始化滑动下标的宽
-		iv_nav_indicator.setLayoutParams(cursor_Params);
-
-		mHsv.setSomeParam(rl_nav, iv_nav_left, iv_nav_right, mAcitivity);
-
+		resizeNavTab(getResources().getConfiguration());
 		initTab();
 		mAdapter = initFragmentAdapter();
 		mViewPager.setAdapter(mAdapter);
+	}
+
+	private void resizeNavTab(Configuration config) {
+		DisplayMetrics dm = new DisplayMetrics();
+		mAcitivity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+		mIndicatorWidth = dm.widthPixels / (mTabCount > 4 ? 4 : mTabCount);
+
+		LayoutParams cursor_Params = mNavIndicator.getLayoutParams();
+		cursor_Params.width = mIndicatorWidth;// 初始化滑动下标的宽
+		mNavIndicator.setLayoutParams(cursor_Params);
+		int size = rg_nav_content.getChildCount();
+		for (int i = 0; i < size; i++) {
+			View view = rg_nav_content.getChildAt(i);
+			view.setLayoutParams(new LinearLayout.LayoutParams(mIndicatorWidth,
+				LayoutParams.MATCH_PARENT));
+		}
+		rg_nav_content.invalidate();
+		
 	}
 
 	private void setUpListener() {
@@ -149,7 +161,7 @@ public abstract class TabFragment extends BaseFragment {
 							animation.setFillAfter(true);
 
 							// 执行位移动画
-							iv_nav_indicator.startAnimation(animation);
+							mNavIndicator.startAnimation(animation);
 
 							mViewPager.setCurrentItem(checkedId); // ViewPager
 																	// 跟随一起 切换
@@ -181,11 +193,10 @@ public abstract class TabFragment extends BaseFragment {
 				R.layout.nav_radiogroup_item, null);
 		rb.setId(index);
 		rb.setText(text);
-		rb.setLayoutParams(new LayoutParams(indicatorWidth,
-				LayoutParams.MATCH_PARENT));
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(indicatorWidth,
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(mIndicatorWidth,
 				LayoutParams.MATCH_PARENT);
 		lp.weight = (float) (1.0 / totalLength);
+		rb.setLayoutParams(lp);
 		rg_nav_content.addView(rb);
 	}
 

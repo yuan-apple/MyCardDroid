@@ -33,6 +33,7 @@
             android:ellipsize="middle"
             android:singleLine="true"
             android:text="title"
+            android:maxLength="10"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/file_name_text_color"
             android:textSize="14.67sp" />

@@ -23,5 +23,7 @@
     android:gravity="center_vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
+    android:paddingTop="8dip"
+    android:paddingBottom="8dip"
     android:background="@drawable/activated_background_holo_light"
     android:minHeight="@dimen/common_list_item_height"/>

@@ -7,7 +7,7 @@ import org.mycard.core.UpdateController;
 import org.mycard.data.ResourcesConstants;
 import org.mycard.data.ServerInfo;
 import org.mycard.fragment.BaseFragment.OnActionBarChangeCallback;
-import org.mycard.fragment.CardDeckFragment;
+import org.mycard.fragment.HomePageFragment;
 import org.mycard.fragment.CardWikiFragment;
 import org.mycard.fragment.ChatRoomFragment;
 import org.mycard.fragment.FinalPhaseFragment;
@@ -68,9 +68,9 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 
 	}
 
-	private static final int DRAWER_ID_CARD_DECK = 1;
-	private static final int DRAWER_ID_CARD_WIKI = 2;
-	private static final int DRAWER_ID_ROOM_LIST = 3;
+	private static final int DRAWER_ID_MY_CARD = 1;
+	private static final int DRAWER_ID_DUEL = 2;
+	private static final int DRAWER_ID_CARD_WIKI = 3;
 	private static final int DRAWER_ID_CHAT_ROOM = 4;
 	private static final int DRAWER_ID_FORUM_LINK = 5;
 	private static final int DRAWER_ID_FINAL_PHASE = 6;
@@ -126,6 +126,8 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_list_item, mDrawerItems));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+		
+		mDrawerList.setSelection(1);
 	}
 
 	private void initActionBar() {
@@ -177,11 +179,11 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		// position
 		Fragment fragment = null;
 		switch (position) {
-		case DRAWER_ID_ROOM_LIST:
+		case DRAWER_ID_DUEL:
 			fragment = new DuelFragment();
 			break;
-		case DRAWER_ID_CARD_DECK:
-			fragment = new CardDeckFragment();
+		case DRAWER_ID_MY_CARD:
+			fragment = new HomePageFragment();
 			break;
 		case DRAWER_ID_CARD_WIKI:
 			fragment = new CardWikiFragment();
@@ -218,17 +220,17 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		// TODO Auto-generated method stub
 		switch (msgType) {
 		case Constants.ACTION_BAR_CHANGE_TYPE_PAGE_CHANGE:
-			if (action == DRAWER_ID_ROOM_LIST) {
-				mActionBarCreator.setRoomCreate(true).setSearch(true);
+			if (action == DRAWER_ID_DUEL) {
+				mActionBarCreator.setRoomCreate(true);
 			} else {
-				mActionBarCreator.setRoomCreate(false).setSearch(false);
+				mActionBarCreator.setRoomCreate(false).setLoading(false).setPlay(false);
 			}
 			break;
 		case Constants.ACTION_BAR_CHANGE_TYPE_DATA_LOADING:
 			if (action == 0) {
-				mActionBarCreator.setLoading(false).setRoomCreate(true).setSearch(true).setPlay(true);
+				mActionBarCreator.setLoading(false).setRoomCreate(true).setPlay(true);
 			} else {
-				mActionBarCreator.setLoading(true).setRoomCreate(false).setSearch(false).setPlay(false);
+				mActionBarCreator.setLoading(true).setRoomCreate(false).setPlay(false);
 			}
 		default:
 			break;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="draw_items">
-        <item >卡组</item>
-        <item >卡查</item>
+        <item >萌卡</item>
         <item >对战</item>
+        <item >卡查</item>
         <item >聊天</item>
         <item >论坛</item>
     </string-array>

@@ -2,9 +2,9 @@
 <resources>
 
     <string-array name="draw_items">
-        <item>Cards</item>
-        <item>Card Wiki</item>
+        <item >My Card</item>
         <item>Battle</item>
+        <item>Card Wiki</item>
         <item>Chat</item>
         <item>Forum</item>
     </string-array>
