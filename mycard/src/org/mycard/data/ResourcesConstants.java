@@ -64,6 +64,7 @@ public interface ResourcesConstants {
 	public static final int GAME_RULE_OCG_TCG = 2;
 	
 	
+	public static final String GAME_OPTIONS = "game.options";
 	public static final String ROOM_INFO_NAME = "room.info.name";
 	public static final String ROOM_INFO_RULE = "room.info.rule";
 	public static final String ROOM_INFO_MODE = "room.info.mode";

@@ -5,17 +5,11 @@ import org.mycard.core.UpdateController;
 import org.mycard.data.DataStore;
 
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 public abstract class BaseFragment extends Fragment implements Handler.Callback{
 

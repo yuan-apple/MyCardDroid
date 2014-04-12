@@ -1,43 +1,47 @@
 package org.mycard;
 
+import java.util.List;
+
 import org.mycard.common.ActionBarCreator;
 import org.mycard.core.UpdateController;
 import org.mycard.data.ResourcesConstants;
+import org.mycard.data.ServerInfo;
 import org.mycard.fragment.BaseFragment.OnActionBarChangeCallback;
 import org.mycard.fragment.CardDeckFragment;
 import org.mycard.fragment.CardWikiFragment;
 import org.mycard.fragment.ChatRoomFragment;
 import org.mycard.fragment.FinalPhaseFragment;
 import org.mycard.fragment.DuelFragment;
-import org.mycard.fragment.RoomPageFragment;
 import org.mycard.fragment.TabFragment;
 
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.internal.widget.ProgressBarICS;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity implements OnActionBarChangeCallback{
+public class MainActivity extends ActionBarActivity implements OnActionBarChangeCallback, Handler.Callback{
+
+	public static class EventHandler extends Handler {
+		public EventHandler(Callback back) {
+			super(back);
+		}
+	}
 
 	/**
 	 * @author mabin
@@ -70,6 +74,8 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 	private static final int DRAWER_ID_CHAT_ROOM = 4;
 	private static final int DRAWER_ID_FORUM_LINK = 5;
 	private static final int DRAWER_ID_FINAL_PHASE = 6;
+	
+	private static final int MSG_ID_UPDATE_SERVER = 0;
 
 	private DrawerLayout mDrawerLayout;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -80,6 +86,10 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 	
 	private ActionBarCreator mActionBarCreator;
 	
+	private EventHandler mHandler;
+	
+	private List<ServerInfo> mServerList;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,6 +99,8 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		setTitle(R.string.mycard);
 		mController = new UpdateController((StaticApplication) getApplication());
 		mActionBarCreator = new ActionBarCreator(this);
+		mHandler = new EventHandler(this);
+		mController.asyncUpdateServer(mHandler.obtainMessage(MSG_ID_UPDATE_SERVER));
 	}
 	
 	public UpdateController getController() {
@@ -133,7 +145,6 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		mActionBarCreator.createMenu(menu);
-//		getMenuInflater().inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -223,5 +234,22 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 			break;
 		}
 		supportInvalidateOptionsMenu();
+	}
+	
+	public ServerInfo getServer() {
+		return mServerList == null ? null : mServerList.get(0);
+	}
+
+	@Override
+	public boolean handleMessage(Message msg) {
+		switch (msg.what) {
+		case MSG_ID_UPDATE_SERVER:
+			mServerList = mController.getDataStore().getServerList();
+			break;
+
+		default:
+			break;
+		}
+		return true;
 	}
 }

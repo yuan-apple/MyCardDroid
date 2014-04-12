@@ -7,6 +7,8 @@ import org.mycard.data.ResourcesConstants;
 import org.mycard.data.RoomInfo;
 import org.mycard.widget.adapter.RoomAdapter;
 
+import cn.garymb.ygodata.YGOGameOptions;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Message;
@@ -51,6 +53,9 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 		super.onPause();
 		mData = null;
 		isDataBinded = false;
+		if (mData != null) {
+			mData.clear();
+		}
 	}
 	
 	@Override
@@ -113,11 +118,21 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 			long id) {
 		RoomInfo info = (RoomInfo) mAdapter.getItem(position);
 		Bundle data = new Bundle();
-		data.putString(ROOM_INFO_NAME, info.name);
-		data.putInt(ROOM_INFO_MODE, info.mode);
-		data.putInt(ROOM_INFO_LIFEPOINTS, info.startLp == -1 ? 8000 : info.startLp);
-		data.putInt(ROOM_INFO_INITIALHAND, info.startHand == -1 ? 5 : info.startHand);
-		data.putInt(ROOM_INFO_DRAWCARDS, info.drawCount == -1 ? 1 : info.drawCount);
+		YGOGameOptions options = new YGOGameOptions();
+		options.mDrawCount = info.drawCount == -1 ? 1 :info.drawCount;
+		options.mEnablePriority = info.enablePriority;
+		options.mMode = info.mode;
+		options.mName = "illusory";
+		options.mNoDeckCheck = info.noDeckCheck;
+		options.mNoDeckShuffle = info.noDeckShuffle;
+		options.mPort = mActivity.getServer().port;
+		options.mRoomName = info.name;
+		options.mRoomPasswd = "";
+		options.mRule = info.rule == -1 ? 0 :info.rule;
+		options.mServerAddr = mActivity.getServer().ipAddrString;
+		options.mStartHand = info.startHand == -1 ? 5 : info.startHand;
+		options.mStartLP = info.startLp == -1 ? 8000 : info.startLp;
+		data.putParcelable(GAME_OPTIONS, options);
 		showDialog(data);
 	}
 

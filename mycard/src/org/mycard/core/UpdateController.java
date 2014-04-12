@@ -26,14 +26,16 @@ public class UpdateController implements TaskStatusCallback {
 	
 	private SparseArrayCompat<Message> mUpdateMessages;
 	
-	private IBaseConnection mConnection;
+	private IBaseConnection mMoeConnection;
+	
+	private IBaseConnection mHttpConnection;
 	
 	public UpdateController(StaticApplication app) {
 		mContext = app;
 		mStore = new DataStore();
 		mUpdateMessages = new SparseArrayCompat<Message>(UPDATE_MAX_TYPE);
-//		mConnection = new UpdateConnection(app, this);
-		mConnection = new MoeConnection(this);
+		mHttpConnection = new UpdateConnection(app, this);
+		mMoeConnection = new MoeConnection(this);
 	}
 	
 	public DataStore getDataStore() {
@@ -44,18 +46,18 @@ public class UpdateController implements TaskStatusCallback {
 	public void asyncUpdateServer(Message msg) {
 		mUpdateMessages.put(UPDATE_TYPE_SERVER_LIST, msg);
 		ServerDataWrapper wrapper = new ServerDataWrapper("http");
-		mConnection.addTask(wrapper);
+		mHttpConnection.addTask(wrapper);
 	}
 	
 	public void asyncUpdateRoomList(Message msg) {
 		mUpdateMessages.put(UPDATE_TYPE_ROOM_LIST, msg);
 		RoomDataWrapper wrapper = new RoomDataWrapper("ws");
-		mConnection.addTask(wrapper);
+		mMoeConnection.addTask(wrapper);
 	}
 	
 	public void stopUpdateRoomList() {
 		// TODO Auto-generated method stub
-		mConnection.purge();
+		mMoeConnection.purge();
 	}
 
 

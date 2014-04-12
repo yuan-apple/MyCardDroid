@@ -6,8 +6,6 @@ import org.mycard.data.wrapper.BaseDataWrapper;
 import org.mycard.data.wrapper.IBaseWrapper;
 import org.mycard.net.websocket.WebSocketConnector;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
