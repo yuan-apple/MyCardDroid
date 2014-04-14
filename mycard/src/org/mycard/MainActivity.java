@@ -1,6 +1,9 @@
 package org.mycard;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mycard.common.ActionBarCreator;
 import org.mycard.core.UpdateController;
@@ -34,6 +37,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements OnActionBarChangeCallback, Handler.Callback{
 
@@ -67,6 +73,9 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		}
 
 	}
+	
+	private static final String IMAGE_TAG = "image";
+	private static final String TEXT_TAG = "text";
 
 	private static final int DRAWER_ID_MY_CARD = 1;
 	private static final int DRAWER_ID_DUEL = 2;
@@ -81,6 +90,13 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 	private ActionBarDrawerToggle mDrawerToggle;
 	private ListView mDrawerList;
 	private String[] mDrawerItems;
+	
+	private Integer[] imageArray = {R.drawable.ic_drawer_home,
+			R.drawable.ic_drawer_duel, R.drawable.ic_drawer_card_wiki, R.drawable.ic_drawer_chat, R.drawable.ic_drawer_forum};
+	private int[] viewTo = {R.id.drawer_item_image, R.id.drawer_item_text};
+	private String[] dataFrom = {IMAGE_TAG, TEXT_TAG};
+	
+	private List<Map<String, Object>> mDrawerListData = new ArrayList<Map<String,Object>>();
 	
 	private UpdateController mController;
 	
@@ -123,8 +139,15 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		View headerView = LayoutInflater.from(this).inflate(
 				R.layout.drawer_header_view, null);
 		mDrawerList.addHeaderView(headerView);
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, mDrawerItems));
+		int size = mDrawerItems.length;
+		for (int i = 0; i < size; i ++) {
+			Map<String, Object> item = new HashMap<String, Object>();
+			item.put(IMAGE_TAG, imageArray[i]);
+			item.put(TEXT_TAG, mDrawerItems[i]);
+			mDrawerListData.add(item);
+		}
+		
+		mDrawerList.setAdapter(new SimpleAdapter(this, mDrawerListData, R.layout.drawer_list_item, dataFrom, viewTo));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 		
 		mDrawerList.setSelection(1);
@@ -151,14 +174,14 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 	}
 	
 	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-          return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    	public boolean onOptionsItemSelected(MenuItem item) {
+        	// Pass the event to ActionBarDrawerToggle, if it returns
+        	// true, then it has handled the app icon touch event
+        	if (mDrawerToggle.onOptionsItemSelected(item)) {
+          	return true;
+        	}
+        	return super.onOptionsItemSelected(item);
+    	}
 	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {

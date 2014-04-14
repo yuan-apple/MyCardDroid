@@ -8,6 +8,7 @@
         <item>Chat</item>
         <item>Forum</item>
     </string-array>
+
     <string-array name="duel_mode">
         <item>Single-game mode</item>
         <item>Match mode</item>
