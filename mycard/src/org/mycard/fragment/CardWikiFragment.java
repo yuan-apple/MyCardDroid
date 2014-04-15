@@ -122,7 +122,6 @@ public class CardWikiFragment extends BaseFragment implements
 		// TODO Auto-generated method stub
 		if (arg1 != null) {
 			Log.d(TAG, "--->load finished");
-			// int i = 0;
 			// for (arg1.moveToFirst(); !arg1.isAfterLast(); arg1.moveToNext())
 			// {
 			// String a = arg1.getString(8);
@@ -130,7 +129,6 @@ public class CardWikiFragment extends BaseFragment implements
 			// Log.d("a0", arg1.getString(0));
 			// break;
 			// }
-			// // i++;
 			// }
 		}
 //		System.out.println(DatabaseUtils.dumpCursorToString(arg1));
