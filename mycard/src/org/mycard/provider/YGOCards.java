@@ -10,6 +10,9 @@ public final class YGOCards {
 	public static final String[] COMMON_DATA_PEOJECTION = new String[] {
 			Datas.ID_ALIAS, Datas.OT, Datas.TYPE, Datas.ATK, Datas.DEF, Datas.LEVEL,
 			Datas.RACE, Datas.ATTRIBUTE, Texts.NAME };
+	public static final String[] COMMON_DATA_PEOJECTION_ID = new String[] {
+		"_id", Datas.OT, Datas.TYPE, Datas.ATK, Datas.DEF, Datas.LEVEL,
+		Datas.RACE, Datas.ATTRIBUTE, Texts.NAME };
 
 	public static final String[] DETAIL_DATA_PEOJECTION = new String[] {
 			Datas.ID_ALIAS, Datas.OT, Datas.TYPE, Datas.ATK, Datas.DEF, Datas.LEVEL,
