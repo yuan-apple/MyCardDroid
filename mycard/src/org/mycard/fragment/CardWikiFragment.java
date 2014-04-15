@@ -56,14 +56,14 @@ public class CardWikiFragment extends BaseFragment implements
 		// return super.onCreateView(inflater, container, savedInstanceState);
 		mContext = getActivity().getApplicationContext();
 		ResourceUtils.init(mContext);
-		
+
 		View view = inflater.inflate(R.layout.card_info_list, null);
 
 		listView = (ListView) view.findViewById(R.id.card_info_list);
-		simpleCursorAdapter = new SimpleCursorAdapter(mContext, R.layout.card_list_item, null,
-				mProjects_id, new int[] { R.id.item_name, R.id.item_level,
-						R.id.item_race, R.id.item_attr, R.id.item_atk,
-						R.id.item_def }, 0);
+		simpleCursorAdapter = new SimpleCursorAdapter(mContext,
+				R.layout.card_list_item, null, mProjects_id, new int[] {
+						R.id.item_name, R.id.item_level, R.id.item_race,
+						R.id.item_attr, R.id.item_atk, R.id.item_def }, 0);
 		simpleCursorAdapter.setViewBinder(new CardInfoBinder());
 		listView.setAdapter(simpleCursorAdapter);
 		initCursorLoader();
@@ -71,7 +71,6 @@ public class CardWikiFragment extends BaseFragment implements
 	}
 
 	private class CardInfoBinder implements ViewBinder {
-
 
 		@Override
 		public boolean setViewValue(View view, Cursor cursor, int arg2) {
@@ -85,14 +84,18 @@ public class CardWikiFragment extends BaseFragment implements
 			case 2:
 				int race = cursor.getInt(6);
 				int n_race = getLog(race);
-				((TextView) view).setText("种族:"
-						+ ResourceUtils.getStringArray(R.array.card_race)[n_race]);
+				((TextView) view)
+						.setText("种族:"
+								+ ResourceUtils
+										.getStringArray(R.array.card_race)[n_race]);
 				return true;
 			case 3:
 				int attr = cursor.getInt(7);
 				int n_attr = getLog(attr);
-				((TextView) view).setText("属性："
-						+ ResourceUtils.getStringArray(R.array.card_attr)[n_attr]);
+				((TextView) view)
+						.setText("属性："
+								+ ResourceUtils
+										.getStringArray(R.array.card_attr)[n_attr]);
 				return true;
 			case 4:
 				((TextView) view).setText("攻击力:" + cursor.getString(3));
@@ -112,8 +115,8 @@ public class CardWikiFragment extends BaseFragment implements
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		mCursorLoader = new CursorLoader(mContext,
-				mContentUri, mProjects, null, null, mProjects[5] + " desc");
+		mCursorLoader = new CursorLoader(mContext, mContentUri, mProjects,
+				null, null, mProjects[5] + " desc");
 		return mCursorLoader;
 	}
 
@@ -131,7 +134,7 @@ public class CardWikiFragment extends BaseFragment implements
 			// }
 			// }
 		}
-//		System.out.println(DatabaseUtils.dumpCursorToString(arg1));
+		// System.out.println(DatabaseUtils.dumpCursorToString(arg1));
 		simpleCursorAdapter.swapCursor(arg1);
 	}
 
@@ -141,7 +144,7 @@ public class CardWikiFragment extends BaseFragment implements
 
 	}
 
-	//获取数值对应位移数
+	// 获取数值对应位移数
 	private int getLog(int value) {
 		int x = 0;
 		while (value > 1) {
