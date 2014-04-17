@@ -9,14 +9,11 @@ import org.mycard.data.wrapper.BaseDataWrapper;
 import org.mycard.data.wrapper.RoomDataWrapper;
 import org.mycard.data.wrapper.ServerDataWrapper;
 
-import android.support.v4.util.SparseArrayCompat;
-
 public class DataStore {
 	private List<ServerInfo> mServers;
 	private Map<String, RoomInfo> mRooms;
 
 	public DataStore() {
-		// TODO Auto-generated constructor stub
 		mServers = new ArrayList<ServerInfo>();
 		mRooms = new HashMap<String, RoomInfo>();
 	}

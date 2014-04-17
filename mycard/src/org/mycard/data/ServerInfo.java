@@ -15,13 +15,11 @@ public class ServerInfo extends BaseInfo {
 	
 	@Override
 	protected ServerInfo clone() {
-		// TODO Auto-generated method stub
 		return (ServerInfo)super.clone();
 	}
 	
 	@Override
 	public void initFromJsonData(JSONObject data) throws JSONException {
-		// TODO Auto-generated method stub
 		super.initFromJsonData(data);
 		name = data.getString(JSON_KEY_NAME);
 		ipAddrString = data.getString(JSON_KEY_SERVER_IP_ADDR);

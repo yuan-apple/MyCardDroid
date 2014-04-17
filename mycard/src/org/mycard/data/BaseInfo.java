@@ -9,7 +9,6 @@ public abstract class BaseInfo implements Cloneable, ResourcesConstants{
 	
 	@Override
 	protected BaseInfo clone() {
-		// TODO Auto-generated method stub
 		try {
 			return (BaseInfo)super.clone();
 		} catch (CloneNotSupportedException e) {

@@ -1,6 +1,7 @@
 package org.mycard.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,7 +13,7 @@ public class RoomInfo extends BaseInfo {
 	public boolean status;
 	public int serverId;
 	
-	public ArrayList<UserInfo> mUsers = new ArrayList<UserInfo>();
+	public List<UserInfo> mUsers = new ArrayList<UserInfo>();
 	public int mode = 0;
 	public int rule = -1;
 	public boolean privacy = false;
@@ -28,7 +29,6 @@ public class RoomInfo extends BaseInfo {
 	
 	@Override
 	public void initFromJsonData(JSONObject data) throws JSONException {
-		// TODO Auto-generated method stub
 		super.initFromJsonData(data);
 		name = data.getString(JSON_KEY_NAME);
 		status = GAME_STATUS_START.equals(data.getString(JSON_KEY_ROOM_STATUS));
@@ -73,8 +73,11 @@ public class RoomInfo extends BaseInfo {
 	
 	@Override
 	public RoomInfo clone() {
-		// TODO Auto-generated method stub
 		RoomInfo info = (RoomInfo)super.clone();
+		info.mUsers = new ArrayList<UserInfo>();
+		for (UserInfo item : mUsers) {
+			info.mUsers.add(item.clone());
+		}
 		return info;
 	}
 
