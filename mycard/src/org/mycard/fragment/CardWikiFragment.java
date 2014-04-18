@@ -37,6 +37,9 @@ public class CardWikiFragment extends BaseFragment implements
 	private ListView listView;
 	private Context mContext;
 
+	private String[] card_race;
+	private String[] card_attr;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -59,6 +62,8 @@ public class CardWikiFragment extends BaseFragment implements
 
 		View view = inflater.inflate(R.layout.card_info_list, null);
 
+		card_race = ResourceUtils.getStringArray(R.array.card_race);
+		card_attr = ResourceUtils.getStringArray(R.array.card_attr);
 		listView = (ListView) view.findViewById(R.id.card_info_list);
 		simpleCursorAdapter = new SimpleCursorAdapter(mContext,
 				R.layout.card_list_item, null, mProjects_id, new int[] {
@@ -84,18 +89,12 @@ public class CardWikiFragment extends BaseFragment implements
 			case 2:
 				int race = cursor.getInt(6);
 				int n_race = getLog(race);
-				((TextView) view)
-						.setText("种族:"
-								+ ResourceUtils
-										.getStringArray(R.array.card_race)[n_race]);
+				((TextView) view).setText("种族:" + card_race[n_race]);
 				return true;
 			case 3:
 				int attr = cursor.getInt(7);
 				int n_attr = getLog(attr);
-				((TextView) view)
-						.setText("属性："
-								+ ResourceUtils
-										.getStringArray(R.array.card_attr)[n_attr]);
+				((TextView) view).setText("属性：" + card_attr[n_attr]);
 				return true;
 			case 4:
 				((TextView) view).setText("攻击力:" + cursor.getString(3));
