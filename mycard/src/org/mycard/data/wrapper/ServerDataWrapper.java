@@ -13,10 +13,10 @@ public class ServerDataWrapper extends BaseDataWrapper {
 	
 	private List<JSONObject> mData;
 	
-	public ServerDataWrapper(String scheme) {
-		super();
-		mUrls.add(scheme + SERVER_LIST_URL);
+	public ServerDataWrapper(int requestType) {
+		super(requestType);
 		mData = new ArrayList<JSONObject>();
+		mUrls.add(SERVER_LIST_URL);
 	}
 
 	@Override

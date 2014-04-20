@@ -7,5 +7,5 @@
     android:checked="true"
     android:gravity="center"
     android:text=""
-    android:textColor="@drawable/rb_blue_bg"
+    android:textColor="@color/dark_purple"
     android:textSize="14.0dip" />

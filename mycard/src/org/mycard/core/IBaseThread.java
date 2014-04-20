@@ -1,6 +1,9 @@
 package org.mycard.core;
 
 public interface IBaseThread {
+	
+	public static final Object sServerLock = new Object();
+	
 	/**
 	 * Terminate the thread;
 	 */

@@ -10,7 +10,7 @@ public class MoeConnection implements IBaseConnection {
 	
 	public MoeConnection(TaskStatusCallback callback) {
 		mConnector = new WebSocketConnector();
-		mUpdateThread = new MoeThread(callback, mConnector);
+		mUpdateThread = new MiscUpdateThread(callback, mConnector);
 		mUpdateThread.start();
 	}
 

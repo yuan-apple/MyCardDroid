@@ -1,14 +1,12 @@
 package org.mycard.net.websocket;
 
 import java.net.URI;
-import java.nio.ByteBuffer;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.mycard.core.IBaseConnection;
 import org.mycard.core.MoeThread;
 import org.mycard.core.MoeThread.MoeEventHandler;
 import org.mycard.data.wrapper.BaseDataWrapper;

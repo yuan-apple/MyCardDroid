@@ -4,16 +4,24 @@
     android:layout_height="wrap_content"
     android:background="@drawable/list_item_background"
     android:descendantFocusability="blocksDescendants"
-    android:padding="15dp" >
-
+    android:paddingRight="15dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp" >
+    <ImageView
+        android:id="@+id/item_flag_image"
+        android:layout_width="20dip"
+        android:layout_height="20dip"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_room_lock"
+        android:visibility="invisible" />
     <ImageView
         android:id="@+id/item_list_icon"
         android:layout_width="32dip"
         android:layout_height="32dip"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@+id/item_flag_image"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="13.33dip"
-        android:layout_marginTop="2.33dip"
+        android:layout_marginLeft="5dip"
         android:scaleType="fitCenter" >
     </ImageView>
 
@@ -31,9 +39,9 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="10dip"
             android:ellipsize="middle"
+            android:maxLength="10"
             android:singleLine="true"
             android:text="title"
-            android:maxLength="10"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/file_name_text_color"
             android:textSize="14.67sp" />

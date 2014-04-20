@@ -26,6 +26,8 @@ public class RoomInfo extends BaseInfo {
 	
 	public boolean deleted = false;
 	
+	private boolean isCompleteInfo;
+	
 	
 	@Override
 	public void initFromJsonData(JSONObject data) throws JSONException {
@@ -47,28 +49,39 @@ public class RoomInfo extends BaseInfo {
 		}
 		if (data.has(JSON_KEY_ROOM_RULE)) {
 			rule = data.getInt(JSON_KEY_ROOM_RULE);
+			isCompleteInfo = true;
 		}
 		if (data.has(JSON_KEY_ROOM_START_LP)) {
 			startLp = data.getInt(JSON_KEY_ROOM_START_LP);
+			isCompleteInfo = true;
 		}
 		if (data.has(JSON_KEY_ROOM_START_HAND)) {
 			startHand = data.getInt(JSON_KEY_ROOM_START_HAND);
+			isCompleteInfo = true;
 		}
 		if (data.has(JSON_KEY_ROOM_DRAW_COUNT)) {
 			drawCount = data.getInt(JSON_KEY_ROOM_DRAW_COUNT);
+			isCompleteInfo = true;
 		}
 		if (data.has(JSON_KEY_ROOM_ENABLE_PRIORITY)) {
 			enablePriority = data.getBoolean(JSON_KEY_ROOM_ENABLE_PRIORITY);
+			isCompleteInfo = true;
 		}
 		if (data.has(JSON_KEY_ROOM_NO_CHECK_DECK)) {
 			noDeckCheck = data.getBoolean(JSON_KEY_ROOM_NO_CHECK_DECK);
+			isCompleteInfo = true;
 		}
 		if (data.has(JSON_KEY_ROOM_NO_SHUFFLE_DECK)) {
 			noDeckShuffle = data.getBoolean(JSON_KEY_ROOM_NO_SHUFFLE_DECK);
+			isCompleteInfo = true;
 		}
 		if (data.has(JSON_KEY_ROOM_DELETED)) {
 			deleted = data.getBoolean(JSON_KEY_ROOM_DELETED);
 		}
+	}
+	
+	public boolean isCompleteInfo() {
+		return isCompleteInfo;
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package org.mycard.core;
 
 
+import org.mycard.Constants;
 import org.mycard.StaticApplication;
 import org.mycard.core.IBaseConnection.TaskStatusCallback;
 import org.mycard.data.DataStore;
@@ -15,6 +16,8 @@ import android.support.v4.util.SparseArrayCompat;
 
 public class UpdateController implements TaskStatusCallback {
 	
+	public static boolean isServerUpdated; 
+	
 	private static final int UPDATE_TYPE_SERVER_LIST = 0;
 	
 	private static final int UPDATE_TYPE_ROOM_LIST = 1;
@@ -28,13 +31,13 @@ public class UpdateController implements TaskStatusCallback {
 	
 	private IBaseConnection mMoeConnection;
 	
-	private IBaseConnection mHttpConnection;
+	private IBaseConnection mServerUpdateConnection;
 	
 	public UpdateController(StaticApplication app) {
 		mContext = app;
 		mStore = new DataStore();
 		mUpdateMessages = new SparseArrayCompat<Message>(UPDATE_MAX_TYPE);
-		mHttpConnection = new UpdateConnection(app, this);
+		mServerUpdateConnection = new ServerUpdateConnection(app, this);
 		mMoeConnection = new MoeConnection(this);
 	}
 	
@@ -45,13 +48,13 @@ public class UpdateController implements TaskStatusCallback {
 	
 	public void asyncUpdateServer(Message msg) {
 		mUpdateMessages.put(UPDATE_TYPE_SERVER_LIST, msg);
-		ServerDataWrapper wrapper = new ServerDataWrapper("http");
-		mHttpConnection.addTask(wrapper);
+		ServerDataWrapper wrapper = new ServerDataWrapper(Constants.REQUEST_TYPE_UPDATE_SERVER);
+		mServerUpdateConnection.addTask(wrapper);
 	}
 	
 	public void asyncUpdateRoomList(Message msg) {
 		mUpdateMessages.put(UPDATE_TYPE_ROOM_LIST, msg);
-		RoomDataWrapper wrapper = new RoomDataWrapper("ws");
+		RoomDataWrapper wrapper = new RoomDataWrapper(Constants.REQUEST_TYPE_UPDATE_ROOM);
 		mMoeConnection.addTask(wrapper);
 	}
 	

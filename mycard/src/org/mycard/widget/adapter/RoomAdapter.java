@@ -18,7 +18,8 @@ import android.widget.TextView;
 public class RoomAdapter extends BaseAdapter {
 
 	public static class ViewHolder {
-		public ImageView mImage;
+		public ImageView mLockImage;
+		public ImageView mCustomImage;
 		public TextView mTitle;
 		public TextView mProperty;
 		public TextView mStatus;
@@ -78,7 +79,9 @@ public class RoomAdapter extends BaseAdapter {
 			ViewHolder holder = new ViewHolder();
 			holder.mTitle = (TextView) convertView
 					.findViewById(R.id.item_list_name);
-			holder.mImage = (ImageView) convertView
+			holder.mLockImage = (ImageView) convertView
+					.findViewById(R.id.item_flag_image);
+			holder.mCustomImage = (ImageView) convertView
 					.findViewById(R.id.item_list_icon);
 			holder.mProperty = (TextView) convertView
 					.findViewById(R.id.item_property_text);
@@ -86,13 +89,19 @@ public class RoomAdapter extends BaseAdapter {
 					.findViewById(R.id.item_list_status);
 			convertView.setTag(holder);
 		}
+		RoomInfo info = mDataList.get(position);
 		ViewHolder holder = (ViewHolder) convertView.getTag();
-		holder.mImage.setImageResource(R.drawable.logo);
-		holder.mTitle.setText(mDataList.get(position).name);
+		holder.mCustomImage.setImageResource(R.drawable.logo);
+		holder.mTitle.setText(info.name);
 		holder.mProperty
-				.setText(generatePropertyString(mDataList.get(position)));
-		holder.mStatus.setText(mDataList.get(position).status ? mContext.getString(R.string.ongoing)
+				.setText(generatePropertyString(info));
+		holder.mStatus.setText(info.status ? mContext.getString(R.string.ongoing)
 				: mContext.getString(R.string.pending));
+		if (info.privacy) {
+			holder.mLockImage.setVisibility(View.VISIBLE);
+		} else {
+			holder.mLockImage.setVisibility(View.INVISIBLE);
+		}
 		return convertView;
 	}
 

@@ -13,10 +13,10 @@ public class RoomDataWrapper extends BaseDataWrapper {
 
 private List<JSONObject> mData;
 	
-	public RoomDataWrapper(String scheme) {
-		super();
-		mUrls.add(scheme + ROOM_LIST_URL);
+	public RoomDataWrapper(int requestType) {
+		super(requestType);
 		mData = new ArrayList<JSONObject>();
+		mUrls.add(ROOM_LIST_URL);
 	}
 
 	@Override

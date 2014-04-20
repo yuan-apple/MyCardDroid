@@ -36,4 +36,11 @@
 	<color name="holo_blue_light">#ff33b5e5</color>
 	<color name="holo_gray_light">#33999999</color>
 	
+	<!-- for navigation drawer & actionbar title -->
+	<color name="dark_blue">#0099CC</color>
+	<color name="dark_purple">#9933CC</color>
+	<color name="dark_orange">#FF8800</color>
+	<color name="orange">#FFBB33</color>
+	<color name="green">#99CC00</color>
+	
 </resources>

@@ -11,8 +11,12 @@
  **/
 package org.mycard.fragment;
 
+import org.mycard.MainActivity;
 import org.mycard.R;
 import org.mycard.data.ResourcesConstants;
+import org.mycard.widget.RoomConfigController;
+import org.mycard.widget.RoomConfigUIBase;
+import org.mycard.widget.RoomDialog;
 
 import cn.garymb.ygodata.YGOGameOptions;
 
@@ -20,8 +24,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -29,6 +36,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -36,15 +45,16 @@ import android.widget.TextView;
  * 
  */
 public class RoomDetailFragment extends DialogFragment implements
-		OnTouchListener, ResourcesConstants{
+		OnTouchListener, ResourcesConstants, OnClickListener, RoomConfigUIBase{
 
-	private ViewGroup mContentView;
-	@SuppressWarnings("unused")
-	private ViewGroup mTitleGroup;
 
-	private Activity mActivity;
+	private MainActivity mActivity;
 
 	private YGOGameOptions mGameOptions;
+	
+	private boolean mIsPrivate;
+	
+	private boolean mIsCreateRoom;
 
 	/**
 	 * Create a new instance of WelfareDialogFragment, providing "num" as an
@@ -68,7 +78,27 @@ public class RoomDetailFragment extends DialogFragment implements
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
-		mActivity = activity;
+		mActivity = (MainActivity) activity;
+	}
+	
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		final Resources res = getResources();
+        // Title
+        final int titleId = res.getIdentifier("alertTitle", "id", "android");
+        final View title = getDialog().findViewById(titleId);
+        if (title != null) {
+            ((TextView) title).setTextColor(res.getColor(R.color.dark_purple));
+        }
+
+        // Title divider
+        final int titleDividerId = res.getIdentifier("titleDivider", "id", "android");
+        final View titleDivider = getDialog().findViewById(titleDividerId);
+        if (titleDivider != null) {
+            titleDivider.setBackgroundColor(res.getColor(R.color.dark_purple));
+        }
 	}
 
 	@Override
@@ -76,7 +106,9 @@ public class RoomDetailFragment extends DialogFragment implements
 		super.onCreate(savedInstanceState);
 
 		mGameOptions = getArguments().getParcelable(GAME_OPTIONS);
-
+		mIsCreateRoom = getArguments().getBoolean(ROOM_OPTIONS);
+		mIsPrivate = getArguments().getBoolean(PRIVATE_OPTIONS,  false);
+		
 		setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
 	}
 
@@ -100,60 +132,8 @@ public class RoomDetailFragment extends DialogFragment implements
 	 */
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		View contentView = LayoutInflater.from(mActivity).inflate(
-				R.layout.room_detail_content, null);
-		TextView cardLimitView = (TextView) contentView
-				.findViewById(R.id.card_limit_text);
-		cardLimitView.setText(mActivity.getResources().getString(
-				R.string.card_limit,
-				getResources().getStringArray(R.array.card_limit)[mGameOptions.mRule]));
-		TextView duelModeView = (TextView) contentView
-				.findViewById(R.id.duel_mode_text);
-		duelModeView.setText(mActivity.getResources()
-				.getString(
-						R.string.duel_mode,
-						mActivity.getResources().getStringArray(
-								R.array.duel_mode)[mGameOptions.mMode]));
-		TextView initLpText = (TextView) contentView
-				.findViewById(R.id.init_lp_text);
-		initLpText.setText(mActivity.getResources().getString(R.string.init_lp,
-				mGameOptions.mStartLP));
-		TextView initHandsText = (TextView) contentView
-				.findViewById(R.id.init_hands_text);
-		initHandsText.setText(mActivity.getResources().getString(R.string.init_hands, mGameOptions.mStartHand));
-		
-		TextView drawCountText = (TextView) contentView.findViewById(R.id.draw_count_text);
-		drawCountText.setText(mActivity.getResources().getString(R.string.draw_count, mGameOptions.mDrawCount));
-		
-		AlertDialog dialog = new AlertDialog.Builder(mActivity)
-				.setTitle(mGameOptions.mRoomName)
-				.setView(contentView)
-				.setPositiveButton(R.string.button_join, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Intent intent = new Intent();
-						ComponentName component = new ComponentName("cn.garymb.ygomobile", "cn.garymb.ygomobile.YGOMobileActivity");
-						intent.setComponent(component);
-						intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-						intent.putExtra(YGOGameOptions.YGO_GAME_OPTIONS_BUNDLE_KEY, mGameOptions);
-						startActivity(intent);
-					}
-				})
-				.setNegativeButton(R.string.button_cancel,
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-							}
-						}).create();
-		return dialog;
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return mContentView;
+		RoomDialog dlg = new RoomDialog(mActivity, this, mGameOptions, mIsPrivate);
+		return dlg;
 	}
 
 	/*
@@ -165,5 +145,74 @@ public class RoomDetailFragment extends DialogFragment implements
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		return true;
+	}
+
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+		if (which == AlertDialog.BUTTON_POSITIVE) {
+			Intent intent = new Intent();
+			YGOGameOptions options = null ;
+			if (mIsCreateRoom) {
+				options = ((RoomDialog)dialog).getController().getGameOption();
+				options.mServerAddr = mActivity.getServer().ipAddrString;
+				options.mPort = mActivity.getServer().port;
+				options.mName = "illusory";
+			} else {
+				options = mGameOptions;
+			}
+			ComponentName component = new ComponentName("cn.garymb.ygomobile", "cn.garymb.ygomobile.YGOMobileActivity");
+			intent.setComponent(component);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+			intent.putExtra(YGOGameOptions.YGO_GAME_OPTIONS_BUNDLE_KEY, options);
+			startActivity(intent);
+		} else if (which == AlertDialog.BUTTON_NEGATIVE) {
+		}
+		
+	}
+
+	@Override
+	public Context getContext() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RoomConfigController getController() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setPositiveButton(CharSequence text) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setCancelButton(CharSequence text) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Button getPosiveButton() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Button getCancelButton() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setTitle(CharSequence text) {
+		getDialog().setTitle(text);
+	}
+
+	@Override
+	public void setTitle(int resId) {
+		getDialog().setTitle(resId);
 	}
 }

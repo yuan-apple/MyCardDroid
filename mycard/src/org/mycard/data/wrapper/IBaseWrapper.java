@@ -27,4 +27,10 @@ public interface IBaseWrapper extends ResourcesConstants {
 	 * 
 	 */
 	String getUrl(int index);
+	
+	/**
+	 * @brief return requestType
+	 * @return
+	 */
+	int getRequestType();
 }

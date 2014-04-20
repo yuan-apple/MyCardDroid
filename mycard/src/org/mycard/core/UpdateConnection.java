@@ -9,13 +9,17 @@ import org.mycard.data.wrapper.BaseDataWrapper;
 public class UpdateConnection implements IBaseConnection{
 	
 
-	private BlockingQueue<BaseDataWrapper> mTaskQueue;
+	protected BlockingQueue<BaseDataWrapper> mTaskQueue;
 	
-	private IBaseThread mUpdateThread;
+	protected IBaseThread mUpdateThread;
 	
 	
 	public UpdateConnection(StaticApplication app, TaskStatusCallback callback) {
 		mTaskQueue = new LinkedBlockingQueue<BaseDataWrapper>();
+		initThread(app, callback);
+	}
+
+	protected void initThread(StaticApplication app, TaskStatusCallback callback) {
 		mUpdateThread = new UpdateThread(mTaskQueue, callback, app.getHttpClient());
 		mUpdateThread.start();
 	}

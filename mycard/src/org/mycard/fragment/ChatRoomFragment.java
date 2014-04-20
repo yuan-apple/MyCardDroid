@@ -1,5 +1,8 @@
 package org.mycard.fragment;
 
+import org.mycard.R;
+
+import android.os.Bundle;
 import android.os.Message;
 
 
@@ -12,6 +15,12 @@ public class ChatRoomFragment extends BaseFragment {
 	public boolean handleMessage(Message msg) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mCompiledTitleColor = getResources().getColor(R.color.orange);
 	}
 
 }

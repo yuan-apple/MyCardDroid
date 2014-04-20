@@ -13,4 +13,8 @@
     <string name="button_cancel">Cancel</string>
     
     <string name="duel_info">Duel info:</string>
+    
+    <string name="life_point_hint">8000</string>
+    
+     <string name="alert_image_content_description">Alert Image</string>
 </resources>

@@ -39,6 +39,7 @@
     	android:paddingTop="8dip"
     	android:paddingBottom="8dip"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="16sp"
         android:textColor="@color/dk_gray" />
 
 </RelativeLayout>

@@ -5,17 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.mycard.common.ActionBarController;
 import org.mycard.common.ActionBarCreator;
 import org.mycard.core.UpdateController;
 import org.mycard.data.ResourcesConstants;
 import org.mycard.data.ServerInfo;
 import org.mycard.fragment.BaseFragment.OnActionBarChangeCallback;
+import org.mycard.fragment.BaseFragment;
 import org.mycard.fragment.HomePageFragment;
 import org.mycard.fragment.CardWikiFragment;
 import org.mycard.fragment.ChatRoomFragment;
 import org.mycard.fragment.FinalPhaseFragment;
 import org.mycard.fragment.DuelFragment;
-import org.mycard.fragment.TabFragment;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -26,6 +27,7 @@ import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -35,13 +37,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity implements OnActionBarChangeCallback, Handler.Callback{
+public class MainActivity extends ActionBarActivity implements
+		OnActionBarChangeCallback, Handler.Callback {
 
 	public static class EventHandler extends Handler {
 		public EventHandler(Callback back) {
@@ -67,13 +67,14 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 				long id) {
 			// TODO Auto-generated method stub
 			if (position != 0) {
-				onActionBarChange(Constants.ACTION_BAR_CHANGE_TYPE_PAGE_CHANGE, position);
+				onActionBarChange(Constants.ACTION_BAR_CHANGE_TYPE_PAGE_CHANGE,
+						position);
 				selectItem(position);
 			}
 		}
 
 	}
-	
+
 	private static final String IMAGE_TAG = "image";
 	private static final String TEXT_TAG = "text";
 
@@ -83,27 +84,28 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 	private static final int DRAWER_ID_CHAT_ROOM = 4;
 	private static final int DRAWER_ID_FORUM_LINK = 5;
 	private static final int DRAWER_ID_FINAL_PHASE = 6;
-	
-	private static final int MSG_ID_UPDATE_SERVER = 0;
 
 	private DrawerLayout mDrawerLayout;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private ListView mDrawerList;
 	private String[] mDrawerItems;
-	
-	private Integer[] imageArray = {R.drawable.ic_drawer_home,
-			R.drawable.ic_drawer_duel, R.drawable.ic_drawer_card_wiki, R.drawable.ic_drawer_chat, R.drawable.ic_drawer_forum};
-	private int[] viewTo = {R.id.drawer_item_image, R.id.drawer_item_text};
-	private String[] dataFrom = {IMAGE_TAG, TEXT_TAG};
-	
-	private List<Map<String, Object>> mDrawerListData = new ArrayList<Map<String,Object>>();
-	
+
+	private Integer[] imageArray = { R.drawable.ic_drawer_home,
+			R.drawable.ic_drawer_duel, R.drawable.ic_drawer_card_wiki,
+			R.drawable.ic_drawer_chat, R.drawable.ic_drawer_forum };
+	private int[] viewTo = { R.id.drawer_item_image, R.id.drawer_item_text };
+	private String[] dataFrom = { IMAGE_TAG, TEXT_TAG };
+
+	private List<Map<String, Object>> mDrawerListData = new ArrayList<Map<String, Object>>();
+
 	private UpdateController mController;
-	
+
 	private ActionBarCreator mActionBarCreator;
 	
+	private ActionBarController mActionBarController;
+
 	private EventHandler mHandler;
-	
+
 	private List<ServerInfo> mServerList;
 	
 	@Override
@@ -115,42 +117,40 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		setTitle(R.string.mycard);
 		mController = new UpdateController((StaticApplication) getApplication());
 		mActionBarCreator = new ActionBarCreator(this);
+		mActionBarController = new ActionBarController();
 		mHandler = new EventHandler(this);
-		mController.asyncUpdateServer(mHandler.obtainMessage(MSG_ID_UPDATE_SERVER));
+		mController.asyncUpdateServer(mHandler
+				.obtainMessage(Constants.MSG_ID_UPDATE_SERVER));
 	}
-	
+
 	public UpdateController getController() {
 		return mController;
 	}
 
 	private void initView() {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mDrawerToggle = new ActionBarDrawerToggle(
-				this,
-				mDrawerLayout,
-				R.drawable.ic_navigation_drawer,
-				R.string.app_name,
-				R.string.app_name
-		);
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+				R.drawable.ic_navigation_drawer, R.string.app_name,
+				R.string.app_name);
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		
+
 		mDrawerItems = getResources().getStringArray(R.array.draw_items);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		View headerView = LayoutInflater.from(this).inflate(
 				R.layout.drawer_header_view, null);
 		mDrawerList.addHeaderView(headerView);
 		int size = mDrawerItems.length;
-		for (int i = 0; i < size; i ++) {
+		for (int i = 0; i < size; i++) {
 			Map<String, Object> item = new HashMap<String, Object>();
 			item.put(IMAGE_TAG, imageArray[i]);
 			item.put(TEXT_TAG, mDrawerItems[i]);
 			mDrawerListData.add(item);
 		}
-		
-		mDrawerList.setAdapter(new SimpleAdapter(this, mDrawerListData, R.layout.drawer_list_item, dataFrom, viewTo));
+
+		mDrawerList.setAdapter(new SimpleAdapter(this, mDrawerListData,
+				R.layout.drawer_list_item, dataFrom, viewTo));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-		
-		mDrawerList.setSelection(1);
+		selectItem(1);
 	}
 
 	private void initActionBar() {
@@ -158,7 +158,7 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setHomeButtonEnabled(true);
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
@@ -172,17 +172,17 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		mActionBarCreator.createMenu(menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
-    	public boolean onOptionsItemSelected(MenuItem item) {
-        	// Pass the event to ActionBarDrawerToggle, if it returns
-        	// true, then it has handled the app icon touch event
-        	if (mDrawerToggle.onOptionsItemSelected(item)) {
-          	return true;
-        	}
-        	return super.onOptionsItemSelected(item);
-    	}
-	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Pass the event to ActionBarDrawerToggle, if it returns
+		// true, then it has handled the app icon touch event
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			return true;
+		}
+		return mActionBarController.handleAction(item.getItemId());
+	}
+
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
@@ -195,11 +195,9 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		super.onConfigurationChanged(newConfig);
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
-	
+
 	/** Swaps fragments in the main content view */
 	private void selectItem(int position) {
-		// Create a new fragment and specify the planet to show based on
-		// position
 		Fragment fragment = null;
 		switch (position) {
 		case DRAWER_ID_DUEL:
@@ -226,15 +224,15 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 			break;
 		}
 		Bundle args = new Bundle();
-		args.putInt(TabFragment.ARG_ITEM_INDEX, position);
+		args.putString(BaseFragment.ARG_ITEM_TITLE, mDrawerItems[position - 1]);
 		fragment.setArguments(args);
 		// Insert the fragment by replacing any existing fragment
 		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, fragment).commit();
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		transaction.replace(R.id.content_frame, fragment).commit();
 		// Highlight the selected item, update the title, and close the drawer
 		mDrawerList.setItemChecked(position, true);
-		setTitle(mDrawerItems[position - 1]);
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 
@@ -246,21 +244,24 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 			if (action == DRAWER_ID_DUEL) {
 				mActionBarCreator.setRoomCreate(true);
 			} else {
-				mActionBarCreator.setRoomCreate(false).setLoading(false).setPlay(false);
+				mActionBarCreator.setRoomCreate(false).setLoading(false)
+						.setPlay(false);
 			}
 			break;
 		case Constants.ACTION_BAR_CHANGE_TYPE_DATA_LOADING:
 			if (action == 0) {
-				mActionBarCreator.setLoading(false).setRoomCreate(true).setPlay(true);
+				mActionBarCreator.setLoading(false).setRoomCreate(true)
+						.setPlay(true);
 			} else {
-				mActionBarCreator.setLoading(true).setRoomCreate(false).setPlay(false);
+				mActionBarCreator.setLoading(true).setRoomCreate(false)
+						.setPlay(false);
 			}
 		default:
 			break;
 		}
 		supportInvalidateOptionsMenu();
 	}
-	
+
 	public ServerInfo getServer() {
 		return mServerList == null ? null : mServerList.get(0);
 	}
@@ -268,7 +269,7 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 	@Override
 	public boolean handleMessage(Message msg) {
 		switch (msg.what) {
-		case MSG_ID_UPDATE_SERVER:
+		case Constants.MSG_ID_UPDATE_SERVER:
 			mServerList = mController.getDataStore().getServerList();
 			break;
 
@@ -276,5 +277,21 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 			break;
 		}
 		return true;
+	}
+	
+	public void registerForActionNew(Handler h) {
+		mActionBarController.registerForActionNew(h);
+	}
+	
+	public void unregisterForActionNew(Handler h) {
+		mActionBarController.unregisterForActionNew(h);
+	}
+	
+	public void registerForActionPlay(Handler h) {
+		mActionBarController.registerForActionPlay(h);
+	}
+	
+	public void unregisterForActionPlay(Handler h) {
+		mActionBarController.unregisterForActionPlay(h);
 	}
 }

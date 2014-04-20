@@ -9,8 +9,8 @@ public interface ResourcesConstants {
 	public static final String FORUM_URL = "https://forum.my-card.in/";
 	
 	
-	public static final String SERVER_LIST_URL = "://my-card.in/servers.json";
-	public static final String ROOM_LIST_URL = "://my-card.in/rooms.json";
+	public static final String SERVER_LIST_URL = "http://my-card.in/servers.json";
+	public static final String ROOM_LIST_URL = "ws://my-card.in/rooms.json";
 	
 	public static final String JSON_KEY_ID = "id";
 	public static final String JSON_KEY_NAME = "name";
@@ -65,6 +65,9 @@ public interface ResourcesConstants {
 	
 	
 	public static final String GAME_OPTIONS = "game.options";
+	public static final String ROOM_OPTIONS = "room.options";
+	public static final String PRIVATE_OPTIONS = "private.options";
+	
 	public static final String ROOM_INFO_NAME = "room.info.name";
 	public static final String ROOM_INFO_RULE = "room.info.rule";
 	public static final String ROOM_INFO_MODE = "room.info.mode";

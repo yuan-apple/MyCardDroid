@@ -2,6 +2,7 @@ package org.mycard.fragment;
 
 import java.util.List;
 
+import org.mycard.Constants;
 import org.mycard.R;
 import org.mycard.data.ResourcesConstants;
 import org.mycard.data.RoomInfo;
@@ -41,7 +42,6 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 	
 	@Override
 	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
 		Log.d(TAG, "onAttach: E");
 		super.onAttach(activity);
 	}
@@ -119,20 +119,24 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 		RoomInfo info = (RoomInfo) mAdapter.getItem(position);
 		Bundle data = new Bundle();
 		YGOGameOptions options = new YGOGameOptions();
-		options.mDrawCount = info.drawCount == -1 ? 1 :info.drawCount;
-		options.mEnablePriority = info.enablePriority;
-		options.mMode = info.mode;
 		options.mName = "illusory";
-		options.mNoDeckCheck = info.noDeckCheck;
-		options.mNoDeckShuffle = info.noDeckShuffle;
+		options.mMode = info.mode;
+		options.mServerAddr = mActivity.getServer().ipAddrString;
 		options.mPort = mActivity.getServer().port;
 		options.mRoomName = info.name;
 		options.mRoomPasswd = "";
-		options.mRule = info.rule == -1 ? 0 :info.rule;
-		options.mServerAddr = mActivity.getServer().ipAddrString;
-		options.mStartHand = info.startHand == -1 ? 5 : info.startHand;
-		options.mStartLP = info.startLp == -1 ? 8000 : info.startLp;
+		options.setCompleteOptions(info.isCompleteInfo());
+		if (info.isCompleteInfo()) {
+			options.mDrawCount = info.drawCount == -1 ? 1 : info.drawCount;
+			options.mEnablePriority = info.enablePriority;
+			options.mNoDeckCheck = info.noDeckCheck;
+			options.mNoDeckShuffle = info.noDeckShuffle;
+			options.mRule = info.rule == -1 ? 0 : info.rule;
+			options.mStartHand = info.startHand == -1 ? 5 : info.startHand;
+			options.mStartLP = info.startLp == -1 ? 8000 : info.startLp;
+		}
 		data.putParcelable(GAME_OPTIONS, options);
+		data.putBoolean(PRIVATE_OPTIONS, info.privacy);
 		showDialog(data);
 	}
 

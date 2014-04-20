@@ -20,14 +20,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:background="#5AB0EB" >
+                android:background="@color/dark_purple" >
 
                 <RadioGroup
                     android:id="@+id/rg_nav_content"
                     android:layout_width="match_parent"
                     android:layout_height="38dip"
                     android:layout_alignParentTop="true"
-                    android:background="#F2F2F2"
+                    android:background="@color/dark_purple"
                     android:orientation="horizontal" >
                 </RadioGroup>
 
@@ -36,7 +36,7 @@
                     android:layout_width="1dip"
                     android:layout_height="5dip"
                     android:layout_alignParentBottom="true"
-                    android:background="#5AB0EB"
+                    android:background="@color/dark_purple"
                     android:scaleType="matrix" />
             </RelativeLayout>
         </HorizontalScrollView>

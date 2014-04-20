@@ -21,7 +21,6 @@ public class BaseDownloadThread extends BaseThread {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		BaseDataWrapper wrapper = null;
 		while (isRunning && !isInterrupted()) {
 			try {
@@ -34,7 +33,6 @@ public class BaseDownloadThread extends BaseThread {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 		}
 	}
 	

@@ -13,11 +13,14 @@ public abstract class BaseDataWrapper implements IBaseWrapper {
 	protected ArrayList<String> mUrls;
 	protected int mResult;
 	
+	protected int mRequestType;
+	
 	/**
 	 * 
 	 */
-	public BaseDataWrapper() {
+	public BaseDataWrapper(int requestType) {
 		mUrls = new ArrayList<String>();
+		mRequestType = requestType;
 	}
 
 	
@@ -47,5 +50,10 @@ public abstract class BaseDataWrapper implements IBaseWrapper {
 		} else {
 			return mUrls.get(index);
 		}
+	}
+	
+	@Override
+	public int getRequestType() {
+		return mRequestType;
 	}
 }
