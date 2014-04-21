@@ -9,7 +9,6 @@ import org.mycard.fragment.CardWikiFragment;
 import org.mycard.fragment.ChatRoomFragment;
 import org.mycard.fragment.FinalPhaseFragment;
 import org.mycard.fragment.RoomFragment;
-import org.mycard.fragment.RoomPageFragment;
 import org.mycard.fragment.TabFragment;
 
 import android.content.Intent;
@@ -19,25 +18,21 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.internal.widget.ProgressBarICS;
-import android.support.v7.widget.SearchView;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity implements OnActionBarChangeCallback{
+public class MainActivity extends ActionBarActivity implements
+		OnActionBarChangeCallback {
 
 	/**
 	 * @author mabin
@@ -56,9 +51,10 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			// TODO Auto-generated method stub
-			if (position != 0) {
-				onActionBarChange(Constants.ACTION_BAR_CHANGE_TYPE_PAGE_CHANGE, position);
-				selectItem(position);
+			if (position != -1) {
+				onActionBarChange(Constants.ACTION_BAR_CHANGE_TYPE_PAGE_CHANGE,
+						position);
+				selectItem(position + 1);
 			}
 		}
 
@@ -75,11 +71,12 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 	private ActionBarDrawerToggle mDrawerToggle;
 	private ListView mDrawerList;
 	private String[] mDrawerItems;
-	
+
 	private UpdateController mController;
-	
+
 	private ActionBarCreator mActionBarCreator;
-	
+	private LinearLayout drawLayout;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,27 +87,29 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		mController = new UpdateController((StaticApplication) getApplication());
 		mActionBarCreator = new ActionBarCreator(this);
 	}
-	
+
 	public UpdateController getController() {
 		return mController;
 	}
 
 	private void initView() {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mDrawerToggle = new ActionBarDrawerToggle(
-				this,
-				mDrawerLayout,
-				R.drawable.ic_navigation_drawer,
-				R.string.app_name,
-				R.string.app_name
-		);
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+				R.drawable.ic_navigation_drawer, R.string.app_name,
+				R.string.app_name);
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		
+
+		drawLayout = (LinearLayout) findViewById(R.id.left_layout);
+
 		mDrawerItems = getResources().getStringArray(R.array.draw_items);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-		View headerView = LayoutInflater.from(this).inflate(
-				R.layout.drawer_header_view, null);
-		mDrawerList.addHeaderView(headerView);
+		// View headerView = LayoutInflater.from(this).inflate(
+		// R.layout.drawer_header_view, null);
+		// mDrawerList.addHeaderView(headerView);
+		// drawLayout.removeAllViews();
+		// drawLayout.addView(headerView);
+		// drawLayout.addView(mDrawerList);
+
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_list_item, mDrawerItems));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -121,7 +120,7 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setHomeButtonEnabled(true);
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
@@ -133,20 +132,20 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		mActionBarCreator.createMenu(menu);
-//		getMenuInflater().inflate(R.menu.main, menu);
+		// getMenuInflater().inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-          return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Pass the event to ActionBarDrawerToggle, if it returns
+		// true, then it has handled the app icon touch event
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
@@ -159,7 +158,7 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		super.onConfigurationChanged(newConfig);
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
-	
+
 	/** Swaps fragments in the main content view */
 	private void selectItem(int position) {
 		// Create a new fragment and specify the planet to show based on
@@ -197,9 +196,10 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 		fragmentManager.beginTransaction()
 				.replace(R.id.content_frame, fragment).commit();
 		// Highlight the selected item, update the title, and close the drawer
-		mDrawerList.setItemChecked(position, true);
+		mDrawerList.setItemChecked(position - 1, true);
 		setTitle(mDrawerItems[position - 1]);
-		mDrawerLayout.closeDrawer(mDrawerList);
+		// mDrawerLayout.closeDrawer(mDrawerList);
+		mDrawerLayout.closeDrawer(drawLayout);
 	}
 
 	@Override
@@ -215,9 +215,11 @@ public class MainActivity extends ActionBarActivity implements OnActionBarChange
 			break;
 		case Constants.ACTION_BAR_CHANGE_TYPE_DATA_LOADING:
 			if (action == 0) {
-				mActionBarCreator.setLoading(false).setRoomCreate(true).setSearch(true);
+				mActionBarCreator.setLoading(false).setRoomCreate(true)
+						.setSearch(true);
 			} else {
-				mActionBarCreator.setLoading(true).setRoomCreate(false).setSearch(false);
+				mActionBarCreator.setLoading(true).setRoomCreate(false)
+						.setSearch(false);
 			}
 		default:
 			break;
