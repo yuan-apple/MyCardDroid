@@ -1,7 +1,5 @@
 package org.mycard.fragment;
 
-import org.mycard.R;
-
 import android.os.Bundle;
 import android.os.Message;
 
@@ -19,7 +17,6 @@ public class HomePageFragment extends BaseFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mCompiledTitleColor = getResources().getColor(R.color.dark_blue);
 	}
 
 }

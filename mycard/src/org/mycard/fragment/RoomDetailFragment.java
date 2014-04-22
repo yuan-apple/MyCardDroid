@@ -30,13 +30,12 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
+import android.support.v4.app.Fragment;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -54,7 +53,8 @@ public class RoomDetailFragment extends DialogFragment implements
 	
 	private boolean mIsPrivate;
 	
-	private boolean mIsCreateRoom;
+	
+	private int mDialogMode;
 
 	/**
 	 * Create a new instance of WelfareDialogFragment, providing "num" as an
@@ -90,14 +90,14 @@ public class RoomDetailFragment extends DialogFragment implements
         final int titleId = res.getIdentifier("alertTitle", "id", "android");
         final View title = getDialog().findViewById(titleId);
         if (title != null) {
-            ((TextView) title).setTextColor(res.getColor(R.color.dark_purple));
+            ((TextView) title).setTextColor(res.getColor(R.color.apptheme_color));
         }
 
         // Title divider
         final int titleDividerId = res.getIdentifier("titleDivider", "id", "android");
         final View titleDivider = getDialog().findViewById(titleDividerId);
         if (titleDivider != null) {
-            titleDivider.setBackgroundColor(res.getColor(R.color.dark_purple));
+            titleDivider.setBackgroundColor(res.getColor(R.color.apptheme_color));
         }
 	}
 
@@ -106,8 +106,8 @@ public class RoomDetailFragment extends DialogFragment implements
 		super.onCreate(savedInstanceState);
 
 		mGameOptions = getArguments().getParcelable(GAME_OPTIONS);
-		mIsCreateRoom = getArguments().getBoolean(ROOM_OPTIONS);
 		mIsPrivate = getArguments().getBoolean(PRIVATE_OPTIONS,  false);
+		mDialogMode = getArguments().getInt(MODE_OPTIONS);
 		
 		setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
 	}
@@ -132,7 +132,7 @@ public class RoomDetailFragment extends DialogFragment implements
 	 */
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		RoomDialog dlg = new RoomDialog(mActivity, this, mGameOptions, mIsPrivate);
+		RoomDialog dlg = new RoomDialog(mActivity, this, mGameOptions, mIsPrivate, mDialogMode);
 		return dlg;
 	}
 
@@ -152,13 +152,17 @@ public class RoomDetailFragment extends DialogFragment implements
 		if (which == AlertDialog.BUTTON_POSITIVE) {
 			Intent intent = new Intent();
 			YGOGameOptions options = null ;
-			if (mIsCreateRoom) {
+			if (mDialogMode == DIALOG_MODE_CREATE_ROOM) {
 				options = ((RoomDialog)dialog).getController().getGameOption();
 				options.mServerAddr = mActivity.getServer().ipAddrString;
 				options.mPort = mActivity.getServer().port;
 				options.mName = "illusory";
-			} else {
+			} else if (mDialogMode == DIALOG_MODE_JOIN_GAME) {
 				options = mGameOptions;
+			} else if (mDialogMode == DIALOG_MODE_QUICK_JOIN) {
+				Fragment f = getTargetFragment();
+				((DuelFragment)f).handleMessage(Message.obtain(null, getTargetRequestCode(), 0, 0, options = ((RoomDialog)dialog).getController().getGameOption()));
+				return;
 			}
 			ComponentName component = new ComponentName("cn.garymb.ygomobile", "cn.garymb.ygomobile.YGOMobileActivity");
 			intent.setComponent(component);

@@ -8,7 +8,11 @@ import org.mycard.data.ResourcesConstants;
 import org.mycard.data.RoomInfo;
 import org.mycard.data.wrapper.IBaseWrapper;
 
+import cn.garymb.ygodata.YGOGameOptions;
+
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -21,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class DuelFragment extends TabFragment {
 
@@ -78,6 +83,8 @@ public class DuelFragment extends TabFragment {
 	private static final String TAG = "RoomFragment";
 
 	public static final String ROOM_BUNDLE_KEY_TAG_INDEX = "bundle.key.room.tag.index";
+	
+	private static final int REQUEST_CODE_QUICK_JOIN = 0x1001;
 
 	private static final int ROOM_TAG_INDEX_SINGLE_MODE = 0;
 	private static final int ROOM_TAG_INDEX_MATCH_MODE = 1;
@@ -92,7 +99,6 @@ public class DuelFragment extends TabFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mCompiledTitleColor = getResources().getColor(R.color.dark_purple);
 	}
 
 	@Override
@@ -228,14 +234,65 @@ public class DuelFragment extends TabFragment {
 				}
 			}
 			break;
-		case Constants.ACTION_BAR_EVENT_TYPE_NEW:
+		case Constants.ACTION_BAR_EVENT_TYPE_NEW: {
 			Log.i(TAG, "receive action bar new click event");
 			Bundle bundle = new Bundle();
-			bundle.putBoolean(ResourcesConstants.ROOM_OPTIONS, true);
+			bundle.putInt(ResourcesConstants.MODE_OPTIONS, ResourcesConstants.DIALOG_MODE_CREATE_ROOM);
 			showDialog(bundle);
 			break;
-		case Constants.ACTION_BAR_EVENT_TYPE_PLAY:
+		}
+		case Constants.ACTION_BAR_EVENT_TYPE_PLAY: {
 			Log.i(TAG, "receive action bar play click event");
+			Bundle bundle = new Bundle();
+			bundle.putInt(ResourcesConstants.MODE_OPTIONS, ResourcesConstants.DIALOG_MODE_QUICK_JOIN);
+			showDialog(bundle, this, REQUEST_CODE_QUICK_JOIN);
+			break;
+		}
+		case REQUEST_CODE_QUICK_JOIN: {
+			YGOGameOptions options = (YGOGameOptions) msg.obj;
+			String[] nameSegments = options.mRoomName.split("$");
+			options.mRoomName = nameSegments[0];
+			boolean isPrivate = nameSegments.length > 1;
+			if (isPrivate) {
+				options.mRoomPasswd = nameSegments[1];
+			} else {
+				options.mRoomPasswd = "";
+			}
+			List<RoomInfo> data = mDataStore.getRooms();
+			RoomInfo target = null;
+			for (RoomInfo info : data) {
+				if (info.name.equals(options.mRoomName) && isPrivate == info.privacy) {
+					target = info;
+					break;
+				}
+			}
+			if (target != null) {
+				options.mName = "illusory";
+				options.mMode = target.mode;
+				options.mServerAddr = mActivity.getServer().ipAddrString;
+				options.mPort = mActivity.getServer().port;
+				options.mRoomName = target.name;
+				options.setCompleteOptions(target.isCompleteInfo());
+				if (target.isCompleteInfo()) {
+					options.mDrawCount = target.drawCount == -1 ? 1 : target.drawCount;
+					options.mEnablePriority = target.enablePriority;
+					options.mNoDeckCheck = target.noDeckCheck;
+					options.mNoDeckShuffle = target.noDeckShuffle;
+					options.mRule = target.rule == -1 ? 0 : target.rule;
+					options.mStartHand = target.startHand == -1 ? 5 : target.startHand;
+					options.mStartLP = target.startLp == -1 ? 8000 : target.startLp;
+				} 
+				Intent intent = new Intent();
+				ComponentName component = new ComponentName("cn.garymb.ygomobile", "cn.garymb.ygomobile.YGOMobileActivity");
+				intent.setComponent(component);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+				intent.putExtra(YGOGameOptions.YGO_GAME_OPTIONS_BUNDLE_KEY, options);
+				startActivity(intent);
+			} else {
+				Toast.makeText(mActivity, R.string.quick_join_error, Toast.LENGTH_SHORT).show();
+			}
+			break;
+		}
 		default:
 			break;
 		}

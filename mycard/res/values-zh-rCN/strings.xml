@@ -7,6 +7,7 @@
     <string name="action_play">开始游戏</string>
     <string name="action_new_room">创建房间</string>
     
+    <string name="quick_join">快速加入</string>
     <string name="create_room">创建房间</string>
     <string name="password">房间密码</string>
     <string name="show_password">显示密码</string>
@@ -19,6 +20,7 @@
     <string name="room_advanced_options">显示高级选项</string>
     <string name="duel_info">决斗信息</string>
     <string name="duel_options">决斗选项</string>
+    <string name="quick_join_hint">房间名$密码</string>
     
     <string name="button_create">创建</string>
     <string name="button_join">加入</string>
@@ -28,6 +30,7 @@
     <string name="ongoing">进行中</string>
     <string name="pending">等待中</string>
     
+    <string name="quick_join_error">无法找到房间</string>
     
     
 </resources>

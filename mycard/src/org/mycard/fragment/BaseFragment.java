@@ -1,11 +1,11 @@
 package org.mycard.fragment;
 
 import org.mycard.MainActivity;
-import org.mycard.R;
 import org.mycard.core.UpdateController;
 import org.mycard.data.DataStore;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,16 +46,15 @@ public abstract class BaseFragment extends Fragment implements Handler.Callback{
 	
 	protected TextView mActionBarTitle;
 	
-	protected int mCompiledTitleColor;
-	
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (mTitle != null) {
-			mActionBarTitle.setText(mTitle);
-			mActionBarTitle.setTextColor(mCompiledTitleColor);
-		}
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
 	}
 	
 	@Override
@@ -64,7 +63,6 @@ public abstract class BaseFragment extends Fragment implements Handler.Callback{
 		mTitle = getArguments().getString(ARG_ITEM_TITLE);
 		int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
 		mActionBarTitle = (TextView) mActivity.findViewById(actionBarTitleId);
-		mCompiledTitleColor = getResources().getColor(R.color.black);
 	}
 
 	@Override
@@ -80,6 +78,24 @@ public abstract class BaseFragment extends Fragment implements Handler.Callback{
 		}
 	}
 
+	protected void showDialog(Bundle params, Fragment target, int requestCode) {
+		// DialogFragment.show() will take care of adding the fragment
+		// in a transaction. We also want to remove any currently showing
+		// dialog, so make our own transaction and take care of that here.
+		FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+		Fragment prev = getChildFragmentManager().findFragmentByTag("dialog");
+		if (prev != null) {
+			ft.remove(prev);
+		}
+		ft.addToBackStack(null);
+
+		// Create and show the dialog.
+		RoomDetailFragment newFragment = RoomDetailFragment
+				.newInstance(params);
+		newFragment.setTargetFragment(target, requestCode);
+		newFragment.show(ft, "dialog");
+	}
+	
 	protected void showDialog(Bundle params) {
 		// DialogFragment.show() will take care of adding the fragment
 		// in a transaction. We also want to remove any currently showing

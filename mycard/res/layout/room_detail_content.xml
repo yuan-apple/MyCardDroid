@@ -11,30 +11,25 @@
         android:paddingRight="20dip"
         android:paddingTop="15dip" >
 
-        <TextView
-            android:id="@+id/duel_title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dip"
-            android:singleLine="true"
-            android:text="@string/duel_info"
-            android:textSize="18sp" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="0.67dip"
-            android:layout_marginTop="5dip"
-            android:background="@color/holo_gray_light"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip" />
-
         <LinearLayout
             android:id="@+id/duel_info_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="gone" >
+            <LinearLayout
+                android:id="@+id/l_room_name"
+                style="@style/room_item" >
+
+                <TextView
+                    style="@style/room_item_label"
+                    android:text="@string/room_name" />
+
+                <TextView
+                    android:id="@+id/room_name_text"
+                    style="@style/room_item_content"
+                    android:gravity="center_horizontal" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/l_dual_mode"
@@ -118,7 +113,7 @@
 
             <EditText
                 android:id="@+id/room_name_editbox"
-                style="@style/room_item_content"
+                style="@style/room_item_edit_text"
                 android:inputType="number"
                 android:singleLine="true" />
         </LinearLayout>
@@ -134,7 +129,7 @@
 
             <Spinner
                 android:id="@+id/duel_mode_spinner"
-                style="@style/room_item_content"
+                style="@style/room_item_spinner"
                 android:entries="@array/duel_mode"
                 android:prompt="@string/duel_mode" />
         </LinearLayout>
@@ -155,7 +150,7 @@
 
                 <EditText
                     android:id="@+id/room_passwd_editbox"
-                    style="@style/room_item_edit_content"
+                    style="@style/room_item_edit_text"
                     android:inputType="textPassword"
                     android:singleLine="true" />
             </LinearLayout>
@@ -168,7 +163,7 @@
 
                 <CheckBox
                     android:id="@+id/room_show_password"
-                    style="@style/room_item_content"
+                    style="@style/room_item_checkbox"
                     android:text="@string/show_password"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -184,7 +179,7 @@
 
                 <CheckBox
                     android:id="@+id/room_advanced_toggle"
-                    style="@style/room_item_content"
+                    style="@style/room_item_checkbox"
                     android:checked="false"
                     android:text="@string/room_advanced_options"
                     android:textSize="14sp" />
@@ -207,7 +202,7 @@
 
                     <Spinner
                         android:id="@+id/card_limit_spinner"
-                        style="@style/room_item_content"
+                        style="@style/room_item_spinner"
                         android:entries="@array/card_limit"
                         android:prompt="@string/card_limit" />
                 </LinearLayout>
@@ -222,7 +217,7 @@
 
                     <EditText
                         android:id="@+id/init_lp_edittext"
-                        style="@style/room_item_edit_content"
+                        style="@style/room_item_edit_text"
                         android:hint="@string/life_point_hint"
                         android:inputType="number" />
                 </LinearLayout>

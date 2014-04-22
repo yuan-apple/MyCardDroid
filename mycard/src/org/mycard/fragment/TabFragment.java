@@ -1,12 +1,10 @@
 package org.mycard.fragment;
 
 import org.mycard.R;
-import org.mycard.widget.SyncHorizontalScrollView;
 
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -22,8 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 /**
@@ -36,7 +32,6 @@ public abstract class TabFragment extends BaseFragment {
 	protected ViewPager mViewPager;
 	private int mIndicatorWidth;
 	private HorizontalScrollView mHsv;
-	private RelativeLayout rl_nav;
 	private RadioGroup rg_nav_content;
 	protected FragmentPagerAdapter mAdapter;
 	private LayoutInflater mInflater;
@@ -44,7 +39,6 @@ public abstract class TabFragment extends BaseFragment {
 	
 	protected int mTabCount;
 
-	private TextView mTabTitle;
 	
 	protected Activity mAcitivity;
 
@@ -68,8 +62,6 @@ public abstract class TabFragment extends BaseFragment {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View contentView = inflater.inflate(R.layout.tab_fragment, null);
-		
-		rl_nav = (RelativeLayout) contentView.findViewById(R.id.rl_nav);
 
 		mHsv = (HorizontalScrollView) contentView.findViewById(R.id.mHsv);
 

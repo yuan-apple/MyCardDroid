@@ -2,7 +2,6 @@ package org.mycard.fragment;
 
 import java.util.List;
 
-import org.mycard.Constants;
 import org.mycard.R;
 import org.mycard.data.ResourcesConstants;
 import org.mycard.data.RoomInfo;
@@ -137,6 +136,7 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 		}
 		data.putParcelable(GAME_OPTIONS, options);
 		data.putBoolean(PRIVATE_OPTIONS, info.privacy);
+		data.putInt(ResourcesConstants.MODE_OPTIONS, ResourcesConstants.DIALOG_MODE_JOIN_GAME);
 		showDialog(data);
 	}
 

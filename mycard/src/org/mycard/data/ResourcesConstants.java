@@ -64,9 +64,13 @@ public interface ResourcesConstants {
 	public static final int GAME_RULE_OCG_TCG = 2;
 	
 	
+	public static final String MODE_OPTIONS = "mode.options";
 	public static final String GAME_OPTIONS = "game.options";
-	public static final String ROOM_OPTIONS = "room.options";
 	public static final String PRIVATE_OPTIONS = "private.options";
+	
+	public static final int DIALOG_MODE_CREATE_ROOM = 0;
+	public static final int DIALOG_MODE_QUICK_JOIN = 1;
+	public static final int DIALOG_MODE_JOIN_GAME = 2;
 	
 	public static final String ROOM_INFO_NAME = "room.info.name";
 	public static final String ROOM_INFO_RULE = "room.info.rule";
