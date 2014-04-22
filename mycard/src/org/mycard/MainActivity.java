@@ -7,7 +7,9 @@ import java.util.Map;
 
 import org.mycard.common.ActionBarController;
 import org.mycard.common.ActionBarCreator;
+import org.mycard.core.Controller;
 import org.mycard.core.UpdateController;
+import org.mycard.data.Model;
 import org.mycard.data.ResourcesConstants;
 import org.mycard.data.ServerInfo;
 import org.mycard.fragment.BaseFragment.OnActionBarChangeCallback;
@@ -17,6 +19,7 @@ import org.mycard.fragment.CardWikiFragment;
 import org.mycard.fragment.ChatRoomFragment;
 import org.mycard.fragment.FinalPhaseFragment;
 import org.mycard.fragment.DuelFragment;
+import org.mycard.fragment.TabFragment;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -32,6 +35,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +43,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements
 		OnActionBarChangeCallback, Handler.Callback {
@@ -66,10 +73,10 @@ public class MainActivity extends ActionBarActivity implements
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			// TODO Auto-generated method stub
-			if (position != 0) {
+			if (position != -1) {
 				onActionBarChange(Constants.ACTION_BAR_CHANGE_TYPE_PAGE_CHANGE,
 						position);
-				selectItem(position);
+				selectItem(position + 1);
 			}
 		}
 
@@ -98,7 +105,7 @@ public class MainActivity extends ActionBarActivity implements
 
 	private List<Map<String, Object>> mDrawerListData = new ArrayList<Map<String, Object>>();
 
-	private UpdateController mController;
+	private Controller mController;
 
 	private ActionBarCreator mActionBarCreator;
 	
@@ -108,6 +115,10 @@ public class MainActivity extends ActionBarActivity implements
 
 	private List<ServerInfo> mServerList;
 	
+	private LinearLayout drawLayout;
+	
+	private TextView mUserStatusDes;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -115,16 +126,12 @@ public class MainActivity extends ActionBarActivity implements
 		initActionBar();
 		initView();
 		setTitle(R.string.mycard);
-		mController = new UpdateController((StaticApplication) getApplication());
+		mController = Controller.peekInstance();
 		mActionBarCreator = new ActionBarCreator(this);
 		mActionBarController = new ActionBarController();
 		mHandler = new EventHandler(this);
 		mController.asyncUpdateServer(mHandler
 				.obtainMessage(Constants.MSG_ID_UPDATE_SERVER));
-	}
-
-	public UpdateController getController() {
-		return mController;
 	}
 
 	private void initView() {
@@ -133,12 +140,12 @@ public class MainActivity extends ActionBarActivity implements
 				R.drawable.ic_navigation_drawer, R.string.app_name,
 				R.string.app_name);
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		
+		mUserStatusDes = (TextView) findViewById(R.id.user_status_des_text);
+		mUserStatusDes.setText(R.string.login_sign_up);
 
 		mDrawerItems = getResources().getStringArray(R.array.draw_items);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-		View headerView = LayoutInflater.from(this).inflate(
-				R.layout.drawer_header_view, null);
-		mDrawerList.addHeaderView(headerView);
 		int size = mDrawerItems.length;
 		for (int i = 0; i < size; i++) {
 			Map<String, Object> item = new HashMap<String, Object>();
@@ -149,6 +156,8 @@ public class MainActivity extends ActionBarActivity implements
 
 		mDrawerList.setAdapter(new SimpleAdapter(this, mDrawerListData,
 				R.layout.drawer_list_item, dataFrom, viewTo));
+		drawLayout = (LinearLayout) findViewById(R.id.left_layout);
+
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 		selectItem(1);
 	}
@@ -232,8 +241,10 @@ public class MainActivity extends ActionBarActivity implements
 		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		transaction.replace(R.id.content_frame, fragment).commit();
 		// Highlight the selected item, update the title, and close the drawer
-		mDrawerList.setItemChecked(position, true);
-		mDrawerLayout.closeDrawer(mDrawerList);
+		mDrawerList.setItemChecked(position - 1, true);
+		setTitle(mDrawerItems[position - 1]);
+		// mDrawerLayout.closeDrawer(mDrawerList);
+		mDrawerLayout.closeDrawer(drawLayout);
 	}
 
 	@Override
@@ -270,7 +281,7 @@ public class MainActivity extends ActionBarActivity implements
 	public boolean handleMessage(Message msg) {
 		switch (msg.what) {
 		case Constants.MSG_ID_UPDATE_SERVER:
-			mServerList = mController.getDataStore().getServerList();
+			mServerList = Model.peekInstance().getServerList();
 			break;
 
 		default:

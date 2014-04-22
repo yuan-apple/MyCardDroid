@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.mycard.Constants;
 import org.mycard.R;
+import org.mycard.core.Controller;
+import org.mycard.data.Model;
 import org.mycard.data.ResourcesConstants;
 import org.mycard.data.RoomInfo;
 import org.mycard.data.wrapper.IBaseWrapper;
@@ -127,7 +129,7 @@ public class DuelFragment extends TabFragment {
 	public void onResume() {
 		Log.d(TAG, "onResume: E");
 		super.onResume();
-		mController.asyncUpdateRoomList(mHandler
+		Controller.peekInstance().asyncUpdateRoomList(mHandler
 				.obtainMessage(Constants.MSG_UPDATE_ROOM_LIST));
 		mActionBarCallback.onActionBarChange(
 				Constants.ACTION_BAR_CHANGE_TYPE_DATA_LOADING, 1);
@@ -145,7 +147,7 @@ public class DuelFragment extends TabFragment {
 	public void onPause() {
 		Log.d(TAG, "onPause: E");
 		super.onPause();
-		mController.stopUpdateRoomList();
+		Controller.peekInstance().stopUpdateRoomList();
 		isDataloaded = false;
 		for (int i = 0; i < mFragments.size(); i++) {
 			RoomPageFragment f = ((RoomPageFragment) mFragments.get(i));
@@ -214,7 +216,7 @@ public class DuelFragment extends TabFragment {
 						mExtraView.setVisibility(View.GONE);
 					}
 				}
-				List<RoomInfo> data = mDataStore.getRooms();
+				List<RoomInfo> data = Model.peekInstance().getRooms();
 				int size = mFragments.size();
 				for (int i = 0; i < size; i++) {
 					RoomPageFragment f = ((RoomPageFragment) mFragments.get(i));
@@ -226,7 +228,7 @@ public class DuelFragment extends TabFragment {
 				// force to reclaim memory
 				System.gc();
 			} else if (msg.arg2 == IBaseWrapper.TASK_STATUS_FAILED) {
-				mController.asyncUpdateRoomList(mHandler
+				Controller.peekInstance().asyncUpdateRoomList(mHandler
 						.obtainMessage(Constants.MSG_UPDATE_ROOM_LIST));
 				isDataloaded = false;
 				if (mExtraView != null) {
@@ -258,7 +260,7 @@ public class DuelFragment extends TabFragment {
 			} else {
 				options.mRoomPasswd = "";
 			}
-			List<RoomInfo> data = mDataStore.getRooms();
+			List<RoomInfo> data = Model.peekInstance().getRooms();
 			RoomInfo target = null;
 			for (RoomInfo info : data) {
 				if (info.name.equals(options.mRoomName) && isPrivate == info.privacy) {

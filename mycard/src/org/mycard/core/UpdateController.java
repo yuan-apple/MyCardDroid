@@ -5,6 +5,7 @@ import org.mycard.Constants;
 import org.mycard.StaticApplication;
 import org.mycard.core.IBaseConnection.TaskStatusCallback;
 import org.mycard.data.DataStore;
+import org.mycard.data.Model;
 import org.mycard.data.wrapper.BaseDataWrapper;
 import org.mycard.data.wrapper.IBaseWrapper;
 import org.mycard.data.wrapper.RoomDataWrapper;
@@ -25,7 +26,8 @@ public class UpdateController implements TaskStatusCallback {
 	private static final int UPDATE_MAX_TYPE = UPDATE_TYPE_ROOM_LIST + 1;
 	
 	private Context mContext;
-	private DataStore mStore;
+	
+	private Model mModel;
 	
 	private SparseArrayCompat<Message> mUpdateMessages;
 	
@@ -35,30 +37,25 @@ public class UpdateController implements TaskStatusCallback {
 	
 	public UpdateController(StaticApplication app) {
 		mContext = app;
-		mStore = new DataStore();
+		mModel = Model.peekInstance();
 		mUpdateMessages = new SparseArrayCompat<Message>(UPDATE_MAX_TYPE);
 		mServerUpdateConnection = new ServerUpdateConnection(app, this);
 		mMoeConnection = new MoeConnection(this);
 	}
 	
-	public DataStore getDataStore() {
-		return mStore;
-	}
-	
-	
-	public void asyncUpdateServer(Message msg) {
+	/* package */ void asyncUpdateServer(Message msg) {
 		mUpdateMessages.put(UPDATE_TYPE_SERVER_LIST, msg);
 		ServerDataWrapper wrapper = new ServerDataWrapper(Constants.REQUEST_TYPE_UPDATE_SERVER);
 		mServerUpdateConnection.addTask(wrapper);
 	}
 	
-	public void asyncUpdateRoomList(Message msg) {
+	/* package */ void asyncUpdateRoomList(Message msg) {
 		mUpdateMessages.put(UPDATE_TYPE_ROOM_LIST, msg);
 		RoomDataWrapper wrapper = new RoomDataWrapper(Constants.REQUEST_TYPE_UPDATE_ROOM);
 		mMoeConnection.addTask(wrapper);
 	}
 	
-	public void stopUpdateRoomList() {
+	/* package */ void stopUpdateRoomList() {
 		// TODO Auto-generated method stub
 		mMoeConnection.purge();
 	}
@@ -76,7 +73,7 @@ public class UpdateController implements TaskStatusCallback {
 		Message msg = mUpdateMessages.get(key);
 		if (msg != null) {
 			if (wrapper.getResult() == IBaseWrapper.TASK_STATUS_SUCCESS) {
-				mStore.updateData(wrapper);
+				mModel.updateData(wrapper);
 			}
 			msg.arg2 = wrapper.getResult();
 			msg.sendToTarget();
@@ -96,7 +93,7 @@ public class UpdateController implements TaskStatusCallback {
 		Message msg = mUpdateMessages.get(key);
 		if (msg != null) {
 			if (wrapper.getResult() == IBaseWrapper.TASK_STATUS_SUCCESS) {
-				mStore.updateData(wrapper);
+				mModel.updateData(wrapper);
 			}
 			Message reply = Message.obtain(msg);
 			reply.arg2 = wrapper.getResult();
