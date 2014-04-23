@@ -3,12 +3,12 @@ package org.mycard.core;
 import org.mycard.data.wrapper.BaseDataWrapper;
 import org.mycard.net.websocket.WebSocketConnector;
 
-public class MoeConnection implements IBaseConnection {
+public class WebSocketConnection implements IBaseConnection {
 	
 	private IBaseThread mUpdateThread;
 	private WebSocketConnector mConnector;
 	
-	public MoeConnection(TaskStatusCallback callback) {
+	public WebSocketConnection(TaskStatusCallback callback) {
 		mConnector = new WebSocketConnector();
 		mUpdateThread = new MiscUpdateThread(callback, mConnector);
 		mUpdateThread.start();
@@ -17,7 +17,7 @@ public class MoeConnection implements IBaseConnection {
 	@Override
 	public void addTask(BaseDataWrapper wrapper) {
 		// TODO Auto-generated method stub
-		((MoeThread)mUpdateThread).executeTask(wrapper);
+		((WebSocketThread)mUpdateThread).executeTask(wrapper);
 	}
 
 	@Override

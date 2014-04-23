@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item type="id" name="action_new"/>
+    <item type="id" name="action_userstatus"/>
     <item type="id" name="action_settings"/>
     <item type="id" name="action_search"/>
     <item type="id" name="action_play"/>

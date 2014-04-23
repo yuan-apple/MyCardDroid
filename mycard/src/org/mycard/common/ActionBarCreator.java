@@ -24,6 +24,15 @@ public class ActionBarCreator {
 	private boolean mSettings = true;
 
 	private boolean mPlay = false;
+	
+	private boolean mUserStatus = true;
+	private int mUserStatusRes = R.string.login_sign_up;
+	
+	public ActionBarCreator setUserStatus(boolean userStatus, int resID) {
+		mUserStatus = userStatus;
+		mUserStatusRes = resID;
+		return this;
+	}
 
 	public ActionBarCreator setSettings(boolean settings) {
 		mSearch = true;
@@ -53,6 +62,10 @@ public class ActionBarCreator {
 	public void createMenu(Menu menu) {
 		int index = 0;
 		menu.removeGroup(Menu.NONE);
+		if (mUserStatus) {
+			MenuItem useritem = menu.add(Menu.NONE, R.id.action_userstatus, index++, mUserStatusRes);
+			MenuItemCompat.setShowAsAction(useritem, MenuItemCompat.SHOW_AS_ACTION_NEVER);
+		}
 		if (mSettings) {
 			MenuItem item = menu.add(Menu.NONE, R.id.action_settings, index++,
 					R.string.action_settings);

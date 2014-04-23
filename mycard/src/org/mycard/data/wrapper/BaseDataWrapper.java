@@ -2,7 +2,8 @@ package org.mycard.data.wrapper;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
+import android.os.Bundle;
+
 
 /**
  * @author mabin
@@ -15,6 +16,8 @@ public abstract class BaseDataWrapper implements IBaseWrapper {
 	
 	protected int mRequestType;
 	
+	protected Bundle mParam;
+	
 	/**
 	 * 
 	 */
@@ -24,7 +27,7 @@ public abstract class BaseDataWrapper implements IBaseWrapper {
 	}
 
 	
-	public abstract void parse(JSONArray data);
+	public abstract void parse(StringBuilder out);
 
 	@Override
 	public void recyle() {
@@ -37,6 +40,14 @@ public abstract class BaseDataWrapper implements IBaseWrapper {
 
 	public void setResult(int result) {
 		mResult = result;
+	}
+	
+	public Bundle getParam() {
+		return mParam;
+	}
+	
+	public void setParam(Bundle param) {
+		mParam = param;
 	}
 	
 	/* (non-Javadoc)

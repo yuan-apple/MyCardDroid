@@ -13,12 +13,9 @@ public class DataStore {
 	private List<ServerInfo> mServers;
 	private Map<String, RoomInfo> mRooms;
 	
-	private UserIdentification mUID;
-	
 	public DataStore() {
 		mServers = new ArrayList<ServerInfo>();
 		mRooms = new HashMap<String, RoomInfo>();
-		mUID = new UserIdentification();
 	}
 
 	public synchronized void updateData(BaseDataWrapper wrapper) {
@@ -40,14 +37,6 @@ public class DataStore {
 				}
 			}
 		}
-	}
-	
-	public boolean isUserInfoSaved() {
-		return mUID.isUserInfoSaved();
-	}
-	
-	public boolean isAutoLoginEnabled() {
-		return mUID.isAutoLoginEnabled();
 	}
 
 	public synchronized List<ServerInfo> getServerList() {

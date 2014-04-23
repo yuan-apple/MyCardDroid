@@ -20,7 +20,7 @@ public class UpdateConnection implements IBaseConnection{
 	}
 
 	protected void initThread(StaticApplication app, TaskStatusCallback callback) {
-		mUpdateThread = new UpdateThread(mTaskQueue, callback, app.getHttpClient());
+		mUpdateThread = new SingleUpdateThreadPool(mTaskQueue, callback, app.getHttpClient());
 		mUpdateThread.start();
 	}
 	
