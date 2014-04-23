@@ -130,7 +130,7 @@ public class DuelFragment extends TabFragment {
 		Log.d(TAG, "onResume: E");
 		super.onResume();
 		Controller.peekInstance().asyncUpdateRoomList(mHandler
-				.obtainMessage(Constants.MSG_UPDATE_ROOM_LIST));
+				.obtainMessage(Constants.MSG_ID_UPDATE_ROOM_LIST));
 		mActionBarCallback.onActionBarChange(
 				Constants.ACTION_BAR_CHANGE_TYPE_DATA_LOADING, 1);
 		for (int i = 0; i < mFragments.size(); i++) {
@@ -206,7 +206,7 @@ public class DuelFragment extends TabFragment {
 	@Override
 	public boolean handleMessage(Message msg) {
 		switch (msg.what) {
-		case Constants.MSG_UPDATE_ROOM_LIST:
+		case Constants.MSG_ID_UPDATE_ROOM_LIST:
 			if (msg.arg2 == IBaseWrapper.TASK_STATUS_SUCCESS) {
 				if (!isDataloaded) {
 					isDataloaded = true;
@@ -229,7 +229,7 @@ public class DuelFragment extends TabFragment {
 				System.gc();
 			} else if (msg.arg2 == IBaseWrapper.TASK_STATUS_FAILED) {
 				Controller.peekInstance().asyncUpdateRoomList(mHandler
-						.obtainMessage(Constants.MSG_UPDATE_ROOM_LIST));
+						.obtainMessage(Constants.MSG_ID_UPDATE_ROOM_LIST));
 				isDataloaded = false;
 				if (mExtraView != null) {
 					mExtraView.setVisibility(View.VISIBLE);

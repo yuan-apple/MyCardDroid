@@ -11,8 +11,8 @@ import org.mycard.data.RoomInfo;
 
 public class RoomDataWrapper extends BaseDataWrapper {
 
-private List<JSONObject> mData;
-	
+	private List<JSONObject> mData;
+
 	public RoomDataWrapper(int requestType) {
 		super(requestType);
 		mData = new ArrayList<JSONObject>();
@@ -20,20 +20,20 @@ private List<JSONObject> mData;
 	}
 
 	@Override
-	public void parse(JSONArray data) {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < data.length(); i++) {
-			try {
-				mData.add(data.getJSONObject(i));
-			} catch (JSONException e) {
+	public void parse(StringBuilder out) {
+		try {
+			JSONArray array = new JSONArray(out.toString());
+			for (int i = 0; i < out.length(); i++) {
+				mData.add(array.getJSONObject(i));
 			}
+		} catch (JSONException e) {
 		}
 	}
-	
+
 	public int size() {
 		return mData.size();
 	}
-	
+
 	public BaseInfo getItem(int index) {
 		BaseInfo info = new RoomInfo();
 		try {

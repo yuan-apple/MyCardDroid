@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.apache.http.client.HttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.mycard.Constants;
 import org.mycard.data.ResourcesConstants;
 import org.mycard.data.wrapper.BaseDataWrapper;
@@ -19,7 +17,7 @@ import android.util.Log;
  * @author mabin
  * 
  */
-public class UpdateHttpConnector extends BaseHttpConnector implements
+public class DataHttpConnector extends BaseHttpConnector implements
 		ResourcesConstants {
 
 	private static final String TAG = "UpdateHttpConnector";
@@ -27,7 +25,7 @@ public class UpdateHttpConnector extends BaseHttpConnector implements
 	/**
 	 * @param client
 	 */
-	public UpdateHttpConnector(HttpClient client) {
+	public DataHttpConnector(HttpClient client) {
 		super(client);
 	}
 
@@ -68,7 +66,6 @@ public class UpdateHttpConnector extends BaseHttpConnector implements
 			throws InterruptedException {
 		int status = IBaseWrapper.TASK_STATUS_SUCCESS;
 		StringBuilder out = new StringBuilder();
-		JSONArray jsonArray;
 		BufferedReader reader = new BufferedReader(new InputStreamReader(data));
 		int len = -1;
 		char[] buffer = new char[Constants.IO_BUFFER_SIZE];
@@ -80,12 +77,7 @@ public class UpdateHttpConnector extends BaseHttpConnector implements
 				throw new InterruptedException();
 			}
 			Log.d(TAG, out.toString());
-			jsonArray = new JSONArray(out.toString());
-			wrapper.parse(jsonArray);
-			jsonArray = null;
-		} catch (JSONException e) {
-			e.printStackTrace();
-			status = IBaseWrapper.TASK_STATUS_FAILED;
+			wrapper.parse(out);
 		} catch (IOException e) {
 			e.printStackTrace();
 			status = IBaseWrapper.TASK_STATUS_FAILED;

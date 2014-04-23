@@ -11,7 +11,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 
-public class MoeThread extends HandlerThread implements IBaseThread, Handler.Callback{
+public class WebSocketThread extends HandlerThread implements IBaseThread, Handler.Callback{
 	
 	public static final int MSG_ID_DATA_UPDATE = 0;
 	public static final int MSG_ID_CONNECTION_CLOSED = 1;
@@ -37,7 +37,7 @@ public class MoeThread extends HandlerThread implements IBaseThread, Handler.Cal
 	
 	private volatile boolean isTerminateRequest = false;
 	
-	public MoeThread(TaskStatusCallback callback, WebSocketConnector connector) {
+	public WebSocketThread(TaskStatusCallback callback, WebSocketConnector connector) {
 		super(TAG);
 		mCallback = callback;
 		mConnector = connector;

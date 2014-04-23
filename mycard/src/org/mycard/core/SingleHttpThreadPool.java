@@ -6,13 +6,13 @@ import org.mycard.core.IBaseConnection.TaskStatusCallback;
 import org.mycard.data.wrapper.BaseDataWrapper;
 import org.mycard.net.IBaseConnector;
 
-public class BaseDownloadThread extends BaseThread {
+public class SingleHttpThreadPool extends BaseThread {
 
 	private BlockingQueue<BaseDataWrapper> mQueue;
 
 	protected IBaseConnector mConnector;
 	
-	public BaseDownloadThread(BlockingQueue<BaseDataWrapper> queue, TaskStatusCallback callback) {
+	public SingleHttpThreadPool(BlockingQueue<BaseDataWrapper> queue, TaskStatusCallback callback) {
 		// TODO Auto-generated constructor stub
 		super(callback);
 		mQueue = queue;

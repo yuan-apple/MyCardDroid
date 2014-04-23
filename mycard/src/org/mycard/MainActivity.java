@@ -8,7 +8,6 @@ import java.util.Map;
 import org.mycard.common.ActionBarController;
 import org.mycard.common.ActionBarCreator;
 import org.mycard.core.Controller;
-import org.mycard.core.UpdateController;
 import org.mycard.data.Model;
 import org.mycard.data.ResourcesConstants;
 import org.mycard.data.ServerInfo;
@@ -19,7 +18,6 @@ import org.mycard.fragment.CardWikiFragment;
 import org.mycard.fragment.ChatRoomFragment;
 import org.mycard.fragment.FinalPhaseFragment;
 import org.mycard.fragment.DuelFragment;
-import org.mycard.fragment.TabFragment;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -34,8 +32,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +40,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements
@@ -127,8 +122,8 @@ public class MainActivity extends ActionBarActivity implements
 		initView();
 		setTitle(R.string.mycard);
 		mController = Controller.peekInstance();
-		mActionBarCreator = new ActionBarCreator(this);
 		mActionBarController = new ActionBarController();
+		mActionBarCreator = new ActionBarCreator(this);
 		mHandler = new EventHandler(this);
 		mController.asyncUpdateServer(mHandler
 				.obtainMessage(Constants.MSG_ID_UPDATE_SERVER));

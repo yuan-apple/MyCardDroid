@@ -12,6 +12,8 @@ public interface ResourcesConstants {
 	public static final String SERVER_LIST_URL = "http://my-card.in/servers.json";
 	public static final String ROOM_LIST_URL = "ws://my-card.in/rooms.json";
 	
+	public static final String LOGIN_URL = "https://my-card.in/users/me.json?";
+	
 	public static final String JSON_KEY_ID = "id";
 	public static final String JSON_KEY_NAME = "name";
 	
