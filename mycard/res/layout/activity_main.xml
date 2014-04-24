@@ -33,6 +33,7 @@
                 android:layout_height="120dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:id="@+id/user_panel"
                 android:padding="@dimen/drawer_header_padding" >
 
                 <ImageView
