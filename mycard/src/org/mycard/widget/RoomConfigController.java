@@ -198,19 +198,46 @@ public class RoomConfigController implements TextWatcher,
 	}
 
 	@Override
-	public void afterTextChanged(Editable s) {
+	public void afterTextChanged(final Editable s) {
 		mTextChangedHandler.post(new Runnable() {
 			@Override
 			public void run() {
-				enableSubmitIfAppropriate();
+				int limit = enableSubmitIfAppropriate();
+				if (s.length() != 0) {
+					Button positive = mConfigUI.getPosiveButton();
+					boolean enabled = positive.isEnabled();
+					if (!enabled) {
+						if (mRoomNameEditText != null && mRoomNameEditText.getVisibility() == View.VISIBLE) {
+							mRoomNameEditText.setError(mConfigUI
+									.getContext()
+									.getResources()
+									.getString(R.string.input_invalid_msg,
+											limit));
+						}
+						if (mRoomPassword != null && mRoomPassword.getVisibility() == View.VISIBLE) {
+							mRoomPassword.setError(mConfigUI
+									.getContext()
+									.getResources()
+									.getString(R.string.input_invalid_msg,
+											limit));
+						}
+					} else {
+						if (mRoomNameEditText != null && mRoomNameEditText.getVisibility() == View.VISIBLE) {
+							mRoomNameEditText.setError(null);
+						}
+						if (mRoomPassword != null && mRoomPassword.getVisibility() == View.VISIBLE) {
+							mRoomPassword.setError(null);
+						}
+					}
+				}
 			}
 		});
 	}
 
-	/* package */void enableSubmitIfAppropriate() {
+	/* package */int enableSubmitIfAppropriate() {
 		Button positive = mConfigUI.getPosiveButton();
 		if (positive == null)
-			return;
+			return 0;
 		boolean enabled = true;
 		int maxRoomNamePasswordLength = 0;
 		if (mOptions != null) {
@@ -247,6 +274,7 @@ public class RoomConfigController implements TextWatcher,
 			}
 		}
 		positive.setEnabled(enabled);
+		return maxRoomNamePasswordLength;
 	}
 
 	public YGOGameOptions getGameOption() {

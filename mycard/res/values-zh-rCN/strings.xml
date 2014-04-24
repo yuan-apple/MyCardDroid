@@ -22,6 +22,8 @@
     <string name="duel_options">决斗选项</string>
     <string name="quick_join_hint">房间名$密码</string>
     
+    <string name="input_invalid_msg">用户名与密码长度之和不能超过<xliff>%1$d</xliff>个字符</string>
+    
     <string name="button_create">创建</string>
     <string name="button_join">加入</string>
     <string name="button_cancel">取消</string>
@@ -35,6 +37,7 @@
     <string name="sign_up">注册</string>
     
     <string name="login_sign_up">登录/注册</string>
+    <string name="personal_center">个人中心</string>
     
     <string name="quick_join_error">无法找到房间</string>
     

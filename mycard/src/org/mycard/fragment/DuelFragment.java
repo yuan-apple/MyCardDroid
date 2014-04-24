@@ -82,7 +82,7 @@ public class DuelFragment extends TabFragment {
 
 	}
 
-	private static final String TAG = "RoomFragment";
+	private static final String TAG = "DuelFragment";
 
 	public static final String ROOM_BUNDLE_KEY_TAG_INDEX = "bundle.key.room.tag.index";
 	
@@ -131,8 +131,6 @@ public class DuelFragment extends TabFragment {
 		super.onResume();
 		Controller.peekInstance().asyncUpdateRoomList(mHandler
 				.obtainMessage(Constants.MSG_ID_UPDATE_ROOM_LIST));
-		mActionBarCallback.onActionBarChange(
-				Constants.ACTION_BAR_CHANGE_TYPE_DATA_LOADING, 1);
 		for (int i = 0; i < mFragments.size(); i++) {
 			RoomPageFragment f = ((RoomPageFragment) mFragments.get(i));
 			if (f != null) {

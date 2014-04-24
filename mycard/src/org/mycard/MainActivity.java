@@ -32,9 +32,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -43,7 +46,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements
-		OnActionBarChangeCallback, Handler.Callback {
+		OnActionBarChangeCallback, Handler.Callback, OnClickListener {
 
 	public static class EventHandler extends Handler {
 		public EventHandler(Callback back) {
@@ -67,7 +70,6 @@ public class MainActivity extends ActionBarActivity implements
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			// TODO Auto-generated method stub
 			if (position != -1) {
 				onActionBarChange(Constants.ACTION_BAR_CHANGE_TYPE_PAGE_CHANGE,
 						position);
@@ -86,6 +88,7 @@ public class MainActivity extends ActionBarActivity implements
 	private static final int DRAWER_ID_CHAT_ROOM = 4;
 	private static final int DRAWER_ID_FORUM_LINK = 5;
 	private static final int DRAWER_ID_FINAL_PHASE = 6;
+	private static final String TAG = "MainActivity";
 
 	private DrawerLayout mDrawerLayout;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -110,7 +113,9 @@ public class MainActivity extends ActionBarActivity implements
 
 	private List<ServerInfo> mServerList;
 	
-	private LinearLayout drawLayout;
+	private LinearLayout mLeftDrawer;
+	
+	private ViewGroup mUserPanel;
 	
 	private TextView mUserStatusDes;
 	
@@ -151,7 +156,9 @@ public class MainActivity extends ActionBarActivity implements
 
 		mDrawerList.setAdapter(new SimpleAdapter(this, mDrawerListData,
 				R.layout.drawer_list_item, dataFrom, viewTo));
-		drawLayout = (LinearLayout) findViewById(R.id.left_layout);
+		mLeftDrawer = (LinearLayout) findViewById(R.id.left_layout);
+		mUserPanel = (ViewGroup) findViewById(R.id.user_panel);
+		mUserPanel.setOnClickListener(this);
 
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 		selectItem(1);
@@ -239,7 +246,7 @@ public class MainActivity extends ActionBarActivity implements
 		mDrawerList.setItemChecked(position - 1, true);
 		setTitle(mDrawerItems[position - 1]);
 		// mDrawerLayout.closeDrawer(mDrawerList);
-		mDrawerLayout.closeDrawer(drawLayout);
+		mDrawerLayout.closeDrawer(mLeftDrawer);
 	}
 
 	@Override
@@ -299,5 +306,13 @@ public class MainActivity extends ActionBarActivity implements
 	
 	public void unregisterForActionPlay(Handler h) {
 		mActionBarController.unregisterForActionPlay(h);
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == R.id.user_panel) {
+			Log.i(TAG, "user panel clicked");
+		}
+		
 	}
 }
