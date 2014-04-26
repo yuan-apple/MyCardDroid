@@ -120,7 +120,7 @@ public class RoomPageFragment extends BaseFragment implements OnItemClickListene
 		YGOGameOptions options = new YGOGameOptions();
 		options.mName = "illusory";
 		options.mMode = info.mode;
-		options.mServerAddr = mActivity.getServer().ipAddrString;
+		options.mServerAddr = mActivity.getServer() == null ?  ""  :mActivity.getServer().ipAddrString;
 		options.mPort = mActivity.getServer().port;
 		options.mRoomName = info.name;
 		options.mRoomPasswd = "";

@@ -32,12 +32,12 @@
 	
 	<color name="low_translucent_cover">#10000000</color>
 	
-	<color name="line_divider_color">#e0e0e0</color>
 	<color name="holo_blue_light">#ff33b5e5</color>
 	<color name="holo_gray_light">#33999999</color>
 	
 	<!-- for navigation drawer & actionbar title -->
 	<color name="dark_blue">#0099CC</color>
+	<color name="trasparent_dark_purple">#669933CC</color>
 	<color name="dark_purple">#9933CC</color>
 	<color name="dark_orange">#FF8800</color>
 	<color name="orange">#FFBB33</color>

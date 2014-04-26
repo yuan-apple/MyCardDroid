@@ -9,6 +9,6 @@
     android:paddingLeft="10dip"
     android:paddingRight="10dip"
     android:cacheColorHint="@android:color/transparent"
-    android:divider="@color/line_divider_color"
+    android:divider="@color/dark_purple"
     android:dividerHeight="0.67dip">
 </ListView>

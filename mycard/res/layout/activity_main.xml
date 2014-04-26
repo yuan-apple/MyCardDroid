@@ -1,13 +1,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <android.support.v4.widget.DrawerLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/drawer_layout"
         android:background="@color/holo_gray_light"
         tools:context=".MainActivity" >
 
@@ -26,18 +26,22 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="#FFFFFF"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip" >
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/user_panel"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:id="@+id/user_panel"
-                android:padding="@dimen/drawer_header_padding" >
+                android:background="@drawable/activated_background_holo_light">
 
                 <ImageView
-                    android:id="@+id/imageView1"
+                    android:id="@+id/userImage"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
                     android:layout_width="@dimen/drawer_header_height"
                     android:layout_height="wrap_content"
                     android:scaleType="fitCenter"
@@ -45,11 +49,19 @@
 
                 <TextView
                     android:id="@+id/user_status_des_text"
+                    android:layout_toRightOf="@id/userImage"
+                    android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dip"
-                    android:textSize="18sp" />
-            </LinearLayout>
+                    android:textSize="18sp"
+                    android:textColor="@color/dark_purple" />
+                <View 
+                    android:layout_width="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="0.67dip"
+                    android:background="@color/dark_purple"/>
+            </RelativeLayout>
 
             <ListView
                 android:id="@+id/left_drawer"
@@ -57,7 +69,7 @@
                 android:layout_height="match_parent"
                 android:background="#FFFFFF"
                 android:choiceMode="singleChoice"
-                android:divider="@color/line_divider_color"
+                android:divider="@color/dark_purple"
                 android:dividerHeight="0.67dp" />
         </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
