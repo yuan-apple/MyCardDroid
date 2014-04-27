@@ -19,17 +19,20 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.support.v7.view.ActionMode;
+import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class CardWikiFragment extends BaseFragment implements
-		LoaderCallbacks<Cursor>, ActionMode.Callback {
+		LoaderCallbacks<Cursor>, ActionMode.Callback, OnMenuItemClickListener, OnItemClickListener {
 
 	private static final int QUERY_SOURCE_LOADER_ID = 0;
 	private static final String TAG = "CardWikiFragment";
@@ -67,6 +70,9 @@ public class CardWikiFragment extends BaseFragment implements
 			mActionMode = mActivity.startSupportActionMode(this);
 			mActionBarView = (CustomActionBarView) LayoutInflater.from(mActivity).inflate(R.layout.custom_actionbar_view, null);
 			mActionMode.setCustomView(mActionBarView);
+			mActionBarView.addNewPopupImage(R.menu.filter_type, R.string.action_filter_string_type, R.string.action_filter_none, this, false);
+			mActionBarView.addNewPopupImage(R.menu.login, R.string.action_filter_string_race, R.string.action_filter_none, this, false);
+			mActionBarView.addNewPopupImage(R.menu.login, R.string.action_filter_string_property, R.string.action_filter_none, this, false);
 			break;
 
 		default:
@@ -117,6 +123,7 @@ public class CardWikiFragment extends BaseFragment implements
 						R.id.item_attr, R.id.item_atk, R.id.item_def }, 0);
 		simpleCursorAdapter.setViewBinder(new CardInfoBinder());
 		listView.setAdapter(simpleCursorAdapter);
+		listView.setOnItemClickListener(this);
 		initCursorLoader();
 		return view;
 	}
@@ -219,6 +226,17 @@ public class CardWikiFragment extends BaseFragment implements
 	@Override
 	public void onDestroyActionMode(ActionMode paramActionMode) {
 		mActionMode = null;
+	}
+
+	@Override
+	public boolean onMenuItemClick(MenuItem paramMenuItem) {
+		return false;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		mActivity.navigateToChild(null, FRAGMENT_ID_CARD_DETAIL);
 	}
 
 }

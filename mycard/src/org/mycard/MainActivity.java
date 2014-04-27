@@ -12,6 +12,7 @@ import org.mycard.data.ResourcesConstants;
 import org.mycard.data.ServerInfo;
 import org.mycard.fragment.BaseFragment.OnActionBarChangeCallback;
 import org.mycard.fragment.BaseFragment;
+import org.mycard.fragment.CardDetailFragment;
 import org.mycard.fragment.HomePageFragment;
 import org.mycard.fragment.CardWikiFragment;
 import org.mycard.fragment.ChatRoomFragment;
@@ -277,6 +278,21 @@ public class MainActivity extends ActionBarActivity implements
 		setTitle(mDrawerItems[position - 1]);
 		// mDrawerLayout.closeDrawer(mDrawerList);
 		mDrawerLayout.closeDrawer(mLeftDrawer);
+	}
+	
+	public void navigateToChild(Bundle param, int id) {
+		Fragment fragment = null;
+		switch (id) {
+		case FRAGMENT_ID_CARD_DETAIL:
+			fragment = CardDetailFragment.newInstance(param);
+			break;
+		default:
+			break;
+		}
+		// Insert the fragment by adding a new fragment
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+		ft.add(R.id.content_frame, fragment).addToBackStack(null).commit();
 	}
 
 	@Override

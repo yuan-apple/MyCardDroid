@@ -207,6 +207,9 @@ public class DuelFragment extends TabFragment {
 
 	@Override
 	public boolean handleMessage(Message msg) {
+		if (!isResumed()) {
+			return false;
+		}
 		switch (msg.what) {
 		case Constants.MSG_ID_UPDATE_ROOM_LIST:
 			if (msg.arg2 == IBaseWrapper.TASK_STATUS_SUCCESS) {

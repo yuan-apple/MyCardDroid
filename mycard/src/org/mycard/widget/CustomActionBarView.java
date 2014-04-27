@@ -13,15 +13,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 public class CustomActionBarView extends RelativeLayout implements
 		android.view.View.OnClickListener {
 
-	private ViewGroup mBasicItemPanel;
-	private ViewGroup mMoreItemPanel;
+	private ViewGroup mBasicPanel;
+	private ViewGroup mMorePanel;
+	
+	private LinearLayout mBasicItemPanel;
+	private LinearLayout mMoreItemPanel;
 
 	private View mNextNavigation;
 	private View mPrevNavigation;
@@ -41,8 +46,10 @@ public class CustomActionBarView extends RelativeLayout implements
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
-		mBasicItemPanel = (ViewGroup) findViewById(R.id.basic_action_pannel);
-		mMoreItemPanel = (ViewGroup) findViewById(R.id.more_action_pannel);
+		mBasicPanel = (ViewGroup) findViewById(R.id.basic_action_pannel);
+		mMorePanel = (ViewGroup) findViewById(R.id.more_action_pannel);
+		mBasicItemPanel = (LinearLayout) findViewById(R.id.basic_item_pannel);
+		mMoreItemPanel = (LinearLayout) findViewById(R.id.more_item_pannel);
 		mNextNavigation = findViewById(R.id.navigation_next);
 		mPrevNavigation = findViewById(R.id.navigation_previous);
 		mNextNavigation.setOnClickListener(this);
@@ -66,20 +73,26 @@ public class CustomActionBarView extends RelativeLayout implements
 		return spinner.getId();
 	}
 
-	public int addNewPopupImage(int menuRes, int res, OnMenuItemClickListener listener,
+	public int addNewPopupImage(int menuRes, int typeRes, int desRes, OnMenuItemClickListener listener,
 			boolean isExtended) {
-		ImageView image = (ImageView) LayoutInflater.from(getContext())
+		ViewGroup panel = (ViewGroup) LayoutInflater.from(getContext())
 				.inflate(R.layout.custom_image, null);
-		image.setImageResource(res);
-		image.setOnClickListener(this);
-		image.setTag(R.id.custom_view_menu, menuRes);
-		image.setTag(R.id.custom_view_listener, listener);
+		TextView type = (TextView) panel.findViewById(R.id.type);
+		TextView des = (TextView) panel.findViewById(R.id.des);
+		type.setText(typeRes);
+		des.setText(desRes);
+		panel.setOnClickListener(this);
+		panel.setTag(R.id.custom_view_menu, menuRes);
+		panel.setTag(R.id.custom_view_listener, listener);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+		params.weight = 1.0f;
+		panel.setLayoutParams(params);
 		if (!isExtended) {
-			mBasicItemPanel.addView(image);
+			mBasicItemPanel.addView(panel);
 		} else {
-			mMoreItemPanel.addView(image);
+			mMoreItemPanel.addView(panel);
 		}
-		return image.getId();
+		return panel.getId();
 	}
 
 	@Override

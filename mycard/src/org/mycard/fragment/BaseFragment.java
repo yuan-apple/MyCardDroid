@@ -2,6 +2,7 @@ package org.mycard.fragment;
 
 import org.mycard.Constants;
 import org.mycard.MainActivity;
+import org.mycard.R;
 
 import android.app.Activity;
 import android.content.res.Configuration;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.TextView;
 
@@ -39,8 +41,6 @@ public abstract class BaseFragment extends Fragment implements Handler.Callback,
 	protected DataHandler mHandler;
 	protected OnActionBarChangeCallback mActionBarCallback;
 	
-	protected String mTitle;
-	
 	protected TextView mActionBarTitle;
 	
 	
@@ -57,7 +57,6 @@ public abstract class BaseFragment extends Fragment implements Handler.Callback,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mTitle = getArguments().getString(ARG_ITEM_TITLE);
 		int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
 		mActionBarTitle = (TextView) mActivity.findViewById(actionBarTitleId);
 	}

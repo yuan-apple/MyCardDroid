@@ -16,6 +16,8 @@ public interface Constants {
 	public static final int DRAWER_ID_FORUM_LINK = 5;
 	public static final int DRAWER_ID_FINAL_PHASE = 6;
 	
+	public static final int FRAGMENT_ID_CARD_DETAIL = 7;
+	
 	public static final int MSG_ID_UPDATE_ROOM_LIST = 0;
 	public static final int MSG_ID_UPDATE_SERVER = 1;
 	public static final int MSG_ID_LOGIN = 2;
