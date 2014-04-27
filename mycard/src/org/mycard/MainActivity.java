@@ -101,8 +101,6 @@ public class MainActivity extends ActionBarActivity implements
 
 	private ActionBar mActionBar;
 
-	private CustomActionBarView mFilterView;
-
 	private ActionBarCreator mActionBarCreator;
 
 	private EventHandler mHandler;
@@ -130,9 +128,6 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	private void initView() {
-
-		mFilterView = (CustomActionBarView) LayoutInflater.from(this).inflate(
-				R.layout.custom_actionbar_view, null);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -165,47 +160,13 @@ public class MainActivity extends ActionBarActivity implements
 
 	private void initActionBar() {
 		mActionBar = getSupportActionBar();
-		mActionBar.setDisplayHomeAsUpEnabled(false);
-		mActionBar.setHomeButtonEnabled(false);
-		// mActionBar.setDisplayShowCustomEnabled(true);
-		// mActionBarView = (CustomActionBarView)
-		// LayoutInflater.from(this).inflate(R.layout.custom_actionbar_view,
-		// null);
-		// mActionBar.setCustomView(mActionBarView);
-
-		// mActionBarView.addNewSpinner(R.string.duel_mode, R.array.duel_mode,
-		// this, false);
-
-		// mActionBarView.addNewPopupImage(R.menu.main,
-		// R.drawable.ic_action_empty_filter, this, false);
+		mActionBar.setDisplayHomeAsUpEnabled(true);
+		mActionBar.setHomeButtonEnabled(true);
 	}
-	
-//	public void setActionModeCallback(ActionMode.Callback callback) {
-//		mFilterModeCallback = callback;
-//	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(final Menu menu) {
 		mActionBarCreator.createMenu(menu);
-//		if (mActionBarCreator.isFilterEnabled()) {
-//			MenuItem item = menu.findItem(R.id.action_filter);
-//			MenuItemCompat.setOnActionExpandListener(item,
-//					new OnActionExpandListener() {
-//
-//						@Override
-//						public boolean onMenuItemActionExpand(
-//								MenuItem paramMenuItem) {
-//							MainActivity.this.startSupportActionMode(mFilterModeCallback);
-//							return true;
-//						}
-//
-//						@Override
-//						public boolean onMenuItemActionCollapse(
-//								MenuItem paramMenuItem) {
-//							return false;
-//						}
-//					});
-//		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -304,8 +265,7 @@ public class MainActivity extends ActionBarActivity implements
 				mActionBarCreator = new ActionBarCreator(this).setRoomCreate(
 						true).setPlay(true);
 			} else if (action == DRAWER_ID_CARD_WIKI) {
-				mActionBarCreator = new ActionBarCreator(this).setFilter(true,
-						mFilterView).setSearch(true);
+				mActionBarCreator = new ActionBarCreator(this).setFilter(true).setSearch(true);
 			} else {
 				mActionBarCreator = new ActionBarCreator(this);
 			}

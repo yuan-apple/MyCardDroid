@@ -66,9 +66,8 @@ public class ActionBarCreator {
 		return this;
 	}
 	
-	public ActionBarCreator setFilter(boolean filter, View filterView) {
+	public ActionBarCreator setFilter(boolean filter) {
 		mFilter = filter;
-		mFilterView = new WeakReference<View>(filterView);
 		return this;
 	}
 	
