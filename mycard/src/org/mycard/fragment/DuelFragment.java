@@ -110,6 +110,8 @@ public class DuelFragment extends TabFragment {
 		super.onAttach(activity);
 		mTabs = getResources().getStringArray(R.array.duel_mode);
 		mTabCount = mTabs.length;
+		mActivity.onActionBarChange(Constants.ACTION_BAR_CHANGE_TYPE_PAGE_CHANGE,
+				DRAWER_ID_DUEL, null);
 	}
 
 	@Override
@@ -131,14 +133,16 @@ public class DuelFragment extends TabFragment {
 		super.onResume();
 		Controller.peekInstance().asyncUpdateRoomList(mHandler
 				.obtainMessage(Constants.MSG_ID_UPDATE_ROOM_LIST));
+		mActionBarCallback.onActionBarChange(
+				Constants.ACTION_BAR_CHANGE_TYPE_DATA_LOADING, 1, null);
 		for (int i = 0; i < mFragments.size(); i++) {
 			RoomPageFragment f = ((RoomPageFragment) mFragments.get(i));
 			if (f != null) {
 				f.onResume();
 			}
 		}
-		mActivity.registerForActionNew(mHandler);
-		mActivity.registerForActionPlay(mHandler);
+		Controller.peekInstance().registerForActionNew(mHandler);
+		Controller.peekInstance().registerForActionPlay(mHandler);
 	}
 
 	@Override
@@ -153,8 +157,8 @@ public class DuelFragment extends TabFragment {
 				f.onPause();
 			}
 		}
-		mActivity.unregisterForActionNew(mHandler);
-		mActivity.unregisterForActionPlay(mHandler);
+		Controller.peekInstance().unregisterForActionNew(mHandler);
+		Controller.peekInstance().unregisterForActionPlay(mHandler);
 	}
 
 	@Override
@@ -209,7 +213,7 @@ public class DuelFragment extends TabFragment {
 				if (!isDataloaded) {
 					isDataloaded = true;
 					mActionBarCallback.onActionBarChange(
-							Constants.ACTION_BAR_CHANGE_TYPE_DATA_LOADING, 0);
+							Constants.ACTION_BAR_CHANGE_TYPE_DATA_LOADING, 0, null);
 					if (mExtraView != null) {
 						mExtraView.setVisibility(View.GONE);
 					}

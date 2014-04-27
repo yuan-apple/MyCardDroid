@@ -1,10 +1,13 @@
 package org.mycard.fragment;
 
-
+import org.mycard.Constants;
 import org.mycard.R;
+import org.mycard.core.Controller;
 import org.mycard.provider.YGOCards;
 import org.mycard.utils.ResourceUtils;
+import org.mycard.widget.CustomActionBarView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,15 +18,18 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
+import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class CardWikiFragment extends BaseFragment implements
-		LoaderCallbacks<Cursor> {
+		LoaderCallbacks<Cursor>, ActionMode.Callback {
 
 	private static final int QUERY_SOURCE_LOADER_ID = 0;
 	private static final String TAG = "CardWikiFragment";
@@ -38,6 +44,8 @@ public class CardWikiFragment extends BaseFragment implements
 	private ListView listView;
 	private Context mContext;
 
+	private ActionMode mActionMode;
+
 	private String[] card_race;
 	private String[] card_attr;
 
@@ -48,8 +56,41 @@ public class CardWikiFragment extends BaseFragment implements
 	 */
 	@Override
 	public boolean handleMessage(Message msg) {
-		// TODO Auto-generated method stub
+		switch (msg.what) {
+		case Constants.ACTION_BAR_EVENT_TYPE_SEARCH:
+			Log.i(TAG, "receive action bar search click event");
+			break;
+		case Constants.ACTION_BAR_EVENT_TYPE_FILTER:
+			Log.i(TAG, "receive action bar filter click event");
+			mActionMode = mActivity.startSupportActionMode(this);
+			break;
+
+		default:
+			break;
+		}
 		return false;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		Controller.peekInstance().registerForActionSearch(mHandler);
+		Controller.peekInstance().registerForActionFilter(mHandler);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		Controller.peekInstance().unregisterForActionSearch(mHandler);
+		Controller.peekInstance().unregisterForActionFilter(mHandler);
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mActivity.onActionBarChange(
+				Constants.ACTION_BAR_CHANGE_TYPE_PAGE_CHANGE,
+				DRAWER_ID_CARD_WIKI, null);
 	}
 
 	@Override
@@ -152,6 +193,29 @@ public class CardWikiFragment extends BaseFragment implements
 			x++;
 		}
 		return x;
+	}
+
+	@Override
+	public boolean onCreateActionMode(ActionMode paramActionMode, Menu paramMenu) {
+		mActivity.getMenuInflater().inflate(R.menu.filter_menu, paramMenu);
+		return true;
+	}
+
+	@Override
+	public boolean onPrepareActionMode(ActionMode paramActionMode,
+			Menu paramMenu) {
+		return false;
+	}
+
+	@Override
+	public boolean onActionItemClicked(ActionMode paramActionMode,
+			MenuItem paramMenuItem) {
+		return false;
+	}
+
+	@Override
+	public void onDestroyActionMode(ActionMode paramActionMode) {
+		mActionMode = null;
 	}
 
 }

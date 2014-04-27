@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.mycard.common.ActionBarController;
-import org.mycard.common.ActionBarCreator;
+import org.mycard.actionbar.ActionBarCreator;
 import org.mycard.core.Controller;
 import org.mycard.data.Model;
 import org.mycard.data.ResourcesConstants;
@@ -18,6 +17,7 @@ import org.mycard.fragment.CardWikiFragment;
 import org.mycard.fragment.ChatRoomFragment;
 import org.mycard.fragment.FinalPhaseFragment;
 import org.mycard.fragment.DuelFragment;
+import org.mycard.widget.CustomActionBarView;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -33,6 +33,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,7 +47,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements
-		OnActionBarChangeCallback, Handler.Callback, OnClickListener {
+		OnActionBarChangeCallback, Handler.Callback, OnClickListener, Constants {
 
 	public static class EventHandler extends Handler {
 		public EventHandler(Callback back) {
@@ -71,8 +72,6 @@ public class MainActivity extends ActionBarActivity implements
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			if (position != -1) {
-				onActionBarChange(Constants.ACTION_BAR_CHANGE_TYPE_PAGE_CHANGE,
-						position);
 				selectItem(position + 1);
 			}
 		}
@@ -82,12 +81,6 @@ public class MainActivity extends ActionBarActivity implements
 	private static final String IMAGE_TAG = "image";
 	private static final String TEXT_TAG = "text";
 
-	private static final int DRAWER_ID_MY_CARD = 1;
-	private static final int DRAWER_ID_DUEL = 2;
-	private static final int DRAWER_ID_CARD_WIKI = 3;
-	private static final int DRAWER_ID_CHAT_ROOM = 4;
-	private static final int DRAWER_ID_FORUM_LINK = 5;
-	private static final int DRAWER_ID_FINAL_PHASE = 6;
 	private static final String TAG = "MainActivity";
 
 	private DrawerLayout mDrawerLayout;
@@ -105,20 +98,22 @@ public class MainActivity extends ActionBarActivity implements
 
 	private Controller mController;
 
+	private ActionBar mActionBar;
+
+	private CustomActionBarView mFilterView;
+
 	private ActionBarCreator mActionBarCreator;
-	
-	private ActionBarController mActionBarController;
 
 	private EventHandler mHandler;
 
 	private List<ServerInfo> mServerList;
-	
+
 	private LinearLayout mLeftDrawer;
-	
+
 	private ViewGroup mUserPanel;
-	
+
 	private TextView mUserStatusDes;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -127,7 +122,6 @@ public class MainActivity extends ActionBarActivity implements
 		initView();
 		setTitle(R.string.mycard);
 		mController = Controller.peekInstance();
-		mActionBarController = new ActionBarController();
 		mActionBarCreator = new ActionBarCreator(this);
 		mHandler = new EventHandler(this);
 		mController.asyncUpdateServer(mHandler
@@ -135,12 +129,16 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	private void initView() {
+
+		mFilterView = (CustomActionBarView) LayoutInflater.from(this).inflate(
+				R.layout.custom_actionbar_view, null);
+
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_navigation_drawer, R.string.app_name,
 				R.string.app_name);
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		
+
 		mUserStatusDes = (TextView) findViewById(R.id.user_status_des_text);
 		mUserStatusDes.setText(R.string.login_sign_up);
 
@@ -165,21 +163,53 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	private void initActionBar() {
-		ActionBar actionbar = getSupportActionBar();
-		actionbar.setDisplayHomeAsUpEnabled(true);
-		actionbar.setHomeButtonEnabled(true);
+		mActionBar = getSupportActionBar();
+		mActionBar.setDisplayHomeAsUpEnabled(false);
+		mActionBar.setHomeButtonEnabled(false);
+		// mActionBar.setDisplayShowCustomEnabled(true);
+		// mActionBarView = (CustomActionBarView)
+		// LayoutInflater.from(this).inflate(R.layout.custom_actionbar_view,
+		// null);
+		// mActionBar.setCustomView(mActionBarView);
+
+		// mActionBarView.addNewSpinner(R.string.duel_mode, R.array.duel_mode,
+		// this, false);
+
+		// mActionBarView.addNewPopupImage(R.menu.main,
+		// R.drawable.ic_action_empty_filter, this, false);
 	}
+	
+//	public void setActionModeCallback(ActionMode.Callback callback) {
+//		mFilterModeCallback = callback;
+//	}
 
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
+	public boolean onPrepareOptionsMenu(final Menu menu) {
 		mActionBarCreator.createMenu(menu);
+//		if (mActionBarCreator.isFilterEnabled()) {
+//			MenuItem item = menu.findItem(R.id.action_filter);
+//			MenuItemCompat.setOnActionExpandListener(item,
+//					new OnActionExpandListener() {
+//
+//						@Override
+//						public boolean onMenuItemActionExpand(
+//								MenuItem paramMenuItem) {
+//							MainActivity.this.startSupportActionMode(mFilterModeCallback);
+//							return true;
+//						}
+//
+//						@Override
+//						public boolean onMenuItemActionCollapse(
+//								MenuItem paramMenuItem) {
+//							return false;
+//						}
+//					});
+//		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		mActionBarCreator.createMenu(menu);
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -191,7 +221,7 @@ public class MainActivity extends ActionBarActivity implements
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		return mActionBarController.handleAction(item.getItemId());
+		return Controller.peekInstance().handleActionBarEvent(item);
 	}
 
 	@Override
@@ -250,24 +280,26 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	@Override
-	public void onActionBarChange(int msgType, int action) {
+	public void onActionBarChange(int msgType, int action, Object extra) {
 		// TODO Auto-generated method stub
 		switch (msgType) {
 		case Constants.ACTION_BAR_CHANGE_TYPE_PAGE_CHANGE:
 			if (action == DRAWER_ID_DUEL) {
-				mActionBarCreator.setRoomCreate(true);
+				mActionBarCreator = new ActionBarCreator(this).setRoomCreate(
+						true).setPlay(true);
+			} else if (action == DRAWER_ID_CARD_WIKI) {
+				mActionBarCreator = new ActionBarCreator(this).setFilter(true,
+						mFilterView).setSearch(true);
 			} else {
-				mActionBarCreator.setRoomCreate(false).setLoading(false)
-						.setPlay(false);
+				mActionBarCreator = new ActionBarCreator(this);
 			}
 			break;
 		case Constants.ACTION_BAR_CHANGE_TYPE_DATA_LOADING:
 			if (action == 0) {
-				mActionBarCreator.setLoading(false).setRoomCreate(true)
-						.setPlay(true);
+				mActionBarCreator = new ActionBarCreator(this).setRoomCreate(
+						true).setPlay(true);
 			} else {
-				mActionBarCreator.setLoading(true).setRoomCreate(false)
-						.setPlay(false);
+				mActionBarCreator = new ActionBarCreator(this).setLoading(true);
 			}
 		default:
 			break;
@@ -291,28 +323,13 @@ public class MainActivity extends ActionBarActivity implements
 		}
 		return true;
 	}
-	
-	public void registerForActionNew(Handler h) {
-		mActionBarController.registerForActionNew(h);
-	}
-	
-	public void unregisterForActionNew(Handler h) {
-		mActionBarController.unregisterForActionNew(h);
-	}
-	
-	public void registerForActionPlay(Handler h) {
-		mActionBarController.registerForActionPlay(h);
-	}
-	
-	public void unregisterForActionPlay(Handler h) {
-		mActionBarController.unregisterForActionPlay(h);
-	}
 
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.user_panel) {
 			Log.i(TAG, "user panel clicked");
 		}
-		
+
 	}
+
 }

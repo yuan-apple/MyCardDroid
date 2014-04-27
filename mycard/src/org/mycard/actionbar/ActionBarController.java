@@ -1,4 +1,4 @@
-package org.mycard.common;
+package org.mycard.actionbar;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -8,10 +8,13 @@ import org.mycard.Constants;
 import org.mycard.R;
 
 import android.os.Handler;
+import android.support.v4.view.MenuItemCompat;
+import android.view.MenuItem;
 
 public class ActionBarController {
 	
 	private List<WeakReference<Handler>> mActionNewList;
+	private List<WeakReference<Handler>> mActionFilterList;
 	private List<WeakReference<Handler>> mActionSettingsList;
 	private List<WeakReference<Handler>> mActionPlayList;
 	private List<WeakReference<Handler>> mActionSearchList;
@@ -21,11 +24,12 @@ public class ActionBarController {
 		mActionSettingsList = new ArrayList<WeakReference<Handler>>();
 		mActionPlayList = new ArrayList<WeakReference<Handler>>();
 		mActionSearchList = new ArrayList<WeakReference<Handler>>();
+		mActionFilterList = new ArrayList<WeakReference<Handler>>();
 	}
 	
-	public boolean handleAction(int actionID) {
+	public boolean handleAction(MenuItem item) {
 		boolean handled = true;
-		switch (actionID) {
+		switch (item.getItemId()) {
 		case R.id.action_settings:
 			notifyTarget(mActionSettingsList, Constants.ACTION_BAR_EVENT_TYPE_SETTINGS);
 			break;
@@ -37,6 +41,9 @@ public class ActionBarController {
 			break;
 		case R.id.action_search:
 			notifyTarget(mActionSearchList, Constants.ACTION_BAR_EVENT_TYPE_SEARCH);
+			break;
+		case R.id.action_filter:
+			notifyTarget(mActionFilterList, Constants.ACTION_BAR_EVENT_TYPE_FILTER);
 			break;
 		default:
 			handled = false;
@@ -57,6 +64,37 @@ public class ActionBarController {
 	public void registerForActionNew(Handler h) {
 		WeakReference<Handler> ref = new WeakReference<Handler>(h);
 		mActionNewList.add(ref);
+	}
+	
+	public void registerForActionSearch(Handler h) {
+		WeakReference<Handler> ref = new WeakReference<Handler>(h);
+		mActionSearchList.add(ref);
+	}
+	
+	public void unregisterForActionSearch(Handler h) {
+		for (WeakReference<Handler> item : mActionSearchList) {
+			if (h == item.get()) {
+				mActionSearchList.remove(item);
+				item = null;
+				break;
+			}
+		}
+	}
+
+	
+	public void registerForActionFilter(Handler h) {
+		WeakReference<Handler> ref = new WeakReference<Handler>(h);
+		mActionFilterList.add(ref);
+	}
+	
+	public void unregisterForActionFilter(Handler h) {
+		for (WeakReference<Handler> item : mActionFilterList) {
+			if (h == item.get()) {
+				mActionFilterList.remove(item);
+				item = null;
+				break;
+			}
+		}
 	}
 	
 	public void unregisterForActionNew(Handler h) {

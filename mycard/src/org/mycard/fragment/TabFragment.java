@@ -39,15 +39,11 @@ public abstract class TabFragment extends BaseFragment {
 	
 	protected int mTabCount;
 
-	
-	protected Activity mAcitivity;
-
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
-		mAcitivity = activity;
-		mInflater = LayoutInflater.from(mAcitivity);
+		mInflater = LayoutInflater.from(mActivity);
 	}
 
 	/*
@@ -93,7 +89,7 @@ public abstract class TabFragment extends BaseFragment {
 
 	private void resizeNavTab(Configuration config) {
 		DisplayMetrics dm = new DisplayMetrics();
-		mAcitivity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+		mActivity.getWindowManager().getDefaultDisplay().getMetrics(dm);
 		mIndicatorWidth = dm.widthPixels / (mTabCount > 4 ? 4 : mTabCount);
 
 		LayoutParams cursor_Params = mNavIndicator.getLayoutParams();

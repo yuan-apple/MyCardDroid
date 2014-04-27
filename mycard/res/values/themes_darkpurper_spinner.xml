@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="darkpurper_spinner" parent="@style/_darkpurper_spinner"/>
+
+  <style name="_darkpurper_spinner" parent="Theme.AppCompat.Light">
+
+    <item name="android:spinnerStyle">@style/Spinnerdarkpurper_spinner</item>
+
+    <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemdarkpurper_spinner</item>
+
+  </style>
+
+</resources>

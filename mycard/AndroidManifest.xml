@@ -16,19 +16,14 @@
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/mycard"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name="org.mycard.MainActivity"
             android:clearTaskOnLaunch="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/mycard"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat.Light"
-            android:uiOptions="splitActionBarWhenNarrow" >
-            <meta-data
-                android:name="android.support.UI_OPTIONS"
-                android:value="splitActionBarWhenNarrow" />
-
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

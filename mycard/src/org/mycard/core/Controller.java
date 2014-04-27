@@ -2,10 +2,12 @@ package org.mycard.core;
 
 import org.mycard.Constants;
 import org.mycard.StaticApplication;
+import org.mycard.actionbar.ActionBarController;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.MenuItem;
 
 public class Controller {
 	
@@ -15,8 +17,11 @@ public class Controller {
 	
 	private UpdateController mUpdateController;
 	
+	private ActionBarController mActionBarController;
+	
 	private Controller(StaticApplication app) {
 		mUpdateController = new UpdateController(app);
+		mActionBarController = new ActionBarController();
 	}
 
 	public static Controller peekInstance() {
@@ -62,5 +67,42 @@ public class Controller {
 	public void unregisterForLoginStatusChange(Handler h) {
 		mLoginStatusTracker.unregisterForLoginStatusChange(h);
 	}
+	
+	public boolean handleActionBarEvent(MenuItem item) {
+		return mActionBarController.handleAction(item);
+	}
+
+	public void registerForActionNew(Handler h) {
+		mActionBarController.registerForActionNew(h);
+	}
+
+	public void unregisterForActionNew(Handler h) {
+		mActionBarController.unregisterForActionNew(h);
+	}
+
+	public void registerForActionPlay(Handler h) {
+		mActionBarController.registerForActionPlay(h);
+	}
+
+	public void unregisterForActionPlay(Handler h) {
+		mActionBarController.unregisterForActionPlay(h);
+	}
+	
+	public void registerForActionSearch(Handler h) {
+		mActionBarController.registerForActionSearch(h);
+	}
+
+	public void unregisterForActionSearch(Handler h) {
+		mActionBarController.unregisterForActionSearch(h);
+	}
+	
+	public void registerForActionFilter(Handler h) {
+		mActionBarController.registerForActionFilter(h);
+	}
+	
+	public void unregisterForActionFilter(Handler h) {
+		mActionBarController.unregisterForActionFilter(h);
+	}
+
 
 }

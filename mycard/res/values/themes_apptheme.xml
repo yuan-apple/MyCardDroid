@@ -6,7 +6,7 @@
   <style name="AppTheme" parent="@style/_AppTheme"/>
 
   <style name="_AppTheme" parent="Theme.AppCompat.Light">
-
+ 
     <item name="android:editTextStyle">@style/EditTextAppTheme</item>
 
     <item name="android:checkboxStyle">@style/CheckBoxAppTheme</item>
@@ -14,6 +14,8 @@
     <item name="android:spinnerStyle">@style/SpinnerAppTheme</item>
 
     <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemAppTheme</item>
+    
+    <item name="actionModeBackground">@drawable/ab_dark_purper</item>
 
   </style>
 

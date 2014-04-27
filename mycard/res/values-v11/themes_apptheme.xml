@@ -12,7 +12,9 @@
     <item name="android:listChoiceIndicatorMultiple">@drawable/apptheme_btn_check_holo_light</item>
 
     <item name="android:dropDownSpinnerStyle">@style/SpinnerAppTheme</item>
-
+    
+    <item name="android:actionModeBackground">@drawable/ab_dark_purper</item>
+    
   </style>
 
 </resources>

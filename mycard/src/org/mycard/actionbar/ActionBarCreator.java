@@ -1,11 +1,16 @@
-package org.mycard.common;
+package org.mycard.actionbar;
+
+import java.lang.ref.WeakReference;
 
 import org.mycard.R;
 
 import android.content.Context;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 public class ActionBarCreator {
 
@@ -14,7 +19,7 @@ public class ActionBarCreator {
 	public ActionBarCreator(Context context) {
 		mContext = context;
 	}
-
+	
 	private boolean mLoading = false;
 
 	private boolean mSearch = false;
@@ -22,10 +27,14 @@ public class ActionBarCreator {
 	private boolean mRoomCreate = false;
 
 	private boolean mSettings = true;
+	
+	private WeakReference<View> mFilterView;
 
 	private boolean mPlay = false;
 	
 	private boolean mPersonalCenter = true;
+	
+	private boolean mFilter = false;
 	
 	public ActionBarCreator setPersonalCenter(boolean userStatus) {
 		mPersonalCenter = userStatus;
@@ -56,8 +65,18 @@ public class ActionBarCreator {
 		mPlay = play;
 		return this;
 	}
+	
+	public ActionBarCreator setFilter(boolean filter, View filterView) {
+		mFilter = filter;
+		mFilterView = new WeakReference<View>(filterView);
+		return this;
+	}
+	
+	public boolean isFilterEnabled() {
+		return mFilter;
+	}
 
-	public void createMenu(Menu menu) {
+	public void createMenu(final Menu menu) {
 		int index = 0;
 		menu.removeGroup(Menu.NONE);
 		if (mPersonalCenter) {
@@ -70,6 +89,16 @@ public class ActionBarCreator {
 			MenuItemCompat.setShowAsAction(item,
 					MenuItemCompat.SHOW_AS_ACTION_NEVER);
 		}
+		
+		if (mFilter) {
+			MenuItem item = menu.add(Menu.NONE, R.id.action_filter, index++,
+					mContext.getResources().getString(R.string.action_filter))
+					.setIcon(R.drawable.ic_action_empty_filter);
+			MenuItemCompat.setShowAsAction(item,
+					MenuItemCompat.SHOW_AS_ACTION_ALWAYS
+					| MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+//			MenuItemCompat.setActionView(item, mFilterView.get());
+		}
 		if (mLoading) {
 			MenuItem item = menu.add(Menu.NONE, R.id.action_loading, index++,
 					"");
@@ -78,7 +107,7 @@ public class ActionBarCreator {
 			MenuItemCompat
 					.setShowAsAction(
 							item,
-							MenuItemCompat.SHOW_AS_ACTION_IF_ROOM
+							MenuItemCompat.SHOW_AS_ACTION_ALWAYS
 									| MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 			MenuItemCompat.expandActionView(item);
 		}
@@ -98,6 +127,7 @@ public class ActionBarCreator {
 							item,
 							MenuItemCompat.SHOW_AS_ACTION_ALWAYS
 									| MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+			MenuItemCompat.setActionView(item, R.layout.custom_actionbar_searchview);
 		}
 		if (mRoomCreate) {
 			MenuItem item = menu

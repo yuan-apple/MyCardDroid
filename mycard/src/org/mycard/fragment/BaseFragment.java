@@ -1,5 +1,6 @@
 package org.mycard.fragment;
 
+import org.mycard.Constants;
 import org.mycard.MainActivity;
 
 import android.app.Activity;
@@ -12,10 +13,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.TextView;
 
-public abstract class BaseFragment extends Fragment implements Handler.Callback{
+public abstract class BaseFragment extends Fragment implements Handler.Callback, Constants{
 
 	public interface OnActionBarChangeCallback {
-		void onActionBarChange(int msgType, int action);
+		void onActionBarChange(int msgType, int action, Object extra);
 	}
 
 	/**
