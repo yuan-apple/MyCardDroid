@@ -41,6 +41,8 @@ public class CardWikiFragment extends BaseFragment implements
 	private Uri mContentUri = YGOCards.CONTENT_URI;
 
 	private SimpleCursorAdapter simpleCursorAdapter = null;
+	
+	private CustomActionBarView mActionBarView;
 	private ListView listView;
 	private Context mContext;
 
@@ -63,6 +65,8 @@ public class CardWikiFragment extends BaseFragment implements
 		case Constants.ACTION_BAR_EVENT_TYPE_FILTER:
 			Log.i(TAG, "receive action bar filter click event");
 			mActionMode = mActivity.startSupportActionMode(this);
+			mActionBarView = (CustomActionBarView) LayoutInflater.from(mActivity).inflate(R.layout.custom_actionbar_view, null);
+			mActionMode.setCustomView(mActionBarView);
 			break;
 
 		default:
@@ -197,7 +201,6 @@ public class CardWikiFragment extends BaseFragment implements
 
 	@Override
 	public boolean onCreateActionMode(ActionMode paramActionMode, Menu paramMenu) {
-		mActivity.getMenuInflater().inflate(R.menu.filter_menu, paramMenu);
 		return true;
 	}
 
